@@ -8,4 +8,6 @@ public interface CourseService {
   List<Course> findAll();
 
   Optional<Course> findById(Long id);
+
+  void save(Course course);
 }

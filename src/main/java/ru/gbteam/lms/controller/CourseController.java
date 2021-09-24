@@ -4,8 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.exception.NotFoundException;
+import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseService;
 
 @Controller
@@ -16,6 +18,19 @@ public class CourseController {
 
   public CourseController(CourseService courseService) {
     this.courseService = courseService;
+  }
+
+  @GetMapping("/new")
+  public String courseForm(Model model) {
+    model.addAttribute("course", new Course());
+    return "course_form";
+  }
+
+  @PostMapping
+  public String saveCourse(Course course) {
+    courseService.save(course);
+    return "redirect:/course";
+
   }
 
   @GetMapping("/{id}")
