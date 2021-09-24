@@ -42,7 +42,7 @@ public class CourseController {
   @GetMapping("/{id}")
   public String courseForm(Model model, @PathVariable("id") Long id) {
     model.addAttribute("course",
-        courseService.findById(id).orElseThrow(() -> new NotFoundException("Course not found")));
+        courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id)));
     return "course_form";
   }
 
