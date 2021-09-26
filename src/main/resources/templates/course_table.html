@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>EShop application</title>
+
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<h1>Список курсов</h1>
+
+<div>
+  <a th:href="@{course/new}">Создать курс</a>
+</div>
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Название курса</th>
+    <th>Автор курса</th>
+    <th>Действие</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="course : ${courses}">
+    <td th:text="${course.id}">1</td>
+    <td><a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
+    </td>
+    <td th:text="${course.author}">Course author</td>
+                <td>
+                    <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
+                        <button type="submit">удалить</button>
+                    </form>
+                </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+
+</html>
