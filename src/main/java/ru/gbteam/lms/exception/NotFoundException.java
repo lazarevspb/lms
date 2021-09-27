@@ -10,11 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NotFoundException extends RuntimeException {
 
-  private String className;
-  private Long id;
+    private String className;
+    private Long id;
 
-  public NotFoundException(String className, Long id) {
-    this.className = className;
-    this.id = id;
-  }
+    public NotFoundException(String className, Long id) {
+        this.className = className;
+        this.id = id;
+    }
 }

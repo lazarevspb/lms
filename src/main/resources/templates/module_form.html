@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Modules</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<form th:object="${module}" th:method="post"
+      th:action="@{/course/{course_id}/module(course_id = ${module.getCourse().getId()})}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{course}">
+    <div>
+        <label for="title">Название модуля</label>
+        <input type="text" id="title" th:field="*{title}">
+    </div>
+
+    <div>
+        <button type="submit">Подтвердить</button>
+    </div>
+</form>
+
+</body>
+
+</html>

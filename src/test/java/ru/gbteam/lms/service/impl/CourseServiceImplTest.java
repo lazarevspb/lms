@@ -19,7 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.repository.CourseRepository;
-import ru.gbteam.lms.repository.impl.MemoryBasedCourseRepository;
 
 @ContextConfiguration(classes = {CourseServiceImpl.class})
 @ExtendWith(SpringExtension.class)

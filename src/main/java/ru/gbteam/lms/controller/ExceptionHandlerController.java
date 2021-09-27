@@ -8,11 +8,11 @@ import ru.gbteam.lms.exception.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
-  @ExceptionHandler
-  public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
-    ModelAndView modelAndView = new ModelAndView("not_found");
-    modelAndView.addObject("exception", ex);
-    modelAndView.setStatus(HttpStatus.NOT_FOUND);
-    return modelAndView;
-  }
+    @ExceptionHandler
+    public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
+        ModelAndView modelAndView = new ModelAndView("not_found");
+        modelAndView.addObject("exception", ex);
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
+        return modelAndView;
+    }
 }

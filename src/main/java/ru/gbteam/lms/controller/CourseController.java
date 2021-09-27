@@ -15,40 +15,40 @@ import ru.gbteam.lms.service.CourseService;
 @RequestMapping("/course")
 public class CourseController {
 
-  private final CourseService courseService;
+    private final CourseService courseService;
 
-  public CourseController(CourseService courseService) {
-    this.courseService = courseService;
-  }
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
-  @DeleteMapping("/{id}")
-  public String deleteCourse(@PathVariable("id") Long id) {
-    courseService.delete(id);
-    return "redirect:/course";
-  }
+    @DeleteMapping("/{id}")
+    public String deleteCourse(@PathVariable("id") Long id) {
+        courseService.delete(id);
+        return "redirect:/course";
+    }
 
-  @GetMapping("/new")
-  public String courseForm(Model model) {
-    model.addAttribute("course", new Course());
-    return "course_form";
-  }
+    @GetMapping("/new")
+    public String courseForm(Model model) {
+        model.addAttribute("course", new Course());
+        return "course_form";
+    }
 
-  @PostMapping
-  public String saveCourse(Course course) {
-    courseService.save(course);
-    return "redirect:/course";
-  }
+    @PostMapping
+    public String saveCourse(Course course) {
+        courseService.save(course);
+        return "redirect:/course";
+    }
 
-  @GetMapping("/{id}")
-  public String courseForm(Model model, @PathVariable("id") Long id) {
-    model.addAttribute("course",
-        courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id)));
-    return "course_form";
-  }
+    @GetMapping("/{id}")
+    public String courseForm(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("course",
+                courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id)));
+        return "course_form";
+    }
 
-  @GetMapping
-  public String courseTable(Model model) {
-    model.addAttribute("courses", courseService.findAll());
-    return "course_table";
-  }
+    @GetMapping
+    public String courseTable(Model model) {
+        model.addAttribute("courses", courseService.findAll());
+        return "course_table";
+    }
 }

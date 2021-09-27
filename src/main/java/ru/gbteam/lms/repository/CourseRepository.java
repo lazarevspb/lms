@@ -1,15 +1,8 @@
 package ru.gbteam.lms.repository;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.gbteam.lms.model.Course;
 
-public interface CourseRepository {
-  List<Course> findAll();
+public interface CourseRepository extends JpaRepository<Course, Long> {
 
-  Optional<Course> findById(long id);
-
-  void save(Course course);
-
-  void delete(long id);
 }

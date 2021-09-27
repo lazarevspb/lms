@@ -22,6 +22,7 @@
     <th>Название курса</th>
     <th>Автор курса</th>
     <th>Действие</th>
+    <th>Модули</th>
   </tr>
   </thead>
   <tbody>
@@ -35,10 +36,13 @@
                         <button type="submit">удалить</button>
                     </form>
                 </td>
+    <td>
+      <a th:text="Modules" th:href="@{/course/{course_id}/module(course_id = ${course.id})}"></a>
+    </td>
+
   </tr>
   </tbody>
 </table>
-
 </body>
 
 </html>
