@@ -33,7 +33,7 @@ public class ModuleController {
     @PostMapping
     public String saveModule(Module module, @PathVariable("course_id") Long course_id) {
         moduleService.save(module);
-        return "redirect:/course/" + course_id + "/module";
+        return String.format("redirect:/course/%d/module", course_id);
     }
 
     @GetMapping("/{id}")
