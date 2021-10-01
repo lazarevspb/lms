@@ -2,32 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8">
-  <title>Courses</title>
+    <meta charset="utf-8">
+    <title>Courses</title>
 
-  <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
-
 <body>
-
 <form th:object="${course}" th:method="post" th:action="@{/course/save}">
-  <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="title">Название курса</label>
+        <input type="text" id="title" th:field="*{title}">
+    </div>
+    <div>
+        <label for="author">Автор Курса</label>
+        <input type="text" id="author" th:field="*{author}">
+    </div>
 
-  <div>
-    <label for="title">Название курса</label>
-    <input type="text" id="title" th:field="*{title}">
-  </div>
-
-  <div>
-    <label for="author">Автор Курса</label>
-    <input type="text" id="author" th:field="*{author}">
-  </div>
-
-  <div>
-    <button type="submit">Подтвердить</button>
-  </div>
+    <div>
+        <button type="submit">Подтвердить</button>
+    </div>
 </form>
 
+<div>Пользователи записанные на курс</div>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td><a th:text="${user.username}">username</a>
+        </td>
+        <td>
+            <form th:action="@{/course/{courseId}/unassign/{userId}(courseId = ${course.id},userId = ${user.id})}"
+                  th:method="delete">
+                <button type="submit">Отвязать</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <a th:href="@{/course}">Вернуться к курсам</a>
+</div>
+<!--</div>-->
 </body>
-
 </html>

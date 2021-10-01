@@ -11,7 +11,6 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Role {
 
     @Id
@@ -27,6 +26,4 @@ public class Role {
     public Role(String name) {
         this.name = name;
     }
-
-
 }

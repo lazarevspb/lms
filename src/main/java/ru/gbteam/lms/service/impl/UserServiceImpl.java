@@ -6,7 +6,6 @@ import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.UserRepository;
 import ru.gbteam.lms.service.UserService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,21 +16,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return Collections.emptyList() ;
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
 
     @Override
     public void save(User user) {
-
+        userRepository.save(user);
     }
 
     @Override
     public void delete(Long id) {
-
+        userRepository.deleteById(id);
     }
 }
