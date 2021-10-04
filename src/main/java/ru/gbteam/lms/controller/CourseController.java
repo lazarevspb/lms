@@ -91,10 +91,4 @@ public class CourseController {
         model.addAttribute("courses", courseService.findAll());
         return "course_table";
     }
-
-    @GetMapping("{course_id}/module")
-    public String moduleTable(Model model, @PathVariable("course_id") Long course_id) {
-        model.addAttribute("modules", moduleService.findAllByCourseId(course_id));
-        return "module_table";
-    }
 }
