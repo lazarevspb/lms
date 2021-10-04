@@ -27,7 +27,7 @@ public class ModuleController {
     @PostMapping("/save")
     public String saveModule(Module module) {
         moduleService.save(module);
-        return String.format("redirect:/course/%d/module", module.getCourse().getId());
+        return String.format("redirect:/course/%d", module.getCourse().getId());
     }
 
     @GetMapping("/{id}")
@@ -44,6 +44,6 @@ public class ModuleController {
                 .orElseThrow(() -> new NotFoundException("Модуль", id))
                 .getCourse().getId();
         moduleService.delete(id);
-        return String.format("redirect:/course/%d/module", course_id);
+        return String.format("redirect:/course/%d", course_id);
     }
 }

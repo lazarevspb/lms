@@ -43,7 +43,7 @@ public class CourseController {
 
     @GetMapping("/{courseId}/assign")
     public String assignCourse(Model model, @PathVariable String courseId) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.findAll()); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
@@ -80,6 +80,7 @@ public class CourseController {
     @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
         final Course course = courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
+        model.addAttribute("modules", moduleService.findAllByCourseId(course.getId()));
         model.addAttribute("course", course);
         model.addAttribute("users", course.getUsers());
         return "course_form";

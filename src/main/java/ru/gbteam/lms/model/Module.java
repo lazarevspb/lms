@@ -21,6 +21,9 @@ public class Module {
     @Column
     private String title;
 
+    @Column
+    private String text;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
 
