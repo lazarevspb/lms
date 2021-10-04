@@ -22,7 +22,6 @@
         <th>Название курса</th>
         <th>Автор курса</th>
         <th>Действие</th>
-        <th>Модули</th>
     </tr>
     </thead>
     <tbody>
@@ -38,9 +37,6 @@
             <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
                 <button type="submit">Назначить</button>
             </form>
-        </td>
-        <td>
-            <a th:text="Modules" th:href="@{/course/{course_id}/module(course_id = ${course.id})}"></a>
         </td>
     </tr>
     <tr th:if="${courses.empty}">
