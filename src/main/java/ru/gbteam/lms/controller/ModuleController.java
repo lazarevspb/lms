@@ -3,37 +3,31 @@ package ru.gbteam.lms.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.ModuleService;
 
 @Controller
-@RequestMapping("/course/{course_id}/module")
+@RequestMapping("/module")
 @RequiredArgsConstructor
-
 public class ModuleController {
     private final ModuleService moduleService;
     private final CourseService courseService;
 
     @GetMapping("/new")
-    public String newModuleForm(Model model, @PathVariable("course_id") Long course_id) {
-        var course = courseService.findById(course_id);
-        var module = new Module();
-        course.ifPresent(module::setCourse);
-        model.addAttribute("module", module);
+    public String newModuleForm(Model model, @RequestParam("course_id") Long course_id) {
+        var course = courseService.findById(course_id)
+                .orElseThrow(() -> new NotFoundException("Курс", course_id));
+        model.addAttribute("module", new Module(course));
         return "module_form";
     }
 
-    @PostMapping
-    public String saveModule(Module module, @PathVariable("course_id") Long course_id) {
+    @PostMapping("/save")
+    public String saveModule(Module module) {
         moduleService.save(module);
-        return String.format("redirect:/course/%d/module", course_id);
+        return String.format("redirect:/course/%d/module", module.getCourse().getId());
     }
 
     @GetMapping("/{id}")
@@ -43,15 +37,13 @@ public class ModuleController {
         return "module_form";
     }
 
-    @GetMapping
-    public String moduleTable(Model model, @PathVariable("course_id") Long course_id) {
-        model.addAttribute("modules", moduleService.findAllByCourseId(course_id));
-        return "module_table";
-    }
-
     @DeleteMapping("/{id}")
     public String deleteModel(@PathVariable("id") Long id) {
+        Long course_id = moduleService
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Модуль", id))
+                .getCourse().getId();
         moduleService.delete(id);
-        return "redirect:/course/{course_id}/module";
+        return String.format("redirect:/course/%d/module", course_id);
     }
 }

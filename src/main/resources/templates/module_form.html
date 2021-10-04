@@ -11,7 +11,7 @@
 <body>
 
 <form th:object="${module}" th:method="post"
-      th:action="@{/course/{course_id}/module(course_id = ${module.getCourse().getId()})}">
+      th:action="@{/module/save}">
     <input type="hidden" th:field="*{id}">
     <input type="hidden" th:field="*{course}">
     <div>

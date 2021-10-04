@@ -13,7 +13,7 @@
 <h1>Список модулей</h1>
 
 <div>
-    <a th:href="@{/course/{course_id}/module/new(course_id = ${course_id})}">Создать модуль</a>
+    <a th:href="@{/module/new(course_id = ${course_id})}">Добавить новый модуль</a></a>
 </div>
 <table>
     <thead>
@@ -27,10 +27,10 @@
     <tbody>
     <tr th:each="module : ${modules}">
         <td th:text="${module.id}">1</td>
-        <td><a th:text="${module.title}" th:href="@{/course/{course_id}/module/{id}(id = ${module.id})}">Module name</a>
+        <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
         </td>
         <td>
-            <form th:method="delete" th:action="@{/course/{course_id}/module/{id}(id = ${module.id})}">
+            <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
                 <button type="submit">удалить</button>
             </form>
         </td>
