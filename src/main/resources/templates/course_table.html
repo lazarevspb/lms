@@ -22,7 +22,6 @@
         <th>Название курса</th>
         <th>Автор курса</th>
         <th>Действие</th>
-        <th>Модули</th>
     </tr>
     </thead>
     <tbody>
@@ -39,10 +38,9 @@
                 <button type="submit">Назначить</button>
             </form>
         </td>
-        <td>
-            <a th:text="Modules" th:href="@{/course/{course_id}/module(course_id = ${course.id})}"></a>
-        </td>
-
+    </tr>
+    <tr th:if="${courses.empty}">
+        <td colspan="4">Тут скоро появятся курсы</td>
     </tr>
     </tbody>
 </table>

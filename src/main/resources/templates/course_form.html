@@ -18,14 +18,50 @@
         <label for="author">Автор Курса</label>
         <input type="text" id="author" th:field="*{author}">
     </div>
-
     <div>
         <button type="submit">Подтвердить</button>
     </div>
 </form>
-
-<div>Пользователи записанные на курс</div>
-<table>
+<!---------------------------------module------------------------------------------>
+<div th:unless="${modules == null}">
+    <h1>
+        <p>Модули курса</p>
+    </h1>
+<div>
+    <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
+</div>
+<table th:unless="${modules == null}">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Название модуля</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="module : ${modules}">
+        <td th:text="${module.id}">1</td>
+        <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
+        </td>
+        <td>
+            <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
+                <button type="submit">удалить</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${modules.empty}">
+        <td colspan="4">У данного курса пока нет модулей</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<!---------------------------------users------------------------------------------>
+<div th:unless="${users == null}">
+    <h1>
+        <p>Пользователи записанные на курс</p>
+    </h1>
+</div>
+<table th:unless="${users == null}">
     <thead>
     <tr>
         <th>Id</th>
@@ -45,11 +81,16 @@
             </form>
         </td>
     </tr>
+    <tr th:if="${users.empty}">
+        <td colspan="4">Нет пользователей записанных на курс</td>
+    </tr>
     </tbody>
 </table>
+
 <div>
-    <a th:href="@{/course}">Вернуться к курсам</a>
+    <p>
+        <a th:href="@{/course}">Вернуться к курсам</a>
+    </p>
 </div>
-<!--</div>-->
 </body>
 </html>
