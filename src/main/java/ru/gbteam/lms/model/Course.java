@@ -1,13 +1,11 @@
 package ru.gbteam.lms.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -35,14 +33,12 @@ public class Course {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Course)) return false;
-
         Course course = (Course) o;
-
-        return getId().equals(course.getId());
+        return Objects.equals(getId(), course.getId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return Objects.hash(getId());
     }
 }
