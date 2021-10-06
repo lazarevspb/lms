@@ -72,6 +72,7 @@ public class CourseController {
     @GetMapping
     public String courseTable(Model model) {
         model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }
