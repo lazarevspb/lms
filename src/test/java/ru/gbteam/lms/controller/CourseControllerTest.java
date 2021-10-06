@@ -22,7 +22,7 @@ import ru.gbteam.lms.service.RoleService;
 import ru.gbteam.lms.service.UserService;
 import ru.gbteam.lms.service.impl.CourseServiceImpl;
 import ru.gbteam.lms.service.impl.ModuleServiceImpl;
-import ru.gbteam.lms.service.impl.UserDtoService;
+import ru.gbteam.lms.service.impl.UserDtoServiceImpl;
 import ru.gbteam.lms.service.impl.UserServiceImpl;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ class CourseControllerTest {
     private UserService userService;
 
     @MockBean
-    private UserDtoService userDtoService;
+    private UserDtoServiceImpl userDtoService;
 
     @MockBean
     private RoleService roleService;

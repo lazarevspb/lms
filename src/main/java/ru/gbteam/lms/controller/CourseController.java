@@ -1,32 +1,28 @@
 package ru.gbteam.lms.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.ModuleService;
+import ru.gbteam.lms.service.RoleService;
 import ru.gbteam.lms.service.UserService;
+import ru.gbteam.lms.service.impl.UserDtoServiceImpl;
 
 @Controller
 @RequestMapping("/course")
+@RequiredArgsConstructor
 public class CourseController {
 
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
-
-    public CourseController(CourseService courseService, ModuleService moduleService, UserService userService) {
-        this.courseService = courseService;
-        this.moduleService = moduleService;
-        this.userService = userService;
-    }
+    private final UserDtoServiceImpl userDtoService;
+    private final RoleService roleService;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
