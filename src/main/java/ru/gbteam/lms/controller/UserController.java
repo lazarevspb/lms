@@ -21,6 +21,12 @@ public class UserController {
     private final UserDtoServiceImpl userDtoService;
     private final RoleService roleService;
 
+    @GetMapping("/new")
+    public String courseForm(Model model) {
+        model.addAttribute("user", new UserDto());
+        return "user_form";
+    }
+
     @PostMapping
     public String submitUserForm(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -47,6 +53,7 @@ public class UserController {
     public String userTable(Model model) {
         final List<UserDto> users = userDtoService.findAllDto();
         model.addAttribute("users", users);
+        model.addAttribute("activePage", "users");
         return "user_table";
     }
 }
