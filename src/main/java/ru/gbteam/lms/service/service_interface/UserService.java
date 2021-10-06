@@ -1,6 +1,5 @@
 package ru.gbteam.lms.service.service_interface;
 
-import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 
 import java.util.List;
@@ -14,4 +13,5 @@ public interface UserService {
     void save(User user);
 
     void delete(Long id);
+
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,14 +36,12 @@ public class Module {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Module)) return false;
-
         Module module = (Module) o;
-
-        return getId().equals(module.getId());
+        return Objects.equals(getId(), module.getId());
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return Objects.hash(getId());
     }
 }
