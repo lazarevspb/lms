@@ -15,25 +15,31 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
-public class UserController {
+public class AdminController {
     private final UserDtoServiceImpl userDtoService;
     private final RoleService roleService;
 
-    @GetMapping("/new")
+    @DeleteMapping("user/{id}")
+    public String deleteCourse(@PathVariable("id") Long id) {
+        userDtoService.deleteById(id);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("user/new")
     public String courseForm(Model model) {
         model.addAttribute("user", new UserDto());
         return "user_form";
     }
 
-    @PostMapping
+    @PostMapping("/user/save")
     public String submitUserForm(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user_form";
         }
         userDtoService.save(user);
-        return "redirect:/user";
+        return "redirect:/admin/users";
     }
 
     @ModelAttribute("roles")
@@ -41,7 +47,7 @@ public class UserController {
         return roleService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("user/{id}")
     public String userForm(Model model, @PathVariable Long id) {
         UserDto user = userDtoService.findDtoById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь", id));
@@ -49,11 +55,11 @@ public class UserController {
         return "user_form";
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public String userTable(Model model) {
         final List<UserDto> users = userDtoService.findAllDto();
         model.addAttribute("users", users);
-        model.addAttribute("activePage", "users");
+        model.addAttribute("activePage", "admin");
         return "user_table";
     }
 }
