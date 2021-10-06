@@ -18,12 +18,12 @@
         <th>Действие</th>
     </tr>
     </thead>
-    <a th:href="@{user/new}">Новый пользователь</a>
+    <a th:href="@{/admin/user/new/}">Новый пользователь</a>
     <tbody>
     <tr th:each="user : ${users}" th:unless="${users.empty}">
         <td th:text="${user.id}">Course author</td>
         <td>
-            <a th:text="${user.username}" th:href="@{user/{id}(id = ${user.id})}"> Username</a>
+            <a th:text="${user.username}" th:href="@{/admin/user/{id}(id = ${user.id})}"> Username</a>
         </td>
         <td>
             <form class="inline" th:method="delete"
