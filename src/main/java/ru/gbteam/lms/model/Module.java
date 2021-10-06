@@ -30,4 +30,19 @@ public class Module {
     public Module(Course course) {
         this.course = course;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Module)) return false;
+
+        Module module = (Module) o;
+
+        return getId().equals(module.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }
