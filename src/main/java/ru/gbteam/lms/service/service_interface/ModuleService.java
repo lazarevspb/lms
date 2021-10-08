@@ -1,4 +1,4 @@
-package ru.gbteam.lms.service;
+package ru.gbteam.lms.service.service_interface;
 
 import ru.gbteam.lms.model.Module;
 

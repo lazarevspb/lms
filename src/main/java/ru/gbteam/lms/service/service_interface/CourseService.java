@@ -1,4 +1,4 @@
-package ru.gbteam.lms.service;
+package ru.gbteam.lms.service.service_interface;
 
 import java.util.List;
 import java.util.Optional;
