@@ -3,6 +3,7 @@ package ru.gbteam.lms.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -31,4 +32,27 @@ public class User {
 
     @Column
     private String password;
+
+    public User(Long id,
+                String username,
+                String password,
+                Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.roles = roles;
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

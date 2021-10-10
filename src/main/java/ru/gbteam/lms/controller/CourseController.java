@@ -1,9 +1,11 @@
 package ru.gbteam.lms.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +17,9 @@ import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.ModuleService;
+import ru.gbteam.lms.service.RoleService;
 import ru.gbteam.lms.service.UserService;
+import ru.gbteam.lms.service.impl.UserDtoServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,25 +28,22 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/course")
+@RequiredArgsConstructor
 public class CourseController {
 
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
+    private final UserDtoServiceImpl userDtoService;
+    private final RoleService roleService;
 
     private final Integer DEFAULT_PAGE = 1;
     private final Integer DEFAULT_PAGE_SIZE = 5;
 
-    public CourseController(CourseService courseService, ModuleService moduleService, UserService userService) {
-        this.courseService = courseService;
-        this.moduleService = moduleService;
-        this.userService = userService;
-    }
-
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
                                @PathVariable("userId") Long userId) {
-        User user = userService.findById(userId)
+        User user = userService.findById(userId) // TODO: 06.10.2021 Перенести логику в CourseControllerFacade
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Курс", courseId));
@@ -60,7 +61,7 @@ public class CourseController {
 
     @PostMapping("/{courseId}/assign")
     public String assignUser(@PathVariable Long courseId, Long userId) {
-        User user = userService.findById(userId)
+        User user = userService.findById(userId) // TODO: 06.10.2021 Перенести логику в CourseControllerFacade
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Курс", courseId));
@@ -89,7 +90,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public String courseForm(Model model, @PathVariable("id") Long id) {
+    public String courseForm(Model model, @PathVariable("id") Long id) {// TODO: 06.10.2021 Перенести логику в CourseControllerFacade
         final Course course = courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
         model.addAttribute("modules", moduleService.findAllByCourseId(course.getId()));
         model.addAttribute("course", course);
@@ -115,7 +116,7 @@ public class CourseController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-
+        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }
