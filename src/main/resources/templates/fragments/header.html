@@ -1,13 +1,29 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <header th:fragment="header">
             <span th:classappend="${activePage == 'courses'} ? active">
                 <a th:href="@{/course}">Courses</a>
             </span>
-    <span th:classappend="${activePage == 'users'} ? active">
+    <span th:classappend="${activePage == 'users'} ? active" sec:authorize="hasAnyRole('!ADMIN','STUDENT')">
                 <a th:href="@{/user}">User</a>
             </span>
+
+    <span th:classappend="${activePage == 'admin'} ? active" sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/admin/users}">Users</a>
+            </span>
+
+    <a class="float-right" sec:authorize="!isAuthenticated()" th:href="@{/login}">
+        Login
+    </a>
+
+    <form class="float-right" sec:authorize="isAuthenticated()" th:method="post"
+          th:action="@{/logout}">
+        <button>
+            Logout <span sec:authentication="principal.username">Username</span>
+        </button>
+    </form>
 </header>
 
 </html>
