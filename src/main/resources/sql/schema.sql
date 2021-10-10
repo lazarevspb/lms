@@ -53,3 +53,18 @@ alter table module
     add constraint FKfq09oddpwjoxcirvkh9vnfnsg
         foreign key (course_id)
             references course;
+
+create table lessons
+(
+    id          bigserial not null,
+    title       varchar(50),
+    description varchar(400),
+    created_at  timestamp default current_timestamp,
+    updated_at  timestamp default current_timestamp,
+    deleted_at  timestamp default current_timestamp,
+    created_by  bigserial,
+    updated_by  bigserial,
+    deleted_by  bigserial,
+    content     varchar(255),
+    exercise    varchar(500)
+);
