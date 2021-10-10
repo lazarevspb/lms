@@ -31,7 +31,7 @@ public class CourseController {
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
                                @PathVariable("userId") Long userId) {
-        User user = userService.findById(userId)
+        User user = userService.findById(userId) // TODO: 06.10.2021 Перенести логику в CourseControllerFacade
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Курс", courseId));
@@ -49,7 +49,7 @@ public class CourseController {
 
     @PostMapping("/{courseId}/assign")
     public String assignUser(@PathVariable Long courseId, Long userId) {
-        User user = userService.findById(userId)
+        User user = userService.findById(userId) // TODO: 06.10.2021 Перенести логику в CourseControllerFacade
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)
                 .orElseThrow(() -> new NotFoundException("Курс", courseId));
@@ -78,7 +78,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public String courseForm(Model model, @PathVariable("id") Long id) {
+    public String courseForm(Model model, @PathVariable("id") Long id) {// TODO: 06.10.2021 Перенести логику в CourseControllerFacade
         final Course course = courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
         model.addAttribute("modules", moduleService.findAllByCourseId(course.getId()));
         model.addAttribute("course", course);
@@ -89,6 +89,7 @@ public class CourseController {
     @GetMapping
     public String courseTable(Model model) {
         model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }
