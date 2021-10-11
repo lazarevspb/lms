@@ -44,9 +44,7 @@ public class CourseServiceImpl implements CourseService {
             resultListCourses = findAll().subList(itemCount, toIndex);
         }
 
-        Page<Course> bookPage = new PageImpl<>(resultListCourses, PageRequest.of(currentPage, pageSize), allCourses.size());
-
-        return bookPage;
+        return new PageImpl<>(resultListCourses, PageRequest.of(currentPage, pageSize), allCourses.size());
     }
 
     @Override
