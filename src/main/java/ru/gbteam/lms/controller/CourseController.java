@@ -9,42 +9,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.service.service_facade.CourseFacadeService;
-import ru.gbteam.lms.service.service_interface.CourseService;
-import ru.gbteam.lms.service.service_interface.ModuleService;
+import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/course")
 public class CourseController {
-
-    private final CourseFacadeService courseFacadeService;
-    private final CourseService courseService;
-
-
+    private final CourseServiceFacadeImpl courseServiceFacadeImpl;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
                                @PathVariable("userId") Long userId) {
-        courseFacadeService.unAssignUser(courseId, userId);
+        courseServiceFacadeImpl.unAssignUser(courseId, userId);
         return String.format("redirect:/course/%d", courseId);
     }
 
     @GetMapping("/{courseId}/assign")
     public String assignCourse(Model model, @PathVariable String courseId) {
-        model.addAttribute("users", courseFacadeService.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
+        model.addAttribute("users", courseServiceFacadeImpl.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
     @PostMapping("/{courseId}/assign")
     public String assignUser(@PathVariable Long courseId, Long userId) {
-        courseFacadeService.assignUser(courseId, userId);
+        courseServiceFacadeImpl.assignUser(courseId, userId);
         return "redirect:/course";
     }
 
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
-        courseService.delete(id);
+        courseServiceFacadeImpl.deleteCourse(id);
         return "redirect:/course";
     }
 
@@ -56,14 +50,14 @@ public class CourseController {
 
     @PostMapping("/save")
     public String saveCourse(Course course) {
-        courseService.save(course);
+        courseServiceFacadeImpl.saveCourse(course);
         return "redirect:/course";
     }
 
     @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
-        final Course course = courseFacadeService.findCourseById(id);
-        model.addAttribute("modules", courseFacadeService.findAllModulesByCourseId(course.getId()));
+        final Course course = courseServiceFacadeImpl.findCourseById(id);
+        model.addAttribute("modules", courseServiceFacadeImpl.findAllModulesByCourseId(course.getId()));
         model.addAttribute("course", course);
         model.addAttribute("users", course.getUsers());
         return "course_form";
@@ -71,7 +65,7 @@ public class CourseController {
 
     @GetMapping
     public String courseTable(Model model) {
-        model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("courses", courseServiceFacadeImpl.findAllCourses());
         model.addAttribute("activePage", "courses");
         return "course_table";
     }

@@ -10,18 +10,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.ConcurrentModel;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
-import ru.gbteam.lms.repository.CourseRepository;
-import ru.gbteam.lms.repository.ModuleRepository;
-import ru.gbteam.lms.repository.UserRepository;
-import ru.gbteam.lms.service.service_interface.CourseService;
-import ru.gbteam.lms.service.service_interface.ModuleService;
-import ru.gbteam.lms.service.service_interface.UserService;
-import ru.gbteam.lms.service.impl.CourseServiceImpl;
-import ru.gbteam.lms.service.impl.ModuleServiceImpl;
-import ru.gbteam.lms.service.impl.UserServiceImpl;
+import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.ModuleService;
+import ru.gbteam.lms.service.UserService;
 
 import java.util.ArrayList;
 import java.util.HashSet;

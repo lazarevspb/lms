@@ -1,4 +1,4 @@
-package ru.gbteam.lms.service.service_facade;
+package ru.gbteam.lms.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,22 +7,21 @@ import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
-import ru.gbteam.lms.repository.CourseRepository;
-import ru.gbteam.lms.service.service_interface.CourseService;
-import ru.gbteam.lms.service.service_interface.ModuleService;
-import ru.gbteam.lms.service.service_interface.UserService;
-
+import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.CourseServiceFacade;
+import ru.gbteam.lms.service.ModuleService;
+import ru.gbteam.lms.service.UserService;
 import java.util.List;
-import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
-public class CourseFacadeService {
+public class CourseServiceFacadeImpl implements CourseServiceFacade {
 
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
 
-
+    @Override
     @Transactional
     public void unAssignUser(Long courseId, Long userId) {
         User user = userService.findById(userId)
@@ -34,6 +33,7 @@ public class CourseFacadeService {
         courseService.save(course);
     }
 
+    @Override
     @Transactional
     public void assignUser(Long courseId, Long userId) {
         User user = userService.findById(userId)
@@ -49,10 +49,28 @@ public class CourseFacadeService {
         return userService.findAll();
     }
 
+    @Override
     public Course findCourseById(Long id) {
         return courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
     }
+
+    @Override
     public List<Module> findAllModulesByCourseId(Long id) {
         return moduleService.findAllByCourseId(id);
+    }
+
+    @Override
+    public void deleteCourse(Long id) {
+        courseService.delete(id);
+    }
+
+    @Override
+    public void saveCourse(Course course) {
+        courseService.save(course);
+    }
+
+    @Override
+    public List<Course> findAllCourses() {
+        return courseService.findAll();
     }
 }

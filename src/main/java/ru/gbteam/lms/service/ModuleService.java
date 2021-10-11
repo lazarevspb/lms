@@ -1,7 +1,6 @@
-package ru.gbteam.lms.service.service_interface;
+package ru.gbteam.lms.service;
 
 import ru.gbteam.lms.model.Module;
-
 import java.util.List;
 import java.util.Optional;
 
