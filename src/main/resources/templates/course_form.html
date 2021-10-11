@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<header th:replace="fragments/header :: header"></header>
 <head>
     <meta charset="utf-8">
-    <title>Courses</title>
+    <title>Страница курса</title>
 
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
@@ -27,33 +27,33 @@
     <h1>
         <p>Модули курса</p>
     </h1>
-<div>
-    <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
-</div>
-<table th:unless="${modules == null}">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Название модуля</th>
-        <th>Действие</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="module : ${modules}">
-        <td th:text="${module.id}">1</td>
-        <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
-        </td>
-        <td>
-            <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
-                <button type="submit">удалить</button>
-            </form>
-        </td>
-    </tr>
-    <tr th:if="${modules.empty}">
-        <td colspan="4">У данного курса пока нет модулей</td>
-    </tr>
-    </tbody>
-</table>
+    <div>
+        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
+    </div>
+    <table th:unless="${modules == null}">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название модуля</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="module : ${modules}">
+            <td th:text="${module.id}">1</td>
+            <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
+            </td>
+            <td>
+                <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
+                    <button type="submit">удалить</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${modules.empty}">
+            <td colspan="4">У данного курса пока нет модулей</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <!---------------------------------users------------------------------------------>
 <div th:unless="${users == null}">
