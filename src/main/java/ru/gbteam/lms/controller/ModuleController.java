@@ -4,19 +4,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import ru.gbteam.lms.exception.NotFoundException;
+import ru.gbteam.lms.model.Module;
+import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.LessonService;
+import ru.gbteam.lms.service.impl.LessonServiceImpl;
+import ru.gbteam.lms.service.ModuleService;
+
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.facade.ModuleServiceFacadeImpl;
+
 
 @Controller
 @RequestMapping("/module")
 @RequiredArgsConstructor
 public class ModuleController {
+
+    private final LessonService lessonService;
     private final ModuleServiceFacadeImpl moduleServiceFacadeImpl;
 
     @GetMapping("/new")
     public String newModuleForm(Model model, @RequestParam("course_id") Long course_id) {
         final Course course = moduleServiceFacadeImpl.findCourseById(course_id);
+
         model.addAttribute("module", new Module(course));
         return "module_form";
     }
@@ -29,6 +41,7 @@ public class ModuleController {
 
     @GetMapping("/{id}")
     public String moduleForm(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("lessons", lessonService.findAllByModuleId(id));
         model.addAttribute("module",
                 moduleServiceFacadeImpl.findModuleById(id));
         return "module_form";
@@ -36,6 +49,7 @@ public class ModuleController {
 
     @DeleteMapping("/{id}")
     public String deleteModel(@PathVariable("id") Long id) {
+
         Long course_id = moduleServiceFacadeImpl.findModuleById(id)
                 .getCourse().getId();
         moduleServiceFacadeImpl.deleteModel(id);

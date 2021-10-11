@@ -53,3 +53,16 @@ alter table module
     add constraint FKfq09oddpwjoxcirvkh9vnfnsg
         foreign key (course_id)
             references course;
+
+create table lessons
+(
+    id          bigserial PRIMARY KEY not null,
+    module_id   bigserial,
+    title       varchar(50),
+    description varchar(400),
+    created_by  bigserial,
+    updated_by  bigserial,
+    content     varchar(255),
+    exercise    varchar(500),
+    foreign key (module_id) references module (id)
+);
