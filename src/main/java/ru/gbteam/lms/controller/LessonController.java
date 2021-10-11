@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.exception.NotFoundException;
-import ru.gbteam.lms.model.Lesson;
-import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.LessonService;
 
 @Controller
@@ -16,12 +13,6 @@ import ru.gbteam.lms.service.LessonService;
 public class LessonController {
 
     private final LessonService lessonService;
-
-//    @GetMapping("/{course_id}/{module_id}")
-//    public String getAllLessonsInModule(@PathVariable("course_id") Long courseId, @PathVariable("module_id") Long moduleId, Model model) {
-////        model.addAttribute("lessons", lessonRepository.getLessonsInModule(moduleId));
-//        return "lessons";
-//    }
 
     @GetMapping("/{lesson_id}")
     public String getLessonById(@PathVariable("lesson_id") Long lessonId, Model model) {
@@ -48,5 +39,4 @@ public class LessonController {
         Long moduleId = lessonService.delete(id);
         return "redirect:/module/" + moduleId;
     }
-
 }

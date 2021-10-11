@@ -8,6 +8,7 @@ import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.LessonService;
+import ru.gbteam.lms.service.impl.LessonServiceImpl;
 import ru.gbteam.lms.service.ModuleService;
 
 @Controller
