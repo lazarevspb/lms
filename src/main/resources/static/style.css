@@ -34,7 +34,7 @@ table {
 }
 
 .inline {
-  display: inline;
+  display: inline-block;
 }
 
 header > span {

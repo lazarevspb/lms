@@ -1,6 +1,8 @@
 package ru.gbteam.lms.service.facade;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gbteam.lms.exception.NotFoundException;
@@ -72,5 +74,10 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @Override
     public List<Course> findAllCourses() {
         return courseService.findAll();
+    }
+
+    @Override
+    public Page<Course> findPaginated(Pageable pageable){
+        return courseService.findPaginated(pageable);
     }
 }
