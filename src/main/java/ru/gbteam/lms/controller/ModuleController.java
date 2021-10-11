@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.LessonService;
 import ru.gbteam.lms.service.ModuleService;
 
 @Controller
@@ -15,6 +16,7 @@ import ru.gbteam.lms.service.ModuleService;
 public class ModuleController {
     private final ModuleService moduleService;
     private final CourseService courseService;
+    private final LessonService lessonService;
 
     @GetMapping("/new")
     public String newModuleForm(Model model, @RequestParam("course_id") Long course_id) {
@@ -32,8 +34,8 @@ public class ModuleController {
 
     @GetMapping("/{id}")
     public String moduleForm(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("module",
-                moduleService.findById(id).orElseThrow(() -> new NotFoundException("Модуль", id)));
+        model.addAttribute("module", moduleService.findById(id).orElseThrow(() -> new NotFoundException("Модуль", id)));
+        model.addAttribute("lessons", lessonService.findAllByModuleId(id));
         return "module_form";
     }
 

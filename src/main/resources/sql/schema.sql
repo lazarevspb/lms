@@ -56,15 +56,13 @@ alter table module
 
 create table lessons
 (
-    id          bigserial not null,
+    id          bigserial PRIMARY KEY not null,
+    module_id   bigserial,
     title       varchar(50),
     description varchar(400),
-    created_at  timestamp default current_timestamp,
-    updated_at  timestamp default current_timestamp,
-    deleted_at  timestamp default current_timestamp,
     created_by  bigserial,
     updated_by  bigserial,
-    deleted_by  bigserial,
     content     varchar(255),
-    exercise    varchar(500)
+    exercise    varchar(500),
+    foreign key (module_id) references module (id)
 );
