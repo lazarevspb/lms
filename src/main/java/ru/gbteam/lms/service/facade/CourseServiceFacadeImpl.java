@@ -80,4 +80,8 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     public Page<Course> findPaginated(Pageable pageable){
         return courseService.findPaginated(pageable);
     }
+
+    public List<Course> findCoursesByTitleLike(String search) {
+        return courseService.findCoursesByTitleLike(search);
+    }
 }

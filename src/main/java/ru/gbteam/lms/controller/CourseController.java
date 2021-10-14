@@ -12,12 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.gbteam.lms.exception.NotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
 
@@ -101,5 +95,11 @@ public class CourseController {
         }
         model.addAttribute("activePage", "courses");
         return "course_table";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(name = "search") String search, Model model) {
+        model.addAttribute("courses",courseServiceFacadeImpl.findCoursesByTitleLike("%" + search + "%"));
+        return "redirect:/course";
     }
 }

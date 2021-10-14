@@ -17,4 +17,6 @@ public interface CourseService {
     void save(Course course);
 
     void delete(Long id);
+
+    List<Course> findCoursesByTitleLike(String search);
 }
