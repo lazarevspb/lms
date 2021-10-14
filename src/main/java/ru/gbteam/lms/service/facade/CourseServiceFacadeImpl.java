@@ -2,9 +2,10 @@ package ru.gbteam.lms.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
@@ -13,11 +14,19 @@ import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.CourseServiceFacade;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.UserService;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
 public class CourseServiceFacadeImpl implements CourseServiceFacade {
+
+    private final Integer DEFAULT_PAGE = 1;
+    private final Integer DEFAULT_PAGE_SIZE = 5;
 
     private final CourseService courseService;
     private final ModuleService moduleService;
@@ -77,7 +86,20 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public Page<Course> findPaginated(Pageable pageable){
-        return courseService.findPaginated(pageable);
+    public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size){
+        int currentPage = page.orElse(DEFAULT_PAGE);
+        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
+        return courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+    }
+
+    @Override
+    public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model){
+        int totalPages = findPaginated(page,  size).getTotalPages();
+        if (totalPages > 0) {
+            return IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 }

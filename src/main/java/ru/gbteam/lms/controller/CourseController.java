@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
+import ru.gbteam.lms.service.ModuleServiceFacade;
 import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,9 +34,8 @@ import java.util.stream.IntStream;
 @RequestMapping("/course")
 public class CourseController {
     private final CourseServiceFacadeImpl courseServiceFacadeImpl;
+    private final ModuleServiceFacade moduleServiceFacade;
 
-    private final Integer DEFAULT_PAGE = 1;
-    private final Integer DEFAULT_PAGE_SIZE = 5;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
@@ -73,9 +75,18 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public String courseForm(Model model, @PathVariable("id") Long id) {
+    public String courseForm(Model model,
+                             @PathVariable("id") Long id,
+                             @RequestParam("page") Optional<Integer> page,
+                             @RequestParam("size") Optional<Integer> size) {
         final Course course = courseServiceFacadeImpl.findCourseById(id);
-        model.addAttribute("modules", courseServiceFacadeImpl.findAllModulesByCourseId(course.getId()));
+        model.addAttribute("modulePage", moduleServiceFacade.findPaginated(id, page, size));
+
+        List<Integer> pageNumbers = moduleServiceFacade.getPageNumbers(id, page, size, model);
+        if (!CollectionUtils.isEmpty(pageNumbers)) {
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        //model.addAttribute("modules", courseServiceFacadeImpl.findAllModulesByCourseId(course.getId()));
         model.addAttribute("course", course);
         model.addAttribute("users", course.getUsers());
         return "course_form";
@@ -85,21 +96,13 @@ public class CourseController {
     public String courseTable(Model model,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
 
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("coursePage", courseServiceFacadeImpl.findPaginated(page, size));
 
-        model.addAttribute("coursePage", coursePage);
-
-        int totalPages = coursePage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
+        List<Integer> pageNumbers = courseServiceFacadeImpl.getPageNumbers(page, size, model);
+        if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }
