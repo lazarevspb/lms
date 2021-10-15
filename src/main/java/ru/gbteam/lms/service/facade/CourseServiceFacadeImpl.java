@@ -47,6 +47,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
         courseService.save(course);
     }
 
+    @Override
     public List<User> findAllUsers() {
         return userService.findAll();
     }

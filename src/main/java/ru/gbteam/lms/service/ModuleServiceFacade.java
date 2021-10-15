@@ -1,7 +1,9 @@
 package ru.gbteam.lms.service;
 
 import ru.gbteam.lms.model.Course;
+import ru.gbteam.lms.model.Lesson;
 import ru.gbteam.lms.model.Module;
+import java.util.List;
 
 public interface ModuleServiceFacade {
 
@@ -11,5 +13,7 @@ public interface ModuleServiceFacade {
 
     void saveModule(Module module);
 
-    void deleteModel(Long id);
+    void deleteModule(Long id);
+
+    List<Lesson> findAllLessonsByModuleId(Long id);
 }
