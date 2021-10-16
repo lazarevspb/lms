@@ -28,20 +28,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findPaginated(Pageable pageable) {
+    public Page<Course> findPaginated(Pageable pageable, String titlePrefix) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
 
         int itemCount = currentPage * pageSize;
 
-        List<Course> allCourses = findAll();
+        List<Course> allCourses = findCoursesByTitleLike(titlePrefix == null ? "%%%" : "%" + titlePrefix + "%");
         List<Course> resultListCourses;
 
         if (findAll().size() < itemCount) {
             resultListCourses = Collections.emptyList();
         } else {
-            int toIndex = Math.min(itemCount + pageSize, findAll().size());
-            resultListCourses = findAll().subList(itemCount, toIndex);
+            int toIndex = Math.min(itemCount + pageSize, allCourses.size());
+            resultListCourses = allCourses.subList(itemCount, toIndex);
         }
 
         return new PageImpl<>(resultListCourses, PageRequest.of(currentPage, pageSize), allCourses.size());
@@ -64,8 +64,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findCoursesByTitleLike(String search) {
-        return courseRepository.findCoursesByTitleLike(search);
+        return courseRepository.findByTitleLike("%" + search + "%");
     }
-
-
 }

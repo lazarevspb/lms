@@ -11,15 +11,14 @@
 
 <body>
 
-<form method="GET" th:action="@{/search}">
-    <div class="mb-3">
-        <label for="searchField" class="form-label">Найти Курс</label>
-        <input type="text" class="form-control" id="searchField" name="search">
-    </div>
-    <button type="submit" class="btn btn-primary">Найти</button>
-</form>
-
 <h1>Список курсов</h1>
+
+<form>
+    <label for="titlePrefix" class="inline">Поиск по названию</label>
+    <input type="text" id="titlePrefix" class="inline" name="titlePrefix"
+           th:value="${param.titlePrefix}"/>
+    <button>Искать</button>
+</form>
 
 <div>
     <a th:href="@{/course/new/}">Создать курс</a>
