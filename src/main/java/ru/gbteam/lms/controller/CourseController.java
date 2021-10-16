@@ -73,11 +73,11 @@ public class CourseController {
     public String courseTable(Model model,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size,
-                              @RequestParam(name = "titlePrefix", required = false) String titlePrefix) {
+                              @RequestParam(name = "title", required = false) String title) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
 
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize), titlePrefix);
+        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
 
         model.addAttribute("coursePage", coursePage);
 
@@ -90,11 +90,5 @@ public class CourseController {
         }
         model.addAttribute("activePage", "courses");
         return "course_table";
-    }
-
-    @GetMapping("/search")
-    public String search(@RequestParam(name = "search") String search, Model model) {
-        model.addAttribute("courses", courseServiceFacadeImpl.findCoursesByTitleLike("%" + search + "%"));
-        return "redirect:/course";
     }
 }

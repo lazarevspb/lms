@@ -34,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
 
         int itemCount = currentPage * pageSize;
 
-        List<Course> allCourses = findCoursesByTitleLike(titlePrefix == null ? "%%%" : "%" + titlePrefix + "%");
+        List<Course> allCourses = findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix);
         List<Course> resultListCourses;
 
         if (findAll().size() < itemCount) {
@@ -63,7 +63,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findCoursesByTitleLike(String search) {
-        return courseRepository.findByTitleLike("%" + search + "%");
+    public List<Course> findCoursesByTitleLike(String title) {
+        return courseRepository.findByTitleContainingIgnoreCase(title);
     }
 }
