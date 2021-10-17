@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<header th:replace="fragments/header :: header"></header>
 <head>
     <meta charset="utf-8">
     <title>Lesson</title>
@@ -31,3 +31,11 @@
         <button type="submit">Подтвердить</button>
     </div>
 </form>
+<div>
+    <p>
+        <a th:href="@{/module/{moduleId}(moduleId = ${lesson.moduleId})}"
+           th:text="'Вернуться к модулю' + ${lesson.moduleTitle}">Module title</a>
+    </p>
+</div>
+</body>
+</html>
