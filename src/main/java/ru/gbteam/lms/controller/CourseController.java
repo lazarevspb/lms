@@ -74,7 +74,7 @@ public class CourseController {
                               @RequestParam(name = "title", required = false) String title) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
+        Page<Course> coursePage = courseServiceFacade.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
 
 
         model.addAttribute("coursePage", coursePage);

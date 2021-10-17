@@ -26,6 +26,8 @@ public interface CourseServiceFacade {
 
     List<Course> findAllCourses();
 
+    List<User> findAllUsers();
+
     Page<Course> findPaginated(Pageable pageable, String titlePrefix);
 
 }
