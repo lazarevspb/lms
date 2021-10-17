@@ -6,18 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.gbteam.lms.exception.NotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
 
@@ -84,11 +72,12 @@ public class CourseController {
     @GetMapping
     public String courseTable(Model model,
                               @RequestParam("page") Optional<Integer> page,
-                              @RequestParam("size") Optional<Integer> size) {
+                              @RequestParam("size") Optional<Integer> size,
+                              @RequestParam(name = "title", required = false) String title) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
 
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
 
         model.addAttribute("coursePage", coursePage);
 
