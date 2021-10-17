@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Builder
-public class LessonDTO {
+public class ModuleDTO {
     private Long id;
     private String title;
-    private String description;
-    private String content;
-    private String exercise;
-    private Long moduleId;
-    private String moduleTitle;
+    private String text;
+    private Long courseId;
 }

@@ -1,17 +1,16 @@
 package ru.gbteam.lms.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lessons")
 @Data
 @NoArgsConstructor
+@Builder
 public class Lesson {
     @Id
     @Column(name = "id")
