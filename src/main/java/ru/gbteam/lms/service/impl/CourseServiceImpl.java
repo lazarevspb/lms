@@ -37,11 +37,11 @@ public class CourseServiceImpl implements CourseService {
         List<Course> allCourses = findAll();
         List<Course> resultListCourses;
 
-        if (findAll().size() < itemCount) {
+        if (allCourses.size() < itemCount) {
             resultListCourses = Collections.emptyList();
         } else {
-            int toIndex = Math.min(itemCount + pageSize, findAll().size());
-            resultListCourses = findAll().subList(itemCount, toIndex);
+            int toIndex = Math.min(itemCount + pageSize, allCourses.size());
+            resultListCourses = allCourses.subList(itemCount, toIndex);
         }
 
         return new PageImpl<>(resultListCourses, PageRequest.of(currentPage, pageSize), allCourses.size());

@@ -38,7 +38,7 @@ public class ModuleServiceImpl implements ModuleService {
         List<Module> allModules = findAllByCourseId(course_id);
         List<Module> resultListModules;
 
-        if (findAllByCourseId(course_id).size() < itemCount) {
+        if (allModules.size() < itemCount) {
             resultListModules = Collections.emptyList();
         } else {
             int toIndex = Math.min(itemCount + pageSize, allModules.size());

@@ -1,41 +1,25 @@
 package ru.gbteam.lms.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.gbteam.lms.exception.NotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.service.ModuleServiceFacade;
-import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
-
-import java.util.Collections;
+import ru.gbteam.lms.service.CourseServiceFacade;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/course")
 public class CourseController {
-    private final CourseServiceFacadeImpl courseServiceFacadeImpl;
-    private final ModuleServiceFacade moduleServiceFacade;
-
+    private final CourseServiceFacade courseServiceFacadeImpl;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
@@ -77,18 +61,26 @@ public class CourseController {
     @GetMapping("/{id}")
     public String courseForm(Model model,
                              @PathVariable("id") Long id,
-                             @RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size) {
+                             @RequestParam("modulePage") Optional<Integer> modulePage,
+                             @RequestParam("moduleSize") Optional<Integer> moduleSize,
+                             @RequestParam("userPage") Optional<Integer> userPage,
+                             @RequestParam("userSize") Optional<Integer> userSize) {
         final Course course = courseServiceFacadeImpl.findCourseById(id);
-        model.addAttribute("modulePage", moduleServiceFacade.findPaginated(id, page, size));
 
-        List<Integer> pageNumbers = moduleServiceFacade.getPageNumbers(id, page, size, model);
+        model.addAttribute("modulePage", courseServiceFacadeImpl.findModulePaginated(id, modulePage, moduleSize));
+        List<Integer> pageNumbers = courseServiceFacadeImpl.getModulePageNumbers(id, modulePage, moduleSize);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
-            model.addAttribute("pageNumbers", pageNumbers);
+            model.addAttribute("pageModelNumbers", pageNumbers);
         }
-        //model.addAttribute("modules", courseServiceFacadeImpl.findAllModulesByCourseId(course.getId()));
+
+        model.addAttribute("userPage", courseServiceFacadeImpl.findUserPaginated(userPage, userSize));
+        List<Integer> pageUserNumbers = courseServiceFacadeImpl.getUserPageNumbers(userPage, userSize, model);
+        if (!CollectionUtils.isEmpty(pageUserNumbers)) {
+            model.addAttribute("pageUserNumbers", pageUserNumbers);
+        }
+
         model.addAttribute("course", course);
-        model.addAttribute("users", course.getUsers());
+
         return "course_form";
     }
 
@@ -99,7 +91,7 @@ public class CourseController {
 
         model.addAttribute("coursePage", courseServiceFacadeImpl.findPaginated(page, size));
 
-        List<Integer> pageNumbers = courseServiceFacadeImpl.getPageNumbers(page, size, model);
+        List<Integer> pageNumbers = courseServiceFacadeImpl.getPageNumbers(page, size);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageNumbers", pageNumbers);
         }

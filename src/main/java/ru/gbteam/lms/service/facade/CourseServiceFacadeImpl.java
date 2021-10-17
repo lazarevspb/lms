@@ -86,15 +86,50 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size){
+    public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
         return courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
     }
 
     @Override
-    public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model){
-        int totalPages = findPaginated(page,  size).getTotalPages();
+    public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size) {
+        int totalPages = findPaginated(page, size).getTotalPages();
+        if (totalPages > 0) {
+            return IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    public Page<Module> findModulePaginated(Long course_id, Optional<Integer> page, Optional<Integer> size) {
+        int currentPage = page.orElse(DEFAULT_PAGE);
+        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
+        return moduleService.findPaginated(course_id, PageRequest.of(currentPage - 1, pageSize));
+    }
+
+    @Override
+    public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size){
+        int totalPages = findModulePaginated(course_id, page,  size).getTotalPages();
+        if (totalPages > 0) {
+            return IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Page<User> findUserPaginated(Optional<Integer> page, Optional<Integer> size) {
+        int currentPage = page.orElse(DEFAULT_PAGE);
+        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
+        return userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+    }
+
+    @Override
+    public List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model){
+        int totalPages = findUserPaginated(page, size).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)
                     .boxed()
