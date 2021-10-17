@@ -5,6 +5,9 @@ import org.springframework.data.domain.Pageable;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 
+import ru.gbteam.lms.model.User;
+
+
 import java.util.List;
 
 public interface CourseServiceFacade {
@@ -24,4 +27,5 @@ public interface CourseServiceFacade {
     List<Course> findAllCourses();
 
     Page<Course> findPaginated(Pageable pageable, String titlePrefix);
+
 }

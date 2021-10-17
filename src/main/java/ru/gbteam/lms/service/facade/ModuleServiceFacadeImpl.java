@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
+import ru.gbteam.lms.model.Lesson;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.LessonService;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.ModuleServiceFacade;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -15,6 +18,7 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
 
     private final CourseService courseService;
     private final ModuleService moduleService;
+    private final LessonService lessonService;
 
 
     @Override
@@ -32,8 +36,13 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
     }
 
     @Override
-    public void deleteModel(Long id) {
+    public void deleteModule(Long id) {
         moduleService.delete(id);
+    }
+
+    @Override
+    public List<Lesson> findAllLessonsByModuleId(Long id) {
+        return lessonService.findAllByModuleId(id);
     }
 
 }
