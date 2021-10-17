@@ -1,5 +1,6 @@
 package ru.gbteam.lms.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Lesson {
     @Id
     @Column(name = "id")
