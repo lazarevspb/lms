@@ -5,22 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.gbteam.lms.exception.NotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,8 +58,11 @@ public class CourseController {
     }
 
     @PostMapping("/save")
-    public String saveCourse(Course course) {
-        courseServiceFacadeImpl.saveCourse(course);
+    public String saveCourse(@Valid @ModelAttribute("course") CourseDTO courseDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "course_form";
+        }
+        courseServiceFacadeImpl.saveCourse(courseDto);
         return "redirect:/course";
     }
 

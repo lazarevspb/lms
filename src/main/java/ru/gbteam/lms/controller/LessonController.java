@@ -3,9 +3,12 @@ package ru.gbteam.lms.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.dto.LessonDTO;
 import ru.gbteam.lms.service.LessonService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/lesson")
@@ -29,7 +32,10 @@ public class LessonController {
     }
 
     @PostMapping("/save")
-    public String saveLesson(LessonDTO lessonDTO) {
+    public String saveLesson(@Valid @ModelAttribute("lesson") LessonDTO lessonDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "lesson_form";
+        }
         lessonService.save(lessonDTO);
         return "redirect:/module/" + lessonDTO.getModuleId();
     }
