@@ -13,10 +13,14 @@
     <div>
         <label for="title">Название курса</label>
         <input type="text" id="title" th:field="*{title}">
+        <small class="validation-error" th:errors="*{title}" th:if="${#fields.hasErrors('title')}">Course
+            title has to be filled</small>
     </div>
     <div>
         <label for="author">Автор Курса</label>
         <input type="text" id="author" th:field="*{author}">
+        <small class="validation-error" th:errors="*{author}" th:if="${#fields.hasErrors('author')}">Course
+            author has to be filled</small>
     </div>
     <div>
         <button type="submit">Подтвердить</button>
@@ -28,7 +32,7 @@
         <p>Модули курса</p>
     </h1>
     <div>
-        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
+        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a>
     </div>
     <table th:unless="${modules == null}">
         <thead>
