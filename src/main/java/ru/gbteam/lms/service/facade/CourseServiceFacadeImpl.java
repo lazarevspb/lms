@@ -13,6 +13,7 @@ import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.CourseServiceFacade;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.UserService;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
         courseService.save(course);
     }
 
+    @Override
     public List<User> findAllUsers() {
         return userService.findAll();
     }
@@ -77,7 +79,11 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public Page<Course> findPaginated(Pageable pageable){
-        return courseService.findPaginated(pageable);
+    public Page<Course> findPaginated(Pageable pageable, String titlePrefix) {
+        return courseService.findPaginated(pageable, titlePrefix);
+    }
+
+    public List<Course> findCoursesByTitleLike(String search) {
+        return courseService.findCoursesByTitleLike(search);
     }
 }

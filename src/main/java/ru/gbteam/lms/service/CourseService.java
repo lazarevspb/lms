@@ -10,11 +10,13 @@ import ru.gbteam.lms.model.Course;
 public interface CourseService {
     List<Course> findAll();
 
-    Page<Course> findPaginated(Pageable pageable);
+    Page<Course> findPaginated(Pageable pageable, String titlePrefix);
 
     Optional<Course> findById(Long id);
 
     void save(Course course);
 
     void delete(Long id);
+
+    List<Course> findCoursesByTitleLike(String search);
 }

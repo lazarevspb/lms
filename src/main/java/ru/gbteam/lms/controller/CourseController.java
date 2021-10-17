@@ -6,21 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.gbteam.lms.exception.NotFoundException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
-
+import ru.gbteam.lms.service.CourseServiceFacade;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,33 +17,32 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @RequestMapping("/course")
 public class CourseController {
-    private final CourseServiceFacadeImpl courseServiceFacadeImpl;
-
+    private final CourseServiceFacade courseServiceFacade;
     private final Integer DEFAULT_PAGE = 1;
     private final Integer DEFAULT_PAGE_SIZE = 5;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
                                @PathVariable("userId") Long userId) {
-        courseServiceFacadeImpl.unAssignUser(courseId, userId);
+        courseServiceFacade.unAssignUser(courseId, userId);
         return String.format("redirect:/course/%d", courseId);
     }
 
     @GetMapping("/{courseId}/assign")
     public String assignCourse(Model model, @PathVariable String courseId) {
-        model.addAttribute("users", courseServiceFacadeImpl.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
+        model.addAttribute("users", courseServiceFacade.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
     @PostMapping("/{courseId}/assign")
     public String assignUser(@PathVariable Long courseId, Long userId) {
-        courseServiceFacadeImpl.assignUser(courseId, userId);
+        courseServiceFacade.assignUser(courseId, userId);
         return "redirect:/course";
     }
 
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable("id") Long id) {
-        courseServiceFacadeImpl.deleteCourse(id);
+        courseServiceFacade.deleteCourse(id);
         return "redirect:/course";
     }
 
@@ -68,14 +54,14 @@ public class CourseController {
 
     @PostMapping("/save")
     public String saveCourse(Course course) {
-        courseServiceFacadeImpl.saveCourse(course);
+        courseServiceFacade.saveCourse(course);
         return "redirect:/course";
     }
 
     @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
-        final Course course = courseServiceFacadeImpl.findCourseById(id);
-        model.addAttribute("modules", courseServiceFacadeImpl.findAllModulesByCourseId(course.getId()));
+        final Course course = courseServiceFacade.findCourseById(id);
+        model.addAttribute("modules", courseServiceFacade.findAllModulesByCourseId(course.getId()));
         model.addAttribute("course", course);
         model.addAttribute("users", course.getUsers());
         return "course_form";
@@ -84,11 +70,12 @@ public class CourseController {
     @GetMapping
     public String courseTable(Model model,
                               @RequestParam("page") Optional<Integer> page,
-                              @RequestParam("size") Optional<Integer> size) {
+                              @RequestParam("size") Optional<Integer> size,
+                              @RequestParam(name = "title", required = false) String title) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
+        Page<Course> coursePage = courseServiceFacade.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
 
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("coursePage", coursePage);
 
