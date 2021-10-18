@@ -1,7 +1,6 @@
 package ru.gbteam.lms.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.type.LocalDateTimeType;
 import org.springframework.stereotype.Service;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.dto.LessonDTO;
@@ -11,8 +10,6 @@ import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.repository.LessonRepository;
 import ru.gbteam.lms.repository.ModuleRepository;
 import ru.gbteam.lms.service.MapperService;
-
-import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor

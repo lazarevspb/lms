@@ -6,8 +6,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.repository.ModuleRepository;
 import ru.gbteam.lms.service.ModuleService;
@@ -15,8 +13,6 @@ import ru.gbteam.lms.service.ModuleService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
@@ -47,7 +43,6 @@ public class ModuleServiceImpl implements ModuleService {
 
         return new PageImpl<>(resultListModules, PageRequest.of(currentPage, pageSize), allModules.size());
     }
-
 
     @Override
     public Optional<Module> findById(Long id) {

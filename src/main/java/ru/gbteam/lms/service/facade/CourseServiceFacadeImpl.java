@@ -24,7 +24,6 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 @Service
 public class CourseServiceFacadeImpl implements CourseServiceFacade {
-
     private final Integer DEFAULT_PAGE = 1;
     private final Integer DEFAULT_PAGE_SIZE = 5;
 
@@ -94,8 +93,8 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size) {
-        int totalPages = findPaginated(page, size).getTotalPages();
+    public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
+        int totalPages = findPaginated(page, size, titlePrefix).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -111,8 +110,8 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size){
-        int totalPages = findModulePaginated(course_id, page,  size).getTotalPages();
+    public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size) {
+        int totalPages = findModulePaginated(course_id, page, size).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -129,7 +128,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model){
+    public List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model) {
         int totalPages = findUserPaginated(page, size).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)
@@ -137,9 +136,5 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
-    }
-
-    public List<Course> findCoursesByTitleLike(String search) {
-        return courseService.findCoursesByTitleLike(search);
     }
 }

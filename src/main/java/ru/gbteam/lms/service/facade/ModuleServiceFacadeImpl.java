@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Lesson;
@@ -13,10 +12,10 @@ import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.LessonService;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.ModuleServiceFacade;
+
 import java.util.List;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,7 +38,8 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
 
     @Override
     public Module findModuleById(Long id) {
-        return moduleService.findById(id).orElseThrow(() -> new NotFoundException("Модуль", id));}
+        return moduleService.findById(id).orElseThrow(() -> new NotFoundException("Модуль", id));
+    }
 
     @Override
     public void saveModule(Module module) {
@@ -60,7 +60,7 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
 
     @Override
     public List<Integer> getLessonPageNumbers(Long module_id, Optional<Integer> page, Optional<Integer> size) {
-        int totalPages = findLessonPaginated(module_id, page,  size).getTotalPages();
+        int totalPages = findLessonPaginated(module_id, page, size).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -68,6 +68,7 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
         }
         return Collections.emptyList();
     }
+
     @Override
     public List<Lesson> findAllLessonsByModuleId(Long id) {
         return lessonService.findAllByModuleId(id);

@@ -7,14 +7,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.exception.NotFoundException;
-import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Lesson;
-import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.repository.LessonRepository;
 import ru.gbteam.lms.service.LessonService;
-import ru.gbteam.lms.service.MapperService;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +26,7 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.findAllByModuleId(id);
     }
 
-    public Page<Lesson> findPaginated(Long moduleId, Pageable pageable){
+    public Page<Lesson> findPaginated(Long moduleId, Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
 
@@ -56,8 +51,12 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void save(Lesson lesson) {lessonRepository.save(lesson);}
+    public void save(Lesson lesson) {
+        lessonRepository.save(lesson);
+    }
 
     @Override
-    public void deleteById(Long id)  {lessonRepository.deleteById(id);}
+    public void deleteById(Long id) {
+        lessonRepository.deleteById(id);
+    }
 }

@@ -3,7 +3,6 @@ package ru.gbteam.lms.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +21,6 @@ import java.util.Optional;
 @RequestMapping("/course")
 public class CourseController {
     private final CourseServiceFacade courseServiceFacade;
-    private final Integer DEFAULT_PAGE = 1;
-    private final Integer DEFAULT_PAGE_SIZE = 5;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
@@ -92,8 +90,8 @@ public class CourseController {
                               @RequestParam("size") Optional<Integer> size,
                               @RequestParam(name = "title", required = false) String title) {
 
-        model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size));
-        List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size);
+        model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));
+        List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageNumbers", pageNumbers);
         }

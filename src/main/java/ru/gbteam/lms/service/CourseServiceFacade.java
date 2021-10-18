@@ -27,7 +27,7 @@ public interface CourseServiceFacade {
 
     Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
-    List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size);
+    List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
     Page<Module> findModulePaginated(Long id, Optional<Integer> page, Optional<Integer> size);
 
