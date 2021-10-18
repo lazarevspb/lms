@@ -13,6 +13,7 @@ import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.LessonService;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.ModuleServiceFacade;
+import java.util.List;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
     }
 
     @Override
-    public void deleteModel(Long id) {
+    public void deleteModule(Long id) {
         moduleService.delete(id);
     }
 
@@ -66,6 +67,10 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+    @Override
+    public List<Lesson> findAllLessonsByModuleId(Long id) {
+        return lessonService.findAllByModuleId(id);
     }
 
 }

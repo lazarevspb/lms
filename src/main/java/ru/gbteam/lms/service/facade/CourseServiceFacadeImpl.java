@@ -56,6 +56,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
         courseService.save(course);
     }
 
+    @Override
     public List<User> findAllUsers() {
         return userService.findAll();
     }
@@ -86,10 +87,10 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size) {
+    public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        return courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        return courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize), titlePrefix);
     }
 
     @Override
@@ -136,5 +137,9 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    public List<Course> findCoursesByTitleLike(String search) {
+        return courseService.findCoursesByTitleLike(search);
     }
 }

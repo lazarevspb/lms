@@ -53,10 +53,8 @@ public class ModuleController {
 
     @DeleteMapping("/{id}")
     public String deleteModel(@PathVariable("id") Long id) {
-
-        Long course_id = moduleServiceFacade.findModuleById(id)
-                .getCourse().getId();
-        moduleServiceFacade.deleteModel(id);
+        Long course_id = moduleServiceFacade.findModuleById(id).getCourse().getId();
+        moduleServiceFacade.deleteModule(id);
         return String.format("redirect:/course/%d", course_id);
     }
 

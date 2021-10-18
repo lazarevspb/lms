@@ -1,22 +1,21 @@
 package ru.gbteam.lms.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.service.LessonService;
+import ru.gbteam.lms.service.LessonServiceFacade;
 
 @Controller
 @RequestMapping("/lesson")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LessonController {
-
-    private final LessonService lessonService;
+    private final LessonServiceFacade lessonServiceFacade;
 
     @GetMapping("/{lesson_id}")
     public String getLessonById(@PathVariable("lesson_id") Long lessonId, Model model) {
-        model.addAttribute("lesson", lessonService.findLessonById(lessonId));
+        model.addAttribute("lesson", lessonServiceFacade.mapLessonToDto(lessonId));
         return "lesson_form";
     }
 
@@ -30,13 +29,14 @@ public class LessonController {
 
     @PostMapping("/save")
     public String saveLesson(LessonDTO lessonDTO) {
-        lessonService.save(lessonDTO);
+        lessonServiceFacade.saveLesson(lessonDTO);
         return "redirect:/module/" + lessonDTO.getModuleId();
     }
 
     @DeleteMapping("/{lesson_id}")
     public String deleteLesson(@PathVariable(name = "lesson_id") Long id) {
-        Long moduleId = lessonService.delete(id);
+        Long moduleId = lessonServiceFacade.findLessonById(id).getModule().getId();
+        lessonServiceFacade.deleteLesson(id);
         return "redirect:/module/" + moduleId;
     }
 }

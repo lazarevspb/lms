@@ -1,6 +1,6 @@
 package ru.gbteam.lms.service.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,15 +18,15 @@ import ru.gbteam.lms.service.MapperService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
 
-    private final MapperService mapperService;
-
+    @Override
     public List<Lesson> findAllByModuleId(Long id) {
         return lessonRepository.findAllByModuleId(id);
     }
@@ -50,19 +50,14 @@ public class LessonServiceImpl implements LessonService {
         return new PageImpl<>(resultListLessons, PageRequest.of(currentPage, pageSize), allLessons.size());
     }
 
-    public LessonDTO findLessonById(Long id) {
-        return lessonRepository.findById(id).map(mapperService::toDTO).orElse(new LessonDTO());
+    @Override
+    public Optional<Lesson> findById(Long id) {
+        return lessonRepository.findById(id);
     }
 
-    public void save(LessonDTO lessonDTO) {
-        Lesson lesson = mapperService.fromDTO(lessonDTO);
-        lessonRepository.save(lesson);
-    }
+    @Override
+    public void save(Lesson lesson) {lessonRepository.save(lesson);}
 
-    public Long delete(Long id) {
-        Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new NotFoundException("Урок", id));
-        Long moduleId = lesson.getModule().getId();
-        lessonRepository.delete(lesson);
-        return moduleId;
-    }
+    @Override
+    public void deleteById(Long id)  {lessonRepository.deleteById(id);}
 }

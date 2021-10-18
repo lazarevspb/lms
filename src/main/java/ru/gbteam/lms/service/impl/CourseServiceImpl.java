@@ -28,13 +28,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findPaginated(Pageable pageable) {
+    public Page<Course> findPaginated(Pageable pageable, String titlePrefix) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
 
         int itemCount = currentPage * pageSize;
 
-        List<Course> allCourses = findAll();
+        List<Course> allCourses = findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix);
         List<Course> resultListCourses;
 
         if (allCourses.size() < itemCount) {
@@ -60,5 +60,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void delete(Long id) {
         courseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Course> findCoursesByTitleLike(String title) {
+        return courseRepository.findByTitleContainingIgnoreCase(title);
     }
 }

@@ -2,20 +2,18 @@ package ru.gbteam.lms.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Lesson;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface LessonService {
     List<Lesson> findAllByModuleId(Long id);
 
     Page<Lesson> findPaginated(Long moduleId, Pageable pageable);
 
-    LessonDTO findLessonById(Long id);
+    Optional<Lesson> findById(Long id);
 
-    void save(LessonDTO lessonDTO);
+    void save(Lesson lesson);
 
-    Long delete(Long id);
+    void deleteById(Long id);
 }
