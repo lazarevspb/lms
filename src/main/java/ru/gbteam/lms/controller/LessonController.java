@@ -35,7 +35,7 @@ public class LessonController {
         if (bindingResult.hasErrors()) {
             return "lesson_form";
         }
-        lessonService.save(lessonDTO);
+        lessonServiceFacade.saveLesson(lessonDTO);
         return "redirect:/module/" + lessonDTO.getModuleId();
     }
 

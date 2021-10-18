@@ -10,10 +10,7 @@ import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
-import ru.gbteam.lms.service.CourseService;
-import ru.gbteam.lms.service.CourseServiceFacade;
-import ru.gbteam.lms.service.ModuleService;
-import ru.gbteam.lms.service.UserService;
+import ru.gbteam.lms.service.*;
 
 import java.util.List;
 

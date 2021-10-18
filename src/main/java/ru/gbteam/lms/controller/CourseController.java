@@ -9,10 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.service.facade.CourseServiceFacadeImpl;
+import ru.gbteam.lms.service.CourseServiceFacade;
 
 import javax.validation.Valid;
-import ru.gbteam.lms.service.CourseServiceFacade;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,7 +61,7 @@ public class CourseController {
         if (bindingResult.hasErrors()) {
             return "course_form";
         }
-        courseServiceFacadeImpl.saveCourse(courseDto);
+        courseServiceFacade.saveCourse(courseDto);
         return "redirect:/course";
     }
 
@@ -83,8 +82,6 @@ public class CourseController {
         int currentPage = page.orElse(DEFAULT_PAGE);
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
         Page<Course> coursePage = courseServiceFacade.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
-
-        Page<Course> coursePage = courseServiceFacadeImpl.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("coursePage", coursePage);
 
