@@ -2,6 +2,7 @@ package ru.gbteam.lms.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
+import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
@@ -21,7 +22,7 @@ public interface CourseServiceFacade {
 
     void deleteCourse(Long id);
 
-    void saveCourse(Course course);
+    void saveCourse(CourseDTO courseDTO);
 
     List<Course> findAllCourses();
 

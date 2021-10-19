@@ -6,14 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
-import ru.gbteam.lms.service.CourseService;
-import ru.gbteam.lms.service.CourseServiceFacade;
-import ru.gbteam.lms.service.ModuleService;
-import ru.gbteam.lms.service.UserService;
+import ru.gbteam.lms.service.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +28,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
+    private final MapperService mapperService;
 
     @Override
     @Transactional
@@ -76,8 +75,9 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
-    public void saveCourse(Course course) {
-        courseService.save(course);
+    public void saveCourse(CourseDTO courseDTO) {
+        Course c = mapperService.fromDTO(courseDTO) ;
+        courseService.save(c);
     }
 
     @Override

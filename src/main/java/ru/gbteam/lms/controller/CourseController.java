@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
 
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +59,11 @@ public class CourseController {
     }
 
     @PostMapping("/save")
-    public String saveCourse(Course course) {
-        courseServiceFacade.saveCourse(course);
+    public String saveCourse(@Valid @ModelAttribute("course") CourseDTO courseDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "course_form";
+        }
+        courseServiceFacade.saveCourse(courseDto);
         return "redirect:/course";
     }
 
