@@ -17,12 +17,12 @@ import java.util.stream.IntStream;
 @Service
 public class PaginationServiceImpl implements PaginationService {
 
-    private final Integer DEFAULT_PAGE = 1;
-    private final Integer DEFAULT_PAGE_SIZE = 5;
-
     @Override
     public Page<?> findPaginated(Optional<Integer> page, Optional<Integer> size, List<?> allEntities) {
-        int currentPage = page.orElse(DEFAULT_PAGE)-1;
+        Integer DEFAULT_PAGE = 1;
+        Integer DEFAULT_PAGE_SIZE = 5;
+
+        int currentPage = page.orElse(DEFAULT_PAGE) - 1;
         int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
 
         int itemCount = currentPage * pageSize;
@@ -39,7 +39,7 @@ public class PaginationServiceImpl implements PaginationService {
     }
 
     @Override
-    public List<Integer> getLessonPageNumbers(Optional<Integer> page, Optional<Integer> size , List<?> allEntities) {
+    public List<Integer> getLessonPageNumbers(Optional<Integer> page, Optional<Integer> size, List<?> allEntities) {
         int totalPages = findPaginated(page, size, allEntities).getTotalPages();
         if (totalPages > 0) {
             return IntStream.rangeClosed(1, totalPages)

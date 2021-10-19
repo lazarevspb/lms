@@ -80,6 +80,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         return (Page<Course>) paginationService.findPaginated(page, size,
                 courseService.findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix));
@@ -92,6 +93,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Page<Module> findModulePaginated(Long course_id, Optional<Integer> page, Optional<Integer> size) {
         return (Page<Module>) paginationService.findPaginated(page, size,
                 moduleService.findAllByCourseId(course_id));
@@ -104,6 +106,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Page<User> findUserPaginated(Optional<Integer> page, Optional<Integer> size) {
         return (Page<User>) paginationService.findPaginated(page, size,
                 userService.findAll());
