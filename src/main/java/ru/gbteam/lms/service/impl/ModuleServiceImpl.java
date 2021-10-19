@@ -1,11 +1,16 @@
 package ru.gbteam.lms.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.repository.ModuleRepository;
 import ru.gbteam.lms.service.ModuleService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +22,26 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public List<Module> findAllByCourseId(Long id) {
         return moduleRepository.findAllByCourseId(id);
+    }
+
+    @Override
+    public Page<Module> findPaginated(Long course_id, Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        int itemCount = currentPage * pageSize;
+
+        List<Module> allModules = findAllByCourseId(course_id);
+        List<Module> resultListModules;
+
+        if (allModules.size() < itemCount) {
+            resultListModules = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(itemCount + pageSize, allModules.size());
+            resultListModules = allModules.subList(itemCount, toIndex);
+        }
+
+        return new PageImpl<>(resultListModules, PageRequest.of(currentPage, pageSize), allModules.size());
     }
 
     @Override

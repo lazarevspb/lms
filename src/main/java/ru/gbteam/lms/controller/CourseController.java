@@ -1,29 +1,31 @@
 package ru.gbteam.lms.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
 
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/course")
 public class CourseController {
     private final CourseServiceFacade courseServiceFacade;
-    private final Integer DEFAULT_PAGE = 1;
-    private final Integer DEFAULT_PAGE_SIZE = 5;
 
     @DeleteMapping("/{courseId}/unassign/{userId}")
     public String unAssignUser(@PathVariable("courseId") Long courseId,
@@ -66,11 +68,27 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public String courseForm(Model model, @PathVariable("id") Long id) {
+    public String courseForm(Model model,
+                             @PathVariable("id") Long id,
+                             @RequestParam("modulePage") Optional<Integer> modulePage,
+                             @RequestParam("moduleSize") Optional<Integer> moduleSize,
+                             @RequestParam("userPage") Optional<Integer> userPage,
+                             @RequestParam("userSize") Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
-        model.addAttribute("modules", courseServiceFacade.findAllModulesByCourseId(course.getId()));
+
+        model.addAttribute("modulePage", courseServiceFacade.findModulePaginated(id, modulePage, moduleSize));
+        List<Integer> pageNumbers = courseServiceFacade.getModulePageNumbers(id, modulePage, moduleSize);
+        if (!CollectionUtils.isEmpty(pageNumbers)) {
+            model.addAttribute("pageModelNumbers", pageNumbers);
+        }
+
+        model.addAttribute("userPage", courseServiceFacade.findUserPaginated(userPage, userSize));
+        List<Integer> pageUserNumbers = courseServiceFacade.getUserPageNumbers(userPage, userSize, model);
+        if (!CollectionUtils.isEmpty(pageUserNumbers)) {
+            model.addAttribute("pageUserNumbers", pageUserNumbers);
+        }
+
         model.addAttribute("course", course);
-        model.addAttribute("users", course.getUsers());
         return "course_form";
     }
 
@@ -79,20 +97,12 @@ public class CourseController {
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size,
                               @RequestParam(name = "title", required = false) String title) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        Page<Course> coursePage = courseServiceFacade.findPaginated(PageRequest.of(currentPage - 1, pageSize), title);
 
-        model.addAttribute("coursePage", coursePage);
-
-        int totalPages = coursePage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
+        model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));
+        List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size, title);
+        if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }

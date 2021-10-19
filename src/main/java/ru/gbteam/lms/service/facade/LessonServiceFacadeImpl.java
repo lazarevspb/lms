@@ -30,6 +30,7 @@ public class LessonServiceFacadeImpl implements LessonServiceFacade {
     public Lesson findLessonById(Long id) {
         return lessonService.findById(id).orElseThrow(() -> new NotFoundException("Урок", id));
     }
+
     @Override
     public void deleteLesson(Long id) {
         lessonService.deleteById(id);

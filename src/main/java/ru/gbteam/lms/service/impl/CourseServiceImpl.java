@@ -37,7 +37,7 @@ public class CourseServiceImpl implements CourseService {
         List<Course> allCourses = findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix);
         List<Course> resultListCourses;
 
-        if (findAll().size() < itemCount) {
+        if (allCourses.size() < itemCount) {
             resultListCourses = Collections.emptyList();
         } else {
             int toIndex = Math.min(itemCount + pageSize, allCourses.size());

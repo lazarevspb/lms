@@ -27,14 +27,14 @@
     </div>
 </form>
 <!---------------------------------module------------------------------------------>
-<div th:unless="${modules == null}">
+<div th:unless="modulePage == null">
     <h1>
         <p>Модули курса</p>
     </h1>
-    <div>
-        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a>
+    <div th:unless="${course.getId() == null}">
+        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
     </div>
-    <table th:unless="${modules == null}">
+    <table th:unless="${modulePage == null}">
         <thead>
         <tr>
             <th>Id</th>
@@ -43,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="module : ${modules}">
+        <tr th:each="module : ${modulePage.content}">
             <td th:text="${module.id}">1</td>
             <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
             </td>
@@ -53,19 +53,28 @@
                 </form>
             </td>
         </tr>
-        <tr th:if="${modules.empty}">
+        <tr th:if="${modulePage==0}">
             <td colspan="4">У данного курса пока нет модулей</td>
         </tr>
         </tbody>
     </table>
+    <p th:if="${modulePage.getTotalPages() > 0}"
+       th:each="pageNumber : ${pageModelNumbers}"
+       class="inline">
+        <a th:href="@{/course/{id}(id = ${course.getId()},moduleSize=${modulePage.size}, modulePage=${pageNumber})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==modulePage.number + 1} ? active"
+           class="inline"
+        ></a>
+    </p>
 </div>
 <!---------------------------------users------------------------------------------>
-<div th:unless="${users == null}">
+<div th:unless="${userPage == null}">
     <h1>
         <p>Пользователи записанные на курс</p>
     </h1>
 </div>
-<table th:unless="${users == null}">
+<table th:unless="${userPage == null}">
     <thead>
     <tr>
         <th>Id</th>
@@ -74,7 +83,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
+    <tr th:each="user : ${userPage.content}">
         <td th:text="${user.id}">1</td>
         <td><a th:text="${user.username}">username</a>
         </td>
@@ -85,12 +94,20 @@
             </form>
         </td>
     </tr>
-    <tr th:if="${users.empty}">
+    <tr th:if="${userPage==0}">
         <td colspan="4">Нет пользователей записанных на курс</td>
     </tr>
     </tbody>
 </table>
-
+<p th:if="${userPage.getTotalPages() > 0}"
+   th:each="pageNumber : ${pageUserNumbers}"
+   class="inline">
+    <a th:href="@{/course/{id}(id = ${course.getId()}, userSize=${modulePage.size}, userPage=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==userPage.number + 1} ? active"
+       class="inline"
+    ></a>
+</p>
 <div>
     <p>
         <a th:href="@{/course}">Вернуться к курсам</a>

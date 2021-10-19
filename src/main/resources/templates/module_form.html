@@ -28,14 +28,14 @@
     </div>
 </form>
 <!---------------------- Lessons ------------------------>
-<div th:unless="${lessons == null}">
+<div th:unless="${lessonPage == null}">
     <h1>
         <p>Уроки модуля</p>
     </h1>
     <div>
         <a th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
     </div>
-    <table th:unless="${lessons == null}">
+    <table th:unless="${lessonPage == null}">
         <thead>
         <tr>
             <th>Id</th>
@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="lesson : ${lessons}">
+        <tr th:each="lesson : ${lessonPage.content}">
             <td th:text="${lesson.id}">1</td>
             <td><a th:text="${lesson.title}" th:href="@{/lesson/{id}(id = ${lesson.id})}">Lesson name</a>
             </td>
@@ -56,11 +56,20 @@
                 </form>
             </td>
         </tr>
-        <tr th:if="${lessons.empty}">
+        <tr th:if="${lessonPage==0}">
             <td colspan="4">У данного модуля пока нет уроков</td>
         </tr>
         </tbody>
     </table>
+    <p th:if="${lessonPage.totalPages > 0}"
+       th:each="pageNumber : ${pageLessonNumbers}"
+       class="inline">
+        <a th:href="@{/module/{id}(id = ${module.getId()},size=${lessonPage.size}, page=${pageNumber})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==lessonPage.number + 1} ? active"
+           class="inline"
+        ></a>
+    </p>
 </div>
 </body>
 </html>
