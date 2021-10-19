@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Модули курса</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<form th:object="${module}" th:method="post"
+      th:action="@{/module/save}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{course}">
+    <div>
+        <label for="title">Название модуля</label>
+        <input type="text" id="title" th:field="*{title}">
+    </div>
+
+    <div>
+        <label for="text">Описание модуля</label>
+        <textarea id="text" rows="5" cols="50" th:field="*{text}"></textarea>
+    </div>
+    <div>
+        <button type="submit">Подтвердить</button>
+    </div>
+</form>
+<!---------------------- Lessons ------------------------>
+<div th:unless="${lessons == null}">
+    <h1>
+        <p>Уроки модуля</p>
+    </h1>
+    <div>
+        <a th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
+    </div>
+    <table th:unless="${lessons == null}">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название урока</th>
+            <th>Описание урока</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lesson : ${lessons}">
+            <td th:text="${lesson.id}">1</td>
+            <td><a th:text="${lesson.title}" th:href="@{/lesson/{id}(id = ${lesson.id})}">Lesson name</a>
+            </td>
+            <td><a th:text="${lesson.description}">Description</a></td>
+            <td>
+                <form th:method="delete" th:action="@{/lesson/{id}(id = ${lesson.id})}">
+                    <button type="submit">удалить</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${lessons.empty}">
+            <td colspan="4">У данного модуля пока нет уроков</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

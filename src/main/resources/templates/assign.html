@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Назначить пользователя</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<h1>Пользователи назначенные на курс</h1>
+<form th:method="post" th:action="@{/course/{courseId}/assign(courseId = ${courseId})}">
+
+    <div>
+        <label for="userId">Назначить пользователя на курс</label>
+        <select id="userId" name="userId">
+            <option th:each="user : ${users}"
+                    th:value="${user.id}"
+                    th:text="${user.username}">Username
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Подтвердить</button>
+    </div>
+</form>
+<div>
+    <a th:href="@{/course}">Вернуться к курсам</a>
+</div>
+</body>
+</html>

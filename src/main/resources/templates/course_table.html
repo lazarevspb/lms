@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+
+<head>
+    <meta charset="utf-8">
+    <title>Все курсы</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+<h1>Список курсов</h1>
+
+<div>
+    <a th:href="@{/course/new/}">Создать курс</a>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Название курса</th>
+        <th>Автор курса</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${coursePage.content}">
+        <td th:text="${course.id}">1</td>
+        <td><a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
+        </td>
+        <td th:text="${course.author}">Course author</td>
+        <td>
+            <form class="inline" th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
+                <button type="submit">Удалить</button>
+            </form>
+            <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
+                <button type="submit">Назначить</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${coursePage.size == 0}">
+        <td colspan="4">Тут скоро появятся курсы</td>
+    </tr>
+    </tbody>
+</table>
+<p th:if="${coursePage.totalPages > 0}"
+   th:each="pageNumber : ${pageNumbers}"
+   class="inline">
+    <a th:href="@{/course(size=${coursePage.size}, page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==coursePage.number + 1} ? active"
+       class="inline"
+    ></a>
+</p>
+</body>
+
+</html>

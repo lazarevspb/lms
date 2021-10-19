@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="app">
+    <div class="warning"
+         th:text="|${exception.className} c id = ${exception.id} не найден. Обратитесь к администратору.|">
+        Курс не найден, обратитесь к администратору
+    </div>
+</div>
+<div>
+    <a th:href="@{/course}">Вернуться к курсам</a>
+</div>
+</body>
+</html>

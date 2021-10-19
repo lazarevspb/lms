@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Страница курса</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<form th:object="${course}" th:method="post" th:action="@{/course/save}">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="title">Название курса</label>
+        <input type="text" id="title" th:field="*{title}">
+    </div>
+    <div>
+        <label for="author">Автор Курса</label>
+        <input type="text" id="author" th:field="*{author}">
+    </div>
+    <div>
+        <button type="submit">Подтвердить</button>
+    </div>
+</form>
+<!---------------------------------module------------------------------------------>
+<div th:unless="${modules == null}">
+    <h1>
+        <p>Модули курса</p>
+    </h1>
+    <div>
+        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
+    </div>
+    <table th:unless="${modules == null}">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Название модуля</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="module : ${modules}">
+            <td th:text="${module.id}">1</td>
+            <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
+            </td>
+            <td>
+                <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
+                    <button type="submit">удалить</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${modules.empty}">
+            <td colspan="4">У данного курса пока нет модулей</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!---------------------------------users------------------------------------------>
+<div th:unless="${users == null}">
+    <h1>
+        <p>Пользователи записанные на курс</p>
+    </h1>
+</div>
+<table th:unless="${users == null}">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td><a th:text="${user.username}">username</a>
+        </td>
+        <td>
+            <form th:action="@{/course/{courseId}/unassign/{userId}(courseId = ${course.id},userId = ${user.id})}"
+                  th:method="delete">
+                <button type="submit">Отвязать</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${users.empty}">
+        <td colspan="4">Нет пользователей записанных на курс</td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <p>
+        <a th:href="@{/course}">Вернуться к курсам</a>
+    </p>
+</div>
+</body>
+</html>
