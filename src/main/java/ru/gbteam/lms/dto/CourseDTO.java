@@ -1,5 +1,7 @@
 package ru.gbteam.lms.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.gbteam.lms.annotation.ValidateCase;
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @Data
+@Builder
+@AllArgsConstructor
 public class CourseDTO {
     private Long id;
 
