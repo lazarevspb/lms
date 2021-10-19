@@ -10,8 +10,6 @@ import java.util.Optional;
 public interface ModuleService {
     List<Module> findAllByCourseId(Long id);
 
-    Page<Module> findPaginated(Long course_id, Pageable pageable);
-
     Optional<Module> findById(Long id);
 
     void save(Module module);

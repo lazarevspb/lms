@@ -9,8 +9,6 @@ import java.util.Optional;
 public interface LessonService {
     List<Lesson> findAllByModuleId(Long id);
 
-    Page<Lesson> findPaginated(Long moduleId, Pageable pageable);
-
     Optional<Lesson> findById(Long id);
 
     void save(Lesson lesson);
