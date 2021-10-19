@@ -28,14 +28,14 @@
     </div>
 </form>
 <!---------------------- Lessons ------------------------>
-<div th:unless="${lessonPage.getTotalPages() == null}">
+<div th:unless="${lessonPage == null}">
     <h1>
         <p>Уроки модуля</p>
     </h1>
     <div>
         <a th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
     </div>
-    <table th:unless="${lessonPage.getTotalPages() == null}">
+    <table th:unless="${lessonPage == null}">
         <thead>
         <tr>
             <th>Id</th>
@@ -56,7 +56,7 @@
                 </form>
             </td>
         </tr>
-        <tr th:if="${lessonPage.totalPages==0}">
+        <tr th:if="${lessonPage==0}">
             <td colspan="4">У данного модуля пока нет уроков</td>
         </tr>
         </tbody>

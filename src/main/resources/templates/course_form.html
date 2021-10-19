@@ -23,14 +23,14 @@
     </div>
 </form>
 <!---------------------------------module------------------------------------------>
-<div th:unless="modulePage.totalPages == null">
+<div th:unless="modulePage == null">
     <h1>
         <p>Модули курса</p>
     </h1>
-    <div>
+    <div th:unless="${course.getId() == null}">
         <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
     </div>
-    <table th:unless="${modulePage.totalPages == null}">
+    <table th:unless="${modulePage == null}">
         <thead>
         <tr>
             <th>Id</th>
@@ -49,12 +49,12 @@
                 </form>
             </td>
         </tr>
-        <tr th:if="${modulePage.totalPages==0}">
+        <tr th:if="${modulePage==0}">
             <td colspan="4">У данного курса пока нет модулей</td>
         </tr>
         </tbody>
     </table>
-    <p th:if="${modulePage.totalPages > 0}"
+    <p th:if="${modulePage.getTotalPages() > 0}"
        th:each="pageNumber : ${pageModelNumbers}"
        class="inline">
         <a th:href="@{/course/{id}(id = ${course.getId()},moduleSize=${modulePage.size}, modulePage=${pageNumber})}"
@@ -65,12 +65,12 @@
     </p>
 </div>
 <!---------------------------------users------------------------------------------>
-<div th:unless="${userPage.totalPages == null}">
+<div th:unless="${userPage == null}">
     <h1>
         <p>Пользователи записанные на курс</p>
     </h1>
 </div>
-<table th:unless="${userPage.totalPages == null}">
+<table th:unless="${userPage == null}">
     <thead>
     <tr>
         <th>Id</th>
@@ -90,12 +90,12 @@
             </form>
         </td>
     </tr>
-    <tr th:if="${modulePage.totalPages==0}">
+    <tr th:if="${userPage==0}">
         <td colspan="4">Нет пользователей записанных на курс</td>
     </tr>
     </tbody>
 </table>
-<p th:if="${userPage.totalPages > 0}"
+<p th:if="${userPage.getTotalPages() > 0}"
    th:each="pageNumber : ${pageUserNumbers}"
    class="inline">
     <a th:href="@{/course/{id}(id = ${course.getId()}, userSize=${modulePage.size}, userPage=${pageNumber})}"
