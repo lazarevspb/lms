@@ -12,7 +12,7 @@ class ExceptionHandlerControllerTest {
 
   @Test
   void testNotFoundExceptionHandler() {
-    ExceptionHandlerController exceptionHandlerController = new ExceptionHandlerController();
+    ExceptionHandlerControllerImpl exceptionHandlerController = new ExceptionHandlerControllerImpl();
     ModelAndView actualNotFoundExceptionHandlerResult = exceptionHandlerController
         .notFoundExceptionHandler(new NotFoundException());
     assertTrue(actualNotFoundExceptionHandlerResult.isReference());
