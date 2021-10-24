@@ -23,11 +23,11 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ContextConfiguration(classes = {CourseController.class})
+@ContextConfiguration(classes = {CourseControllerImpl.class})
 @ExtendWith(SpringExtension.class)
 class CourseControllerTest {
     @Autowired
-    private CourseController courseController;
+    private CourseControllerImpl courseController;
 
     @MockBean
     private CourseService courseService;
