@@ -1,20 +1,15 @@
 package ru.gbteam.lms.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.gbteam.lms.controller.impl.CourseController;
 import ru.gbteam.lms.dto.CourseDTO;
-import ru.gbteam.lms.exception.InternalServerError;
-import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.service.CourseImageStorageService;
 import ru.gbteam.lms.service.CourseServiceFacade;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,42 +20,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourseControllerImpl implements CourseController {
     private final CourseServiceFacade courseServiceFacade;
-    private final CourseImageStorageService courseImageStorageService;
 
-    @GetMapping("/courseImage/{courseId}")
-    @ResponseBody
-    public ResponseEntity<byte[]> courseImage(@PathVariable Long courseId) {
-        String contentType;
-        byte[] data;
-        if (courseImageStorageService.checkCourseImage(courseId)) {
-            contentType = courseImageStorageService.getContentTypeByCourse(courseId)
-                    .orElseThrow(() -> new NotFoundException("ContentType not found for", courseId));
-
-            data = courseImageStorageService.getCourseImageByCourse(courseId)
-                    .orElseThrow(() -> new NotFoundException("Data not found for", courseId));
-        } else {
-            contentType = "image/jpg";
-            data = courseImageStorageService.getDefaultCourseImageData()
-                    .orElseThrow(() -> new NotFoundException("Data not found for", courseId));
-        }
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .body(data);
+    @Override
+    public ResponseEntity<byte[]> courseImage(Long courseId) {
+     return courseServiceFacade.getCourseImage(courseId);
     }
 
-    @PostMapping("/courseImage")
-    public String updateCourseImage(
-            @RequestParam Long id,
-            @RequestParam("courseImage") MultipartFile courseImage,
-            HttpServletRequest request) {
-
-        try {
-            courseImageStorageService
-                    .save(id, courseImage.getContentType(), courseImage.getInputStream());
-        } catch (Exception ex) {
-            throw new InternalServerError("upload_failed");
-        }
+    @Override
+    public String updateCourseImage(Long id, MultipartFile courseImage, HttpServletRequest request) {
+        courseServiceFacade.updateCourseImage(id, courseImage, request);
         return String.format("redirect:%s", request.getHeader("referer"));
     }
 
@@ -112,13 +80,11 @@ public class CourseControllerImpl implements CourseController {
         if (!CollectionUtils.isEmpty(pageUserNumbers)) {
             model.addAttribute("pageUserNumbers", pageUserNumbers);
         }
-
         model.addAttribute("course", course);
         return "course_form";
     }
 
     public String courseTable(Model model, Optional<Integer> page, Optional<Integer> size, String title) {
-
         model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));
         List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {

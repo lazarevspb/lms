@@ -1,12 +1,12 @@
 package ru.gbteam.lms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,4 +25,17 @@ public class CourseImage {
 
   @OneToOne
   private Course course;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CourseImage)) return false;
+    CourseImage that = (CourseImage) o;
+    return getId().equals(that.getId()) && getFilename().equals(that.getFilename());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getFilename());
+  }
 }
