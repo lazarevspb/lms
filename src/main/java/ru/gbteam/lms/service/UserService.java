@@ -13,8 +13,6 @@ public interface UserService {
 
     List<User> findAll();
 
-    Page<User> findPaginated(Pageable pageable);
-
     Optional<User> findById(Long id);
 
     void save(User user);

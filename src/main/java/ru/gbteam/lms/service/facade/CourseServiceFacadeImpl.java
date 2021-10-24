@@ -2,7 +2,6 @@ package ru.gbteam.lms.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -13,22 +12,17 @@ import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
 public class CourseServiceFacadeImpl implements CourseServiceFacade {
-    private final Integer DEFAULT_PAGE = 1;
-    private final Integer DEFAULT_PAGE_SIZE = 5;
-
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
     private final MapperService mapperService;
+    private final PaginationService paginationService;
 
     @Override
     @Transactional
@@ -76,7 +70,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
 
     @Override
     public void saveCourse(CourseDTO courseDTO) {
-        Course c = mapperService.fromDTO(courseDTO) ;
+        Course c = mapperService.fromDTO(courseDTO);
         courseService.save(c);
     }
 
@@ -86,55 +80,41 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        return courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize), titlePrefix);
+        return (Page<Course>) paginationService.findPaginated(page, size,
+                courseService.findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix));
     }
 
     @Override
     public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
-        int totalPages = findPaginated(page, size, titlePrefix).getTotalPages();
-        if (totalPages > 0) {
-            return IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return paginationService.getLessonPageNumbers(page, size,
+                courseService.findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix));
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
     public Page<Module> findModulePaginated(Long course_id, Optional<Integer> page, Optional<Integer> size) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        return moduleService.findPaginated(course_id, PageRequest.of(currentPage - 1, pageSize));
+        return (Page<Module>) paginationService.findPaginated(page, size,
+                moduleService.findAllByCourseId(course_id));
     }
 
     @Override
     public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size) {
-        int totalPages = findModulePaginated(course_id, page, size).getTotalPages();
-        if (totalPages > 0) {
-            return IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return paginationService.getLessonPageNumbers(page, size,
+                moduleService.findAllByCourseId(course_id));
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Page<User> findUserPaginated(Optional<Integer> page, Optional<Integer> size) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        int pageSize = size.orElse(DEFAULT_PAGE_SIZE);
-        return userService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        return (Page<User>) paginationService.findPaginated(page, size,
+                userService.findAll());
     }
 
     @Override
     public List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model) {
-        int totalPages = findUserPaginated(page, size).getTotalPages();
-        if (totalPages > 0) {
-            return IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return paginationService.getLessonPageNumbers(page, size,
+                userService.findAll());
     }
 }
