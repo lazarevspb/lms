@@ -2,22 +2,28 @@ package ru.gbteam.lms.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import ru.gbteam.lms.dto.CourseDTO;
+import ru.gbteam.lms.exception.InternalServerError;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class CourseServiceFacadeImpl implements CourseServiceFacade {
+    private final CourseImageStorageService courseImageStorageService;
     private final CourseService courseService;
     private final ModuleService moduleService;
     private final UserService userService;
@@ -34,6 +40,38 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
         user.getCourses().remove(course);
         course.getUsers().remove(user);
         courseService.save(course);
+    }
+
+    @Override
+    public void updateCourseImage(Long id, MultipartFile courseImage, HttpServletRequest request) {
+        try {
+            courseImageStorageService
+                    .save(id, courseImage.getContentType(), courseImage.getInputStream());
+        } catch (Exception ex) {
+            throw new InternalServerError("upload_failed");
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<byte[]> getCourseImage(Long courseId) {
+        String contentType;
+        byte[] data;
+        if (courseImageStorageService.checkCourseImage(courseId)) {
+            contentType = courseImageStorageService.getContentTypeByCourse(courseId)
+                    .orElseThrow(() -> new NotFoundException("ContentType not found for", courseId));
+
+            data = courseImageStorageService.getCourseImageByCourse(courseId)
+                    .orElseThrow(() -> new NotFoundException("Data not found for", courseId));
+        } else {
+            contentType = "image/jpg";
+            data = courseImageStorageService.getDefaultCourseImageData()
+                    .orElseThrow(() -> new NotFoundException("Data not found for", courseId));
+        }
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(data);
     }
 
     @Override

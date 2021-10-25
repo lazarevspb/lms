@@ -9,4 +9,3 @@ public class IndexControllerImpl {
     return "redirect:/course";
   }
 }
-

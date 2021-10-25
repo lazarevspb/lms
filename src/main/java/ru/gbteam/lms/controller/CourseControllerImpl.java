@@ -1,15 +1,18 @@
 package ru.gbteam.lms.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 import ru.gbteam.lms.controller.impl.CourseController;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +20,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourseControllerImpl implements CourseController {
     private final CourseServiceFacade courseServiceFacade;
+
+    @Override
+    public ResponseEntity<byte[]> courseImage(Long courseId) {
+     return courseServiceFacade.getCourseImage(courseId);
+    }
+
+    @Override
+    public String updateCourseImage(Long id, MultipartFile courseImage, HttpServletRequest request) {
+        courseServiceFacade.updateCourseImage(id, courseImage, request);
+        return String.format("redirect:%s", request.getHeader("referer"));
+    }
 
     public String unAssignUser(Long courseId, Long userId) {
         courseServiceFacade.unAssignUser(courseId, userId);
@@ -66,13 +80,11 @@ public class CourseControllerImpl implements CourseController {
         if (!CollectionUtils.isEmpty(pageUserNumbers)) {
             model.addAttribute("pageUserNumbers", pageUserNumbers);
         }
-
         model.addAttribute("course", course);
         return "course_form";
     }
 
     public String courseTable(Model model, Optional<Integer> page, Optional<Integer> size, String title) {
-
         model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));
         List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
