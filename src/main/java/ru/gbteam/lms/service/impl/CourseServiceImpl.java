@@ -38,7 +38,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findCoursesByTitleLike(String title) {
-        return courseRepository.findByTitleContainingIgnoreCase(title);
+    public List<Course> findCoursesByTitleOrAuthorLike(String title) {
+        return courseRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(title, title);
     }
 }

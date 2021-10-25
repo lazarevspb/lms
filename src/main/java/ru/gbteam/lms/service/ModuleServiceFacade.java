@@ -19,9 +19,9 @@ public interface ModuleServiceFacade {
 
     void deleteModule(Long id);
 
-    Page<Lesson> findLessonPaginated(Long id, Optional<Integer> page, Optional<Integer> size);
+    Page<Lesson> findLessonPaginated(Long id, Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
-    List<Integer> getLessonPageNumbers(Long module_id, Optional<Integer> page, Optional<Integer> size);
+    List<Integer> getLessonPageNumbers(Long module_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
     List<Lesson> findAllLessonsByModuleId(Long id);
 }

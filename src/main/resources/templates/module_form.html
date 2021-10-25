@@ -32,6 +32,12 @@
     <h1>
         <p>Уроки модуля</p>
     </h1>
+    <form>
+        <label for="title" class="inline">Поиск по названию</label>
+        <input type="text" id="title" class="inline" name="title"
+               th:value="${param.title}"/>
+        <button>Искать</button>
+    </form>
     <div>
         <a th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
     </div>

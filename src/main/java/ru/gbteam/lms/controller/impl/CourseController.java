@@ -40,6 +40,7 @@ public interface CourseController {
                              @PathVariable("id") Long id,
                              @RequestParam("modulePage") Optional<Integer> modulePage,
                              @RequestParam("moduleSize") Optional<Integer> moduleSize,
+                             @RequestParam(name = "title", required = false) String title,
                              @RequestParam("userPage") Optional<Integer> userPage,
                              @RequestParam("userSize") Optional<Integer> userSize);
     @GetMapping

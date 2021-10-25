@@ -30,9 +30,9 @@ public interface CourseServiceFacade {
 
     List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
-    Page<Module> findModulePaginated(Long id, Optional<Integer> page, Optional<Integer> size);
+    Page<Module> findModulePaginated(Long id, Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
-    List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size);
+    List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix);
 
     Page<User> findUserPaginated(Optional<Integer> page, Optional<Integer> size);
 

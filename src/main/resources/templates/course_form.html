@@ -31,6 +31,12 @@
     <h1>
         <p>Модули курса</p>
     </h1>
+    <form>
+        <label for="title" class="inline">Поиск по названию</label>
+        <input type="text" id="title" class="inline" name="title"
+               th:value="${param.title}"/>
+        <button>Искать</button>
+    </form>
     <div th:unless="${course.getId() == null}">
         <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
     </div>

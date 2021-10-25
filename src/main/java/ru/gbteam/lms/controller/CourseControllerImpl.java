@@ -51,12 +51,12 @@ public class CourseControllerImpl implements CourseController {
         return "redirect:/course";
     }
 
-    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize,
+    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize,String title,
                              Optional<Integer> userPage, Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
 
-        model.addAttribute("modulePage", courseServiceFacade.findModulePaginated(id, modulePage, moduleSize));
-        List<Integer> pageNumbers = courseServiceFacade.getModulePageNumbers(id, modulePage, moduleSize);
+        model.addAttribute("modulePage", courseServiceFacade.findModulePaginated(id, modulePage, moduleSize, title));
+        List<Integer> pageNumbers = courseServiceFacade.getModulePageNumbers(id, modulePage, moduleSize, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageModelNumbers", pageNumbers);
         }

@@ -35,4 +35,9 @@ public class LessonServiceImpl implements LessonService {
     public void deleteById(Long id) {
         lessonRepository.deleteById(id);
     }
+
+    @Override
+    public List<Lesson> findLessonsByModuleIdAndTitleLike(Long id, String title) {
+        return lessonRepository.findAllByModuleIdAndTitleContainingIgnoreCase(id, title);
+    }
 }

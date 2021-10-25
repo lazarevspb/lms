@@ -47,13 +47,13 @@ public class ModuleServiceFacadeImpl implements ModuleServiceFacade {
     }
 
     @Override
-    public Page<Lesson> findLessonPaginated(Long module_id, Optional<Integer> page, Optional<Integer> size) {
-        return (Page<Lesson>) paginationService.findPaginated(page, size, lessonService.findAllByModuleId(module_id));
+    public Page<Lesson> findLessonPaginated(Long module_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
+        return (Page<Lesson>) paginationService.findPaginated(page, size, lessonService.findLessonsByModuleIdAndTitleLike(module_id,(titlePrefix == null ? "" : titlePrefix)));
     }
 
     @Override
-    public List<Integer> getLessonPageNumbers(Long module_id, Optional<Integer> page, Optional<Integer> size) {
-        return paginationService.getLessonPageNumbers(page, size, lessonService.findAllByModuleId(module_id));
+    public List<Integer> getLessonPageNumbers(Long module_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
+        return paginationService.getLessonPageNumbers(page, size, lessonService.findLessonsByModuleIdAndTitleLike(module_id,(titlePrefix == null ? "" : titlePrefix)));
     }
 
     @Override
