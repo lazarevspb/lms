@@ -21,26 +21,31 @@ public class MapperServiceImpl implements MapperService {
 
     private final ModuleRepository moduleRepository;
 
+    @Override
     public CourseDTO toDTO(Course course) {
         return CourseDTO.builder().id(course.getId()).author(course.getAuthor()).title(course.getTitle()).build();
     }
 
+    @Override
     public Course fromDTO(CourseDTO dto) {
         return Course.builder().id(dto.getId()).author(dto.getAuthor()).title(dto.getTitle()).build();
     }
 
+    @Override
     public ModuleDTO toDTO(Module module) {
         return ModuleDTO.builder().id(module.getId())
                 .title(module.getTitle()).text(module.getText())
                 .courseId(module.getCourse().getId()).build();
     }
 
+    @Override
     public Module fromDTO(ModuleDTO dto) {
         return Module.builder().id(dto.getId())
                 .title(dto.getTitle()).text(dto.getText())
                 .course(courseRepository.getById(dto.getCourseId())).build();
     }
 
+    @Override
     public LessonDTO toDTO(Lesson lesson) {
         return LessonDTO.builder()
                 .id(lesson.getId())
@@ -53,6 +58,7 @@ public class MapperServiceImpl implements MapperService {
                 .build();
     }
 
+    @Override
     public Lesson fromDTO(LessonDTO dto) {
         return Lesson.builder()
                 .id(dto.getId())
@@ -64,21 +70,29 @@ public class MapperServiceImpl implements MapperService {
                 .build();
     }
 
+    @Override
     public UserDto toDTO(User user) {
         return UserDto.builder()
                 .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .email(user.getEmail())
                 .courses(user.getCourses())
                 .roles(user.getRoles())
                 .build();
     }
 
+    @Override
     public User fromDTO(UserDto dto) {
         return User.builder()
                 .id(dto.getId())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
                 .username(dto.getUsername())
                 .password(dto.getPassword())
+                .email(dto.getEmail())
                 .courses(dto.getCourses())
                 .roles(dto.getRoles())
                 .build();

@@ -11,6 +11,7 @@ import ru.gbteam.lms.dto.UserDto;
 import ru.gbteam.lms.exception.UserAlreadyExistException;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.UserRepository;
+import ru.gbteam.lms.service.MapperService;
 import ru.gbteam.lms.service.UserService;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final MapperService mapperService;
 
     @Override
     public Optional<User> findUserByUsername(String username) {

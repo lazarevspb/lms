@@ -1,11 +1,11 @@
-package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
-import ru.gbteam.lms.controller.impl.CourseController;
+import ru.gbteam.lms.controller.CourseController;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
@@ -18,31 +18,37 @@ import java.util.Optional;
 public class CourseControllerImpl implements CourseController {
     private final CourseServiceFacade courseServiceFacade;
 
+    @Override
     public String unAssignUser(Long courseId, Long userId) {
         courseServiceFacade.unAssignUser(courseId, userId);
         return String.format("redirect:/course/%d", courseId);
     }
 
+    @Override
     public String assignCourse(Model model, String courseId) {
         model.addAttribute("users", courseServiceFacade.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
+    @Override
     public String assignUser(Long courseId, Long userId) {
         courseServiceFacade.assignUser(courseId, userId);
         return "redirect:/course";
     }
 
+    @Override
     public String deleteCourse(Long id) {
         courseServiceFacade.deleteCourse(id);
         return "redirect:/course";
     }
 
+    @Override
     public String courseForm(Model model) {
         model.addAttribute("course", new Course());
         return "course_form";
     }
 
+    @Override
     public String saveCourse(CourseDTO courseDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "course_form";
@@ -51,6 +57,7 @@ public class CourseControllerImpl implements CourseController {
         return "redirect:/course";
     }
 
+    @Override
     public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize,
                              Optional<Integer> userPage, Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
@@ -71,6 +78,7 @@ public class CourseControllerImpl implements CourseController {
         return "course_form";
     }
 
+    @Override
     public String courseTable(Model model, Optional<Integer> page, Optional<Integer> size, String title) {
 
         model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));

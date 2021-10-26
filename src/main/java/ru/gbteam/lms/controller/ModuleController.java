@@ -1,4 +1,4 @@
-package ru.gbteam.lms.controller.impl;
+package ru.gbteam.lms.controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;

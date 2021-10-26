@@ -1,8 +1,8 @@
-package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import ru.gbteam.lms.controller.impl.ErrorController;
+import ru.gbteam.lms.controller.ErrorController;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ErrorControllerImpl implements ErrorController {
 
+  @Override
   public String handleError(HttpServletRequest request) {
     Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
