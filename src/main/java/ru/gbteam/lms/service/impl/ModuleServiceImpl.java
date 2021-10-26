@@ -33,4 +33,9 @@ public class ModuleServiceImpl implements ModuleService {
     public void delete(Long id) {
         moduleRepository.deleteById(id);
     }
+
+    @Override
+    public List<Module> findModulesByCourseIdAndTitleLike(Long id, String title) {
+        return moduleRepository.findAllByCourseIdAndTitleContainingIgnoreCase(id, title);
+    }
 }

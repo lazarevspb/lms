@@ -121,26 +121,26 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @SuppressWarnings("unchecked")
     public Page<Course> findPaginated(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         return (Page<Course>) paginationService.findPaginated(page, size,
-                courseService.findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix));
+                courseService.findCoursesByTitleOrAuthorLike(titlePrefix == null ? "" : titlePrefix));
     }
 
     @Override
     public List<Integer> getPageNumbers(Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         return paginationService.getLessonPageNumbers(page, size,
-                courseService.findCoursesByTitleLike(titlePrefix == null ? "" : titlePrefix));
+                courseService.findCoursesByTitleOrAuthorLike(titlePrefix == null ? "" : titlePrefix));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Page<Module> findModulePaginated(Long course_id, Optional<Integer> page, Optional<Integer> size) {
+    public Page<Module> findModulePaginated(Long course_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         return (Page<Module>) paginationService.findPaginated(page, size,
-                moduleService.findAllByCourseId(course_id));
+                moduleService.findModulesByCourseIdAndTitleLike(course_id,(titlePrefix == null ? "" : titlePrefix)));
     }
 
     @Override
-    public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size) {
+    public List<Integer> getModulePageNumbers(Long course_id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
         return paginationService.getLessonPageNumbers(page, size,
-                moduleService.findAllByCourseId(course_id));
+                moduleService.findModulesByCourseIdAndTitleLike(course_id,(titlePrefix == null ? "" : titlePrefix)));
     }
 
     @Override
