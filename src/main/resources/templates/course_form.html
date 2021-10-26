@@ -26,18 +26,40 @@
         <button type="submit">Подтвердить</button>
     </div>
 </form>
+
+<!------------------------------Course image--------------------------------------->
+<div th:unless="${userPage == null}">
+    <p>
+    <div>
+        <a>
+            <img alt="Course image" th:src="@{/course/courseImage/{courseId}(courseId = ${course.id})}"
+                 width="192">
+        </a>
+    </div>
+    </p>
+
+    </form>
+
+    <form enctype="multipart/form-data" th:action="@{/course/courseImage}"
+          th:method="post" th:object="${course}">
+        <div>
+            <label for="courseImage">Выберите картинку для загрузки</label>
+            <input id="courseImage" name="courseImage" type="file"/>
+        </div>
+        <div>
+            <input th:field="*{id}" type="hidden">
+            <button>Загрузить картинку</button>
+        </div>
+    </form>
+</div>
+<!------------------------------Course image end--------------------------------------->
+
 <!---------------------------------module------------------------------------------>
 <div th:unless="modulePage == null">
-    <h1>
-        <p>Модули курса</p>
-    </h1>
-    <form>
-        <label for="title" class="inline">Поиск по названию</label>
-        <input type="text" id="title" class="inline" name="title"
-               th:value="${param.title}"/>
-        <button>Искать</button>
-    </form>
     <div th:unless="${course.getId() == null}">
+        <h1>
+            <p>Модули курса</p>
+        </h1>
         <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
     </div>
     <table th:unless="${modulePage == null}">

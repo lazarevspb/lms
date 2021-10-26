@@ -47,5 +47,4 @@ public class ModuleControllerImpl implements ModuleController {
         moduleServiceFacade.deleteModule(id);
         return String.format("redirect:/course/%d", course_id);
     }
-
 }
