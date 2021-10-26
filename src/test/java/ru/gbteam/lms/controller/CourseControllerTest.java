@@ -91,9 +91,7 @@ class CourseControllerTest {
 
     @Test
     void testCourseForm3() throws Exception {
-        when(courseService.findModulePaginated(any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        when(courseService.getModulePageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
         when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
 
         Course course = new Course();

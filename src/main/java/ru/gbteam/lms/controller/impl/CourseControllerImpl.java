@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 import ru.gbteam.lms.controller.CourseController;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
@@ -71,7 +72,7 @@ public class CourseControllerImpl implements CourseController {
     }
 
     @Override
-    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize,
+    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize, String title,
                              Optional<Integer> userPage, Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
 

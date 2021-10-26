@@ -33,6 +33,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
             return "registration";
         }
         model.addAttribute("user", userDto);
+        model.addAttribute("message", "An account is created");
         return "registration";
     }
 
