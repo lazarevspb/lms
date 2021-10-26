@@ -18,6 +18,10 @@
         Login
     </a>
 
+    <a class="float-right" sec:authorize="!isAuthenticated()" th:href="@{/user/registration}">
+        Registration
+    </a>
+
     <form class="float-right" sec:authorize="isAuthenticated()" th:method="post"
           th:action="@{/logout}">
         <button>

@@ -22,14 +22,26 @@ public class UserDtoServiceImpl implements UserDtoService {
     @Override
     public List<UserDto> findAllDto() {
         return userRepository.findAll().stream()
-                .map(usr -> new UserDto(usr.getId(), usr.getUsername(), "", usr.getRoles()))
+                .map(usr -> new UserDto(usr.getId(),
+                        usr.getUsername(),
+                        usr.getFirstName(),
+                        usr.getLastName(),
+                        usr.getEmail(),
+                        "",
+                        usr.getRoles()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<UserDto> findDtoById(long id) {
         return userRepository.findById(id)
-                .map(usr -> new UserDto(usr.getId(), usr.getUsername(), "", usr.getRoles()));
+                .map(usr -> new UserDto(usr.getId(),
+                        usr.getUsername(),
+                        usr.getFirstName(),
+                        usr.getLastName(),
+                        usr.getEmail(),
+                        "",
+                        usr.getRoles()));
     }
 
     @Override

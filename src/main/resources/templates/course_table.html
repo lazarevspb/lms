@@ -56,7 +56,7 @@
    th:each="pageNumber : ${pageNumbers}"
    class="inline">
     <a th:href="@{/course(size=${coursePage.size}, page=${pageNumber})}"
-       th:text=${pageNumber}
+       th:text="${pageNumber}"
        th:class="${pageNumber==coursePage.number + 1} ? active"
        class="inline"
     ></a>
