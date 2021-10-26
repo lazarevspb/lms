@@ -25,5 +25,4 @@ public class ErrorControllerImpl implements ErrorController {
     }
     return "errors/error";
   }
-
 }

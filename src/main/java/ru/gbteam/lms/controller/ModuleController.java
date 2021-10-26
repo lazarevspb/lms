@@ -23,7 +23,8 @@ public interface ModuleController {
     String moduleForm(Model model,
                              @PathVariable("id") Long id,
                              @RequestParam("page") Optional<Integer> page,
-                             @RequestParam("size") Optional<Integer> size);
+                             @RequestParam("size") Optional<Integer> size,
+                             @RequestParam(name = "title", required = false) String title);
 
     @DeleteMapping("/{id}")
     String deleteModel(@PathVariable("id") Long id);

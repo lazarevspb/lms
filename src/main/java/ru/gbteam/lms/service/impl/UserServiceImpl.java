@@ -36,26 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findPaginated(Pageable pageable) {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-
-        int itemCount = currentPage * pageSize;
-
-        List<User> allUsers = findAll();
-        List<User> resultListUsers;
-
-        if (allUsers.size() < itemCount) {
-            resultListUsers = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(itemCount + pageSize, allUsers.size());
-            resultListUsers = allUsers.subList(itemCount, toIndex);
-        }
-
-        return new PageImpl<>(resultListUsers, PageRequest.of(currentPage, pageSize), allUsers.size());
-    }
-
-    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }

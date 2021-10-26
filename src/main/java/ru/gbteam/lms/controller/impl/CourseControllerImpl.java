@@ -1,6 +1,7 @@
 package ru.gbteam.lms.controller.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -10,6 +11,7 @@ import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.service.CourseServiceFacade;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CourseControllerImpl implements CourseController {
     private final CourseServiceFacade courseServiceFacade;
+
+    @Override
+    public ResponseEntity<byte[]> courseImage(Long courseId) {
+     return courseServiceFacade.getCourseImage(courseId);
+    }
+
+    @Override
+    public String updateCourseImage(Long id, MultipartFile courseImage, HttpServletRequest request) {
+        courseServiceFacade.updateCourseImage(id, courseImage, request);
+        return String.format("redirect:%s", request.getHeader("referer"));
+    }
 
     @Override
     public String unAssignUser(Long courseId, Long userId) {
@@ -62,8 +75,8 @@ public class CourseControllerImpl implements CourseController {
                              Optional<Integer> userPage, Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
 
-        model.addAttribute("modulePage", courseServiceFacade.findModulePaginated(id, modulePage, moduleSize));
-        List<Integer> pageNumbers = courseServiceFacade.getModulePageNumbers(id, modulePage, moduleSize);
+        model.addAttribute("modulePage", courseServiceFacade.findModulePaginated(id, modulePage, moduleSize, title));
+        List<Integer> pageNumbers = courseServiceFacade.getModulePageNumbers(id, modulePage, moduleSize, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageModelNumbers", pageNumbers);
         }

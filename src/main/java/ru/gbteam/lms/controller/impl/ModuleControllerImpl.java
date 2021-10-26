@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 
 import ru.gbteam.lms.controller.ModuleController;
+import ru.gbteam.lms.controller.impl.ModuleController;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.ModuleServiceFacade;
 import ru.gbteam.lms.model.Course;
@@ -34,10 +35,10 @@ public class ModuleControllerImpl implements ModuleController {
     }
 
     @Override
-    public String moduleForm(Model model, Long id, Optional<Integer> page, Optional<Integer> size) {
+    public String moduleForm(Model model, Long id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
 
-        model.addAttribute("lessonPage", moduleServiceFacade.findLessonPaginated(id, page, size));
-        List<Integer> pageNumbers = moduleServiceFacade.getLessonPageNumbers(id, page, size);
+        model.addAttribute("lessonPage", moduleServiceFacade.findLessonPaginated(id, page, size, titlePrefix));
+        List<Integer> pageNumbers = moduleServiceFacade.getLessonPageNumbers(id, page, size, titlePrefix);
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageLessonNumbers", pageNumbers);
         }

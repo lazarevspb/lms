@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -13,15 +14,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.gbteam.lms.controller.impl.CourseControllerImpl;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
-import ru.gbteam.lms.service.CourseService;
+import ru.gbteam.lms.service.CourseServiceFacade;
 import ru.gbteam.lms.service.ModuleService;
 import ru.gbteam.lms.service.UserService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {CourseControllerImpl.class})
@@ -31,7 +32,7 @@ class CourseControllerTest {
     private CourseControllerImpl courseController;
 
     @MockBean
-    private CourseService courseService;
+    private CourseServiceFacade courseService;
 
     @MockBean
     private ModuleService moduleService;
@@ -49,7 +50,7 @@ class CourseControllerTest {
         Course course = new Course();
         course.setUsers(new HashSet<>());
         Optional<Course> ofResult1 = Optional.of(course);
-        when(courseService.findById(123L)).thenReturn(ofResult1);
+        when(courseService.findCourseById(123L)).thenReturn(course);
         MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders
                 .post("/course/{courseId}/assign", 123L);
         MockHttpServletRequestBuilder requestBuilder = postResult.param("userId", String.valueOf(123L));
@@ -61,18 +62,6 @@ class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/course"))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/course"));
     }
-
-//    @Test
-//    void testAssignCourse() {
-//        UserRepository userRepository = mock(UserRepository.class);
-//        when(userRepository.findAll()).thenReturn(new ArrayList<>());
-//        UserServiceImpl userService = new UserServiceImpl(userRepository);
-//        CourseServiceImpl courseService = new CourseServiceImpl(mock(CourseRepository.class));
-//        CourseController courseController = new CourseController(courseService,
-//                new ModuleServiceImpl(mock(ModuleRepository.class)), userService);
-//        assertEquals("assign", courseController.assignCourse(new ConcurrentModel(), "1"));
-//        verify(userRepository).findAll();
-//    }
 
     @Test
     void testCourseForm() throws Exception {
@@ -102,55 +91,59 @@ class CourseControllerTest {
 
     @Test
     void testCourseForm3() throws Exception {
-        when(moduleService.findAllByCourseId(123L)).thenReturn(new ArrayList<>());
+        when(courseService.findModulePaginated(any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(courseService.getModulePageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
+        when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
 
         Course course = new Course();
         course.setUsers(new HashSet<>());
 
-        Optional<Course> ofResult = Optional.of(course);
-        when(courseService.findById(any())).thenReturn(ofResult);
+        when(courseService.findCourseById(any())).thenReturn(course);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course/{id}", 123L);
         MockMvcBuilders.standaloneSetup(courseController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().size(3))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("course", "modules", "users"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("course", "modulePage", "userPage"))
                 .andExpect(MockMvcResultMatchers.view().name("course_form"))
                 .andExpect(MockMvcResultMatchers.forwardedUrl("course_form"));
     }
 
     @Test
     void testCourseTable() throws Exception {
-        when(courseService.findAll()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course");
+        Course course = new Course();
+        course.setUsers(new HashSet<>());
+        when(courseService.findPaginated(Optional.of(1), Optional.of(10), "Курс П")).thenReturn(new PageImpl<>(List.of(course)));
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course").param("title", "Курс П");
         MockMvcBuilders.standaloneSetup(courseController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courses"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
                 .andExpect(MockMvcResultMatchers.view().name("course_table"))
                 .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
     }
 
     @Test
     void testCourseTable2() throws Exception {
-        when(courseService.findAll()).thenReturn(new ArrayList<>());
+        when(courseService.findPaginated(Optional.of(1), Optional.of(10), null)).thenReturn(new PageImpl<>(new ArrayList<>()));
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/course");
         MockMvcBuilders.standaloneSetup(courseController)
                 .build()
                 .perform(getResult)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("courses"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
                 .andExpect(MockMvcResultMatchers.view().name("course_table"))
                 .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
     }
 
     @Test
     void testDeleteCourse() throws Exception {
-        doNothing().when(courseService).delete(123L);
+        doNothing().when(courseService).deleteCourse(123L);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/course/{id}", 123L);
         MockMvcBuilders.standaloneSetup(courseController)
                 .build()
@@ -163,20 +156,9 @@ class CourseControllerTest {
 
     @Test
     void testSaveCourse() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/course/save");
-        MockMvcBuilders.standaloneSetup(courseController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("course"))
-                .andExpect(MockMvcResultMatchers.view().name("redirect:/course"))
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/course"));
-    }
-
-    @Test
-    void testSaveCourse2() throws Exception {
-        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/course/save");
+        MockHttpServletRequestBuilder postResult = MockMvcRequestBuilders.post("/course/save")
+                .param("title", "Курс по джава")
+                .param("author", "Пушкин");
         MockMvcBuilders.standaloneSetup(courseController)
                 .build()
                 .perform(postResult)
@@ -197,7 +179,7 @@ class CourseControllerTest {
         Course course = new Course();
         course.setUsers(new HashSet<>());
         Optional<Course> ofResult1 = Optional.of(course);
-        when(courseService.findById(123L)).thenReturn(ofResult1);
+        when(courseService.findCourseById(123L)).thenReturn(course);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/course/{courseId}/unassign/{userId}",
                 123L, 100L);
         MockMvcBuilders.standaloneSetup(courseController)
