@@ -51,7 +51,7 @@ public interface CourseController {
                              @RequestParam("userSize") Optional<Integer> userSize);
     @GetMapping
     String courseTable(Model model,
-                              @RequestParam("page") Optional<Integer> page,
-                              @RequestParam("size") Optional<Integer> size,
+                              @RequestParam(name="page", defaultValue = "1", required = false) Optional<Integer> page,
+                              @RequestParam(name="size", defaultValue = "10", required = false) Optional<Integer> size,
                               @RequestParam(name = "title", required = false) String title);
 }
