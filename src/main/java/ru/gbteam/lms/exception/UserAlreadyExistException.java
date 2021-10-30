@@ -11,11 +11,9 @@ public class UserAlreadyExistException extends RuntimeException{
 
     private String message;
     private String username;
-    private String email;
 
-    public UserAlreadyExistException(String message, String username, String email) {
+    public UserAlreadyExistException(String message, String username) {
         this.message = message;
         this.username = username;
-        this.email = email;
     }
 }

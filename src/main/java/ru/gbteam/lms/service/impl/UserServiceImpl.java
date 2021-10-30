@@ -54,9 +54,14 @@ public class UserServiceImpl implements UserService {
     public User registerNewUserAccount(UserDto userDto) {
         if (emailExists(userDto.getEmail())) {
             log.warn("Пользователь с таким email {} уже существует", userDto.getEmail());
-            throw new UserAlreadyExistException("There is an account with that email address: ",
-                    userDto.getUsername(),
-                    userDto.getEmail());
+            throw new UserAlreadyExistException("There is an account with that email address: " + userDto.getEmail(),
+                    userDto.getUsername());
+        }
+
+        if (loginExists(userDto.getUsername())) {
+            log.warn("Пользователь с таким логином {} уже существует", userDto.getUsername());
+            throw new UserAlreadyExistException("There is an account with that username address: " + userDto.getUsername(),
+                    userDto.getUsername());
         }
 
         User user = mapperService.fromDTO(userDto);
@@ -67,4 +72,9 @@ public class UserServiceImpl implements UserService {
     private boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
+
+    private boolean loginExists(String username) {
+        return userRepository.findUserByUsername(username).isPresent();
+    }
+
 }
