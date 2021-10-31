@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <header th:replace="fragments/header :: header"></header>
 
 <head>
@@ -21,25 +21,25 @@
 </form>
 
 <div>
-    <a th:href="@{/course/new/}">Создать курс</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/course/new/}">Создать курс</a>
 </div>
 <table>
     <thead>
     <tr>
-        <th>Id</th>
+        <th sec:authorize="hasRole('ADMIN')" >Id</th>
         <th>Название курса</th>
         <th>Автор курса</th>
-        <th>Действие</th>
+        <th sec:authorize="hasAnyRole('ADMIN','OWNER')">Действие</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="course : ${coursePage.content}">
-        <td th:text="${course.id}">1</td>
-        <td><a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
-        </td>
-        <td th:text="${course.author}">Course author</td>
-        <td>
-            <form class="inline" th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
+        <td sec:authorize="hasRole('ADMIN')" th:text="${course.id}">id</td>
+        <td sec:authorize="!isAuthenticated()"> <a th:text="${course.title}">Course name</a></td>
+        <td sec:authorize="isAuthenticated()"> <a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a></td>
+        <td> <a th:text="${course.author}">Course author</a></td>
+        <td sec:authorize="hasAnyRole('ADMIN','OWNER')">
+            <form sec:authorize="hasRole('ADMIN')" class="inline" th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
                 <button type="submit">Удалить</button>
             </form>
             <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">

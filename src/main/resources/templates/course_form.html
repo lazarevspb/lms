@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
 <header th:replace="fragments/header :: header"></header>
 <head>
     <meta charset="utf-8">
@@ -12,18 +12,20 @@
     <input type="hidden" th:field="*{id}">
     <div>
         <label for="title">Название курса</label>
-        <input type="text" id="title" th:field="*{title}">
+        <input sec:authorize="hasRole('STUDENT')" readonly type="text" id="title" th:field="*{title}">
+        <input sec:authorize="hasAnyRole('ADMIN','OWNER')" type="text" id="title" th:field="*{title}">
         <small class="validation-error" th:errors="*{title}" th:if="${#fields.hasErrors('title')}">Course
             title has to be filled</small>
     </div>
     <div>
         <label for="author">Автор Курса</label>
-        <input type="text" id="author" th:field="*{author}">
+        <input  sec:authorize="hasRole('STUDENT')" readonly  type="text" id="author" th:field="*{author}">
+        <input sec:authorize="hasAnyRole('ADMIN','OWNER')" type="text" id="author" th:field="*{author}">
         <small class="validation-error" th:errors="*{author}" th:if="${#fields.hasErrors('author')}">Course
             author has to be filled</small>
     </div>
     <div>
-        <button type="submit">Подтвердить</button>
+        <button sec:authorize="hasAnyRole('ADMIN','OWNER')" type="submit">Подтвердить</button>
     </div>
 </form>
 
@@ -40,7 +42,7 @@
 
     </form>
 
-    <form enctype="multipart/form-data" th:action="@{/course/courseImage}"
+    <form sec:authorize="hasAnyRole('ADMIN','OWNER')" enctype="multipart/form-data" th:action="@{/course/courseImage}"
           th:method="post" th:object="${course}">
         <div>
             <label for="courseImage">Выберите картинку для загрузки</label>
@@ -66,14 +68,14 @@
                    th:value="${param.title}"/>
             <button>Искать</button>
         </form>
-        <a th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
+        <a sec:authorize="hasAnyRole('ADMIN','OWNER')" th:href="@{/module/new(course_id = ${course.getId()})}">Добавить новый модуль</a></a>
     </div>
     <table th:unless="${modulePage == null}">
         <thead>
         <tr>
             <th>Id</th>
             <th>Название модуля</th>
-            <th>Действие</th>
+            <th sec:authorize="hasRole('ADMIN')">Действие</th>
         </tr>
         </thead>
         <tbody>
@@ -81,7 +83,7 @@
             <td th:text="${module.id}">1</td>
             <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ADMIN')">
                 <form th:method="delete" th:action="@{/module/{id}(id = ${module.id})}">
                     <button type="submit">удалить</button>
                 </form>

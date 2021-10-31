@@ -1,5 +1,6 @@
 package ru.gbteam.lms.controller.impl;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +24,10 @@ public interface LessonController {
     String newLesson(@RequestParam(name = "module_id") Long moduleId, Model model);
 
     @PostMapping("/save")
+    @Secured("ROLE_ADMIN")
     String saveLesson(@Valid @ModelAttribute("lesson") LessonDTO lessonDTO, BindingResult bindingResult);
 
     @DeleteMapping("/{lesson_id}")
+    @Secured("ROLE_ADMIN")
     String deleteLesson(@PathVariable(name = "lesson_id") Long id);
 }
