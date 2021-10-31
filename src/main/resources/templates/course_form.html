@@ -6,20 +6,29 @@
     <title>Страница курса</title>
 
     <link rel="stylesheet" th:href="@{/style.css}">
+    <style type="text/css">
+        p { padding: 0px; }
+        #left { position: absolute; left: 0; top: 25px; width: 30%; }
+        #right { position: absolute; right: 0; top: 25px; width: 70%; }
+    </style>
+
 </head>
 <body>
+<div id="left">
+
 <form th:object="${course}" th:method="post" th:action="@{/course/save}">
     <input type="hidden" th:field="*{id}">
     <div>
-        <label for="title">Название курса</label>
-        <input sec:authorize="hasRole('STUDENT')" readonly type="text" id="title" th:field="*{title}">
-        <input sec:authorize="hasAnyRole('ADMIN','OWNER')" type="text" id="title" th:field="*{title}">
+        <label sec:authorize="hasAnyRole('ADMIN','OWNER','TUTOR')" for="title">Название курса</label>
+        <h1 sec:authorize="hasRole('STUDENT')">  <span  th:text=${course.title}></span> </h1>
+        <input sec:authorize="hasAnyRole('ADMIN','OWNER','TUTOR')" type="text" id="title" th:field="*{title}">
+
         <small class="validation-error" th:errors="*{title}" th:if="${#fields.hasErrors('title')}">Course
             title has to be filled</small>
     </div>
     <div>
-        <label for="author">Автор Курса</label>
-        <input  sec:authorize="hasRole('STUDENT')" readonly  type="text" id="author" th:field="*{author}">
+        <label sec:authorize="hasAnyRole('ADMIN','OWNER')" for="author">Автор Курса</label>
+        <h3 sec:authorize="hasRole('STUDENT')">  <span  th:text=${course.author}></span> </h3>
         <input sec:authorize="hasAnyRole('ADMIN','OWNER')" type="text" id="author" th:field="*{author}">
         <small class="validation-error" th:errors="*{author}" th:if="${#fields.hasErrors('author')}">Course
             author has to be filled</small>
@@ -32,7 +41,7 @@
 <!------------------------------Course image--------------------------------------->
 <div th:unless="${userPage == null}">
     <p>
-    <div>
+    <div class="imagediv">
         <a>
             <img alt="Course image" th:src="@{/course/courseImage/{courseId}(courseId = ${course.id})}"
                  width="192">
@@ -55,13 +64,16 @@
     </form>
 </div>
 <!------------------------------Course image end--------------------------------------->
+</div>
 
+
+<div id="right">
 <!---------------------------------module------------------------------------------>
 <div th:unless="modulePage == null">
     <div th:unless="${course.getId() == null}">
-        <h1>
+        <h4 class="header">
             <p>Модули курса</p>
-        </h1>
+        </h4>
         <form>
             <label for="title" class="inline">Поиск по модулям курса</label>
             <input type="text" id="title" class="inline" name="title"
@@ -80,7 +92,7 @@
         </thead>
         <tbody>
         <tr th:each="module : ${modulePage.content}">
-            <td th:text="${module.id}">1</td>
+            <td class="id" th:text="${module.id}">1</td>
             <td><a th:text="${module.title}" th:href="@{/module/{id}(id = ${module.id})}">Module name</a>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
@@ -106,9 +118,9 @@
 </div>
 <!---------------------------------users------------------------------------------>
 <div th:unless="${userPage == null}">
-    <h1>
+    <h4 class="header">
         <p>Пользователи записанные на курс</p>
-    </h1>
+    </h4>
 </div>
 <table th:unless="${userPage == null}">
     <thead>
@@ -120,7 +132,7 @@
     </thead>
     <tbody>
     <tr th:each="user : ${userPage.content}">
-        <td th:text="${user.id}">1</td>
+        <td class="id" th:text="${user.id}">1</td>
         <td><a th:text="${user.username}">username</a>
         </td>
         <td>
@@ -144,10 +156,6 @@
        class="inline"
     ></a>
 </p>
-<div>
-    <p>
-        <a th:href="@{/course}">Вернуться к курсам</a>
-    </p>
 </div>
 </body>
 </html>
