@@ -1,4 +1,4 @@
-package ru.gbteam.lms.controller.impl;
+package ru.gbteam.lms.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;

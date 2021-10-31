@@ -1,4 +1,4 @@
-package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
