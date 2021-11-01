@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.gbteam.lms.model.Course;
 import java.util.List;
 
-@Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(String title, String author);
 }

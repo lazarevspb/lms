@@ -1,10 +1,10 @@
-package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import ru.gbteam.lms.controller.impl.LessonController;
+import ru.gbteam.lms.controller.LessonController;
 import ru.gbteam.lms.dto.LessonDTO;
 import ru.gbteam.lms.service.LessonServiceFacade;
 

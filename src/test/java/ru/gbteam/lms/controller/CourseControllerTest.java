@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ru.gbteam.lms.controller.impl.CourseControllerImpl;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.CourseServiceFacade;
@@ -90,9 +91,9 @@ class CourseControllerTest {
 
     @Test
     void testCourseForm3() throws Exception {
-        when(courseService.findModulePaginated(any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        when(courseService.getModulePageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
+//        when(courseService.findModulePaginated(any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+//        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+//        when(courseService.getModulePageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
         when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
 
         Course course = new Course();
