@@ -2,19 +2,16 @@ package ru.gbteam.lms.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.enums.UserRole;
 import ru.gbteam.lms.exception.UserAlreadyExistException;
 import ru.gbteam.lms.model.User;
+import ru.gbteam.lms.repository.RoleRepository;
 import ru.gbteam.lms.repository.UserRepository;
 import ru.gbteam.lms.service.MapperService;
 import ru.gbteam.lms.service.UserService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MapperService mapperService;
+    private final RoleRepository roleRepository;
 
     @Override
     public Optional<User> findUserByUsername(String username) {
@@ -63,7 +61,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistException("There is an account with that username address: " + userDto.getUsername(),
                     userDto.getUsername());
         }
-
+        userDto.getRoles().add(roleRepository.getById(UserRole.ROLE_STUDENT.getId()));
         User user = mapperService.fromDTO(userDto);
         log.info("Сохраняем пользователя с логином {}", user.getUsername());
         return userRepository.save(user);

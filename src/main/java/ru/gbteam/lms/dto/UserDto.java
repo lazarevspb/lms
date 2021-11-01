@@ -13,6 +13,7 @@ import ru.gbteam.lms.annotation.PasswordMatches;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -40,7 +41,7 @@ public class UserDto {
 
     private Set<Course> courses;
 
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Size(min = 8, message = "Пароль должен быть не менее 8 символов")
     @ValidateCase(type = ValidateType.PASSWORD, message = "Некорректный формат пароля")
