@@ -1,8 +1,8 @@
-package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller.impl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import ru.gbteam.lms.controller.impl.ErrorController;
+import ru.gbteam.lms.controller.ErrorController;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;

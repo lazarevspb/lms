@@ -6,7 +6,6 @@ import ru.gbteam.lms.model.CourseImage;
 
 import java.util.Optional;
 
-@Repository
 public interface CourseImageRepository extends JpaRepository<CourseImage, Long> {
 
     Optional<CourseImage> findByFilename(String filename);
