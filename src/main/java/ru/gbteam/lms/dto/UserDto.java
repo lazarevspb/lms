@@ -29,13 +29,11 @@ public class UserDto {
     @ValidateCase(type = ValidateType.LOGIN, message = "Поле Логин может содержать только латиницу и/или спец.символы")
     private String username;
 
-    @NotBlank(message = "Имя не должно быть пустым")
     private String firstName;
 
-    @NotBlank(message = "Фамилия не должна быть пустой")
     private String lastName;
 
-    @ValidateCase(type = ValidateType.EMAIL, message = "Некорректный формат пароля")
+    @ValidateCase(type = ValidateType.EMAIL, message = "Некорректный формат email")
     @NotBlank(message = "Email не должен быть пустым")
     private String email;
 

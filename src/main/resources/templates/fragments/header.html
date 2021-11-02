@@ -14,13 +14,17 @@
                 <a th:href="@{/admin/users}">Users</a>
             </span>
 
-    <a class="float-right" sec:authorize="!isAuthenticated()" th:href="@{/login}">
-        Login
-    </a>
+    <span class="float-right">
+        <a  sec:authorize="!isAuthenticated()" th:href="@{/login}">
+            Login
+        </a>
+    </span>
 
-    <a class="float-right" sec:authorize="!isAuthenticated()" th:href="@{/user/registration}">
-        Registration
-    </a>
+    <span class="float-right">
+        <a  sec:authorize="!isAuthenticated()" th:href="@{/user/registration}">
+            Registration
+        </a>
+    </span>
 
     <form class="float-right" sec:authorize="isAuthenticated()" th:method="post"
           th:action="@{/logout}">

@@ -1,6 +1,7 @@
 package ru.gbteam.lms.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.dto.LessonDTO;
@@ -20,6 +21,8 @@ public class MapperServiceImpl implements MapperService {
     private final CourseRepository courseRepository;
 
     private final ModuleRepository moduleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CourseDTO toDTO(Course course) {
@@ -91,7 +94,7 @@ public class MapperServiceImpl implements MapperService {
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .username(dto.getUsername())
-                .password(dto.getPassword())
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .email(dto.getEmail())
                 .courses(dto.getCourses())
                 .roles(dto.getRoles())
