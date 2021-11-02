@@ -10,13 +10,13 @@ import ru.gbteam.lms.exception.NotFoundException;
 
 class ExceptionHandlerControllerTest {
 
-  @Test
-  void testNotFoundExceptionHandler() {
-    ExceptionHandlerControllerImpl exceptionHandlerController = new ExceptionHandlerControllerImpl();
-    ModelAndView actualNotFoundExceptionHandlerResult = exceptionHandlerController
-        .notFoundExceptionHandler(new NotFoundException());
-    assertTrue(actualNotFoundExceptionHandlerResult.isReference());
-    assertEquals(HttpStatus.NOT_FOUND, actualNotFoundExceptionHandlerResult.getStatus());
-  }
+    @Test
+    void testNotFoundExceptionHandler() {
+        ExceptionHandlerControllerImpl exceptionHandlerController = new ExceptionHandlerControllerImpl();
+        ModelAndView actualNotFoundExceptionHandlerResult = exceptionHandlerController
+                .notFoundExceptionHandler(new NotFoundException());
+        assertTrue(actualNotFoundExceptionHandlerResult.isReference());
+        assertEquals(HttpStatus.NOT_FOUND, actualNotFoundExceptionHandlerResult.getStatus());
+    }
 }
 
