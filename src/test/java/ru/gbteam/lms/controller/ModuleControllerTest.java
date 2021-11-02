@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ru.gbteam.lms.controller.impl.ModuleControllerImpl;
 import ru.gbteam.lms.model.*;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.ModuleServiceFacade;
