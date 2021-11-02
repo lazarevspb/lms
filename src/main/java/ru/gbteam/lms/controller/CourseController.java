@@ -1,6 +1,7 @@
 package ru.gbteam.lms.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +35,15 @@ public interface CourseController {
     String assignUser(@PathVariable Long courseId, Long userId);
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     String deleteCourse(@PathVariable("id") Long id);
 
     @GetMapping("/new")
+    @Secured("ROLE_ADMIN")
     String courseForm(Model model);
 
     @PostMapping("/save")
+    @Secured("ROLE_ADMIN")
     String saveCourse(@Valid @ModelAttribute("course") CourseDTO courseDto, BindingResult bindingResult);
 
     @GetMapping("/{id}")

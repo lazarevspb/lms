@@ -1,4 +1,4 @@
- package ru.gbteam.lms.controller;
+package ru.gbteam.lms.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 

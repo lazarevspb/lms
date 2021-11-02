@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import ru.gbteam.lms.controller.ModuleController;
 
 import ru.gbteam.lms.controller.ModuleController;
 import ru.gbteam.lms.model.Module;
@@ -47,7 +48,6 @@ public class ModuleControllerImpl implements ModuleController {
         return "module_form";
     }
 
-    @Override
     public String deleteModel(Long id) {
         Long course_id = moduleServiceFacade.findModuleById(id).getCourse().getId();
         moduleServiceFacade.deleteModule(id);

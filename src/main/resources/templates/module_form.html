@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <header th:replace="fragments/header :: header"></header>
 <head>
     <meta charset="utf-8">
@@ -15,15 +15,18 @@
     <input type="hidden" th:field="*{course}">
     <div>
         <label for="title">Название модуля</label>
-        <input type="text" id="title" th:field="*{title}">
+        <input sec:authorize="hasRole('STUDENT')" readonly type="text" id="title" th:field="*{title}">
+        <input sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')" type="text" id="title" th:field="*{title}">
     </div>
 
     <div>
         <label for="text">Описание модуля</label>
-        <textarea id="text" rows="5" cols="50" th:field="*{text}"></textarea>
+        <textarea sec:authorize="hasRole('STUDENT')" readonly
+                  id="text" rows="5" cols="50" th:field="*{text}"></textarea>
+        <textarea sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')" id="text" rows="5" cols="50" th:field="*{text}"></textarea>
     </div>
     <div>
-        <button type="submit">Подтвердить</button>
+        <button sec:authorize="hasAnyRole('ADMIN','OWNER')" type="submit">Подтвердить</button>
     </div>
 </form>
 <!---------------------- Lessons ------------------------>
@@ -38,7 +41,7 @@
         <button>Искать</button>
     </form>
     <div>
-        <a th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
+        <a sec:authorize="hasAnyRole('ADMIN','OWNER')" th:href="@{/lesson/new(module_id = ${module.getId()})}">Добавить новый урок</a></a>
     </div>
     <table th:unless="${lessonPage == null}">
         <thead>
@@ -46,7 +49,7 @@
             <th>Id</th>
             <th>Название урока</th>
             <th>Описание урока</th>
-            <th>Действие</th>
+            <th sec:authorize="hasRole('ADMIN')">Действие</th>
         </tr>
         </thead>
         <tbody>
@@ -55,8 +58,8 @@
             <td><a th:text="${lesson.title}" th:href="@{/lesson/{id}(id = ${lesson.id})}">Lesson name</a>
             </td>
             <td><a th:text="${lesson.description}">Description</a></td>
-            <td>
-                <form th:method="delete" th:action="@{/lesson/{id}(id = ${lesson.id})}">
+            <td sec:authorize="hasRole('ADMIN')">
+                <form  th:method="delete" th:action="@{/lesson/{id}(id = ${lesson.id})}">
                     <button type="submit">удалить</button>
                 </form>
             </td>

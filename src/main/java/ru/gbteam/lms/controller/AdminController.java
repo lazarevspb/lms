@@ -1,5 +1,6 @@
 package ru.gbteam.lms.controller;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import ru.gbteam.lms.model.Role;
 import java.util.List;
 import javax.validation.Valid;
 
+@Secured("ROLE_ADMIN")
 @RequestMapping("/admin")
 public interface AdminController {
     @DeleteMapping("user/{id}")
