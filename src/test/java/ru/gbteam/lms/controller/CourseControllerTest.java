@@ -77,23 +77,10 @@ class CourseControllerTest {
     }
 
     @Test
-    void testCourseForm2() throws Exception {
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/course/new");
-        MockMvcBuilders.standaloneSetup(courseController)
-                .build()
-                .perform(getResult)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("course"))
-                .andExpect(MockMvcResultMatchers.view().name("course_form"))
-                .andExpect(MockMvcResultMatchers.forwardedUrl("course_form"));
-    }
-
-    @Test
     void testCourseForm3() throws Exception {
-//        when(courseService.findModulePaginated(any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-//        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-//        when(courseService.getModulePageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
+        when(courseService.findModulePaginated(any(), any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+        when(courseService.getModulePageNumbers(any(), any(), any(), any())).thenReturn(new ArrayList<>());
         when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
 
         Course course = new Course();
