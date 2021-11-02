@@ -19,16 +19,19 @@ public class AdminControllerImpl implements AdminController {
     private final UserDtoServiceImpl userDtoService;
     private final RoleService roleService;
 
+    @Override
     public String deleteCourse(Long id) {
         userDtoService.deleteById(id);
         return "redirect:/admin/users";
     }
 
+    @Override
     public String courseForm(Model model) {
         model.addAttribute("user", new UserDto());
         return "user_form";
     }
 
+    @Override
     public String submitUserForm(UserDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user_form";
@@ -37,6 +40,7 @@ public class AdminControllerImpl implements AdminController {
         return "redirect:/admin/users";
     }
 
+    @Override
     public List<Role> rolesAttribute() {
         return roleService.findAll();
     }
@@ -48,6 +52,7 @@ public class AdminControllerImpl implements AdminController {
         return "user_form";
     }
 
+    @Override
     public String userTable(Model model) {
         final List<UserDto> users = userDtoService.findAllDto();
         model.addAttribute("users", users);

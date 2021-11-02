@@ -5,9 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import ru.gbteam.lms.controller.ModuleController;
+
+import ru.gbteam.lms.controller.ModuleController;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.service.ModuleServiceFacade;
 import ru.gbteam.lms.model.Course;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +20,7 @@ public class ModuleControllerImpl implements ModuleController {
 
     private final ModuleServiceFacade moduleServiceFacade;
 
+    @Override
     public String newModuleForm(Model model, Long course_id) {
         final Course course = moduleServiceFacade.findCourseById(course_id);
 
@@ -24,11 +28,13 @@ public class ModuleControllerImpl implements ModuleController {
         return "module_form";
     }
 
+    @Override
     public String saveModule(Module module) {
         moduleServiceFacade.saveModule(module);
         return String.format("redirect:/course/%d", module.getCourse().getId());
     }
 
+    @Override
     public String moduleForm(Model model, Long id, Optional<Integer> page, Optional<Integer> size, String titlePrefix) {
 
         model.addAttribute("lessonPage", moduleServiceFacade.findLessonPaginated(id, page, size, titlePrefix));
@@ -47,4 +53,5 @@ public class ModuleControllerImpl implements ModuleController {
         moduleServiceFacade.deleteModule(id);
         return String.format("redirect:/course/%d", course_id);
     }
+
 }

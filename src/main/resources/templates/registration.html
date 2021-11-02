@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Страница регистрации</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<form th:action="@{/user/registration}" th:object="${user}" method="POST">
+    <div>
+        <label for="firstName">Имя: </label>
+        <input id="firstName" th:field="*{firstName}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('firstName')}"
+               th:errors="*{firstName}">firstName has to be filled</small>
+    </div>
+    <div>
+        <label for="lastName">Фамилия: </label>
+        <input id="lastName" th:field="*{lastName}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('lastName')}"
+               th:errors="*{lastName}">lastName has to be filled</small>
+    </div>
+    <div>
+        <label for="username">Логин: </label>
+        <input id="username" th:field="*{username}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('username')}"
+               th:errors="*{username}">username has to be filled</small>
+    </div>
+    <div>
+        <label for="email">Email: </label>
+        <input id="email" type="email" th:field="*{email}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('email')}"
+               th:errors="*{email}">email has to be filled</small>
+    </div>
+    <div>
+        <label for="password">Пароль: </label>
+        <input id="password" type="password" th:field="*{password}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('password')}"
+               th:errors="*{password}">password has to be filled</small>
+    </div>
+    <div>
+        <label for="matchingPassword">Подтверждение пароля: </label>
+        <input id="matchingPassword" type="password" th:field="*{matchingPassword}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('matchingPassword')}"
+               th:errors="*{matchingPassword}">matchingPassword has to be filled</small>
+    </div>
+    <button type="submit">Зарегистрировать</button>
+</form>
+
+<div th:unless="${message == null}">
+    <h1>
+        <small class="validation-error" th:text="${message}"></small>
+    </h1>
+</div>
+
+<a th:href="@{/login}">Авторизоваться</a>
+</body>
+</html>

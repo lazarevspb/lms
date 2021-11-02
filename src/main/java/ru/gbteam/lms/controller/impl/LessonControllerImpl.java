@@ -14,11 +14,13 @@ import ru.gbteam.lms.service.LessonServiceFacade;
 public class LessonControllerImpl implements LessonController {
     private final LessonServiceFacade lessonServiceFacade;
 
+    @Override
     public String getLessonById(Long lessonId, Model model) {
         model.addAttribute("lesson", lessonServiceFacade.mapLessonToDto(lessonId));
         return "lesson_form";
     }
 
+    @Override
     public String newLesson(Long moduleId, Model model) {
         LessonDTO lessonDTO = new LessonDTO();
         lessonDTO.setModuleId(moduleId);
@@ -26,6 +28,7 @@ public class LessonControllerImpl implements LessonController {
         return "lesson_form";
     }
 
+    @Override
     public String saveLesson(LessonDTO lessonDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "lesson_form";
@@ -34,6 +37,7 @@ public class LessonControllerImpl implements LessonController {
         return "redirect:/module/" + lessonDTO.getModuleId();
     }
 
+    @Override
     public String deleteLesson(Long id) {
         Long moduleId = lessonServiceFacade.findLessonById(id).getModule().getId();
         lessonServiceFacade.deleteLesson(id);

@@ -10,8 +10,7 @@
 
 <body>
 
-<form th:object="${module}" th:method="post"
-      th:action="@{/module/save}">
+<form th:object="${module}" th:method="post" th:action="@{/module/save}">
     <input type="hidden" th:field="*{id}">
     <input type="hidden" th:field="*{course}">
     <div>
@@ -74,7 +73,7 @@
        th:each="pageNumber : ${pageLessonNumbers}"
        class="inline">
         <a th:href="@{/module/{id}(id = ${module.getId()},size=${lessonPage.size}, page=${pageNumber})}"
-           th:text=${pageNumber}
+           th:text="${pageNumber}"
            th:class="${pageNumber==lessonPage.number + 1} ? active"
            class="inline"
         ></a>

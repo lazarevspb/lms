@@ -32,31 +32,37 @@ public class CourseControllerImpl implements CourseController {
         return String.format("redirect:%s", request.getHeader("referer"));
     }
 
+    @Override
     public String unAssignUser(Long courseId, Long userId) {
         courseServiceFacade.unAssignUser(courseId, userId);
         return String.format("redirect:/course/%d", courseId);
     }
 
+    @Override
     public String assignCourse(Model model, String courseId) {
         model.addAttribute("users", courseServiceFacade.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
+    @Override
     public String assignUser(Long courseId, Long userId) {
         courseServiceFacade.assignUser(courseId, userId);
         return "redirect:/course";
     }
 
+    @Override
     public String deleteCourse(Long id) {
         courseServiceFacade.deleteCourse(id);
         return "redirect:/course";
     }
 
+    @Override
     public String courseForm(Model model) {
         model.addAttribute("course", new Course());
         return "course_form";
     }
 
+    @Override
     public String saveCourse(CourseDTO courseDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "course_form";
@@ -65,7 +71,8 @@ public class CourseControllerImpl implements CourseController {
         return "redirect:/course";
     }
 
-    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize,String title,
+    @Override
+    public String courseForm(Model model, Long id, Optional<Integer> modulePage, Optional<Integer> moduleSize, String title,
                              Optional<Integer> userPage, Optional<Integer> userSize) {
         final Course course = courseServiceFacade.findCourseById(id);
 
@@ -80,11 +87,14 @@ public class CourseControllerImpl implements CourseController {
         if (!CollectionUtils.isEmpty(pageUserNumbers)) {
             model.addAttribute("pageUserNumbers", pageUserNumbers);
         }
+
         model.addAttribute("course", course);
         return "course_form";
     }
 
+    @Override
     public String courseTable(Model model, Optional<Integer> page, Optional<Integer> size, String title) {
+
         model.addAttribute("coursePage", courseServiceFacade.findPaginated(page, size, title));
         List<Integer> pageNumbers = courseServiceFacade.getPageNumbers(page, size, title);
         if (!CollectionUtils.isEmpty(pageNumbers)) {

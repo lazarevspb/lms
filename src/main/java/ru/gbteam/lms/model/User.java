@@ -23,6 +23,15 @@ public class User {
     @Column
     private String username;
 
+    @Column
+    private String firstName;
+
+    @Column
+    private String lastName;
+
+    @Column
+    private String email;
+
     @ManyToMany(mappedBy = "users")
     @ToString.Exclude
     private Set<Course> courses;
