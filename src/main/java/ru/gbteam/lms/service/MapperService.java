@@ -3,7 +3,8 @@ package ru.gbteam.lms.service;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.dto.LessonDTO;
 import ru.gbteam.lms.dto.ModuleDTO;
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserDTO;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Lesson;
 import ru.gbteam.lms.model.Module;
@@ -14,8 +15,10 @@ public interface MapperService {
     LessonDTO toDTO(Lesson model);
     Course fromDTO(CourseDTO dto);
     CourseDTO toDTO(Course model);
-    UserDto toDTO(User user);
-    User fromDTO(UserDto dto);
+    UserWithPwdDto toUserRegistrationDTO(User user);
+    User fromUserRegistrationDTO(UserWithPwdDto dto);
     ModuleDTO toDTO(Module module);
      Module fromDTO(ModuleDTO dto);
+    UserDTO toUserAuthDTO(User user);
+    User fromUserAuthDTO(UserDTO dto);
 }

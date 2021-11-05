@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.gbteam.lms.controller.AdminController;
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Role;
 import ru.gbteam.lms.service.RoleService;
@@ -27,12 +27,12 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     public String courseForm(Model model) {
-        model.addAttribute("user", new UserDto());
+        model.addAttribute("user", new UserWithPwdDto());
         return "user_form";
     }
 
     @Override
-    public String submitUserForm(UserDto user, BindingResult bindingResult) {
+    public String submitUserForm(UserWithPwdDto user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user_form";
         }
@@ -46,7 +46,7 @@ public class AdminControllerImpl implements AdminController {
     }
 
     public String userForm(Model model, Long id) {
-        UserDto user = userDtoService.findDtoById(id)
+        UserWithPwdDto user = userDtoService.findDtoById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь", id));
         model.addAttribute("user", user);
         return "user_form";
@@ -54,7 +54,7 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     public String userTable(Model model) {
-        final List<UserDto> users = userDtoService.findAllDto();
+        final List<UserWithPwdDto> users = userDtoService.findAllDto();
         model.addAttribute("users", users);
         model.addAttribute("activePage", "admin");
         return "user_table";

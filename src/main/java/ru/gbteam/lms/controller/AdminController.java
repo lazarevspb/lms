@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.Role;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public interface AdminController {
     String courseForm(Model model);
 
     @PostMapping("/user/save")
-    String submitUserForm(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult);
+    String submitUserForm(@Valid @ModelAttribute("user") UserWithPwdDto user, BindingResult bindingResult);
 
     @ModelAttribute("roles")
     List<Role> rolesAttribute();

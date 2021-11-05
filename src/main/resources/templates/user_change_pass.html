@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Изменение пароля</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<form th:action="@{/user/change-password}" th:object="${user}" method="POST">
+    <div>
+        <label for="password">Пароль: </label>
+        <input id="password" type="password" th:field="*{password}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('password')}"
+               th:errors="*{password}">password has to be filled</small>
+    </div>
+    <div>
+        <label for="matchingPassword">Подтверждение пароля: </label>
+        <input id="matchingPassword" type="password" th:field="*{matchingPassword}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('matchingPassword')}"
+               th:errors="*{matchingPassword}">matchingPassword has to be filled</small>
+    </div>
+    <button type="submit">Изменить</button>
+</form>
+
+<div th:unless="${message == null}">
+    <h1>
+        <small class="validation-error" th:text="${message}"></small>
+    </h1>
+</div>
+
+</body>
+</html>

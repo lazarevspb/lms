@@ -21,7 +21,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @PasswordMatches
-public class UserDto {
+public class UserWithPwdDto {
 
     private Long id;
 
@@ -47,7 +47,7 @@ public class UserDto {
     private String password;
     private String matchingPassword;
 
-    public UserDto(Long id, String username, String firstName,String lastName, String email, String password, Set<Role> roles) {
+    public UserWithPwdDto(Long id, String username, String firstName, String lastName, String email, String password, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -57,7 +57,7 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto(User user) {
+    public UserWithPwdDto(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.firstName = user.getFirstName();
