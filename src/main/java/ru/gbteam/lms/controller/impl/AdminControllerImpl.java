@@ -30,9 +30,9 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public String courseForm(Model model) {
+    public String newUserForm(Model model) {
         model.addAttribute("user", new UserDto());
-        return "user_form";
+        return "new_user_form";
     }
 
     @Override
@@ -42,6 +42,16 @@ public class AdminControllerImpl implements AdminController {
         user.getRoles().clear();
         user.setRoles(userDto.getRoles());
         userService.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @Override
+    @Transactional
+    public String createUser(UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new_user_form";
+        }
+        userDtoService.save(userDto);
         return "redirect:/admin/users";
     }
 

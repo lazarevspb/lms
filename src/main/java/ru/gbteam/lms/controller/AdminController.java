@@ -17,10 +17,13 @@ public interface AdminController {
     String deleteCourse(@PathVariable("id") Long id);
 
     @GetMapping("user/new")
-    String courseForm(Model model);
+    String newUserForm(Model model);
 
     @PostMapping("/user/save")
     String submitUserForm(@ModelAttribute("user") UserDto user, BindingResult bindingResult);
+
+    @PostMapping("/user/create")
+    String createUser(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult);
 
     @ModelAttribute("roles")
     List<Role> rolesAttribute();
