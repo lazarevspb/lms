@@ -54,7 +54,8 @@ public class UserDtoServiceImpl implements UserDtoService {
         userRepository.save(new User(userDto.getId(),
                 userDto.getUsername(),
                 encoder.encode(userDto.getPassword()),
-                userDto.getRoles()
+                userDto.getRoles(),
+                userDto.getEmail()
         ));
     }
 }

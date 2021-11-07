@@ -1,6 +1,7 @@
 package ru.gbteam.lms.controller.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CourseControllerImpl implements CourseController {
     private final CourseServiceFacade courseServiceFacade;
 
@@ -40,7 +42,7 @@ public class CourseControllerImpl implements CourseController {
 
     @Override
     public String assignCourse(Model model, String courseId) {
-        model.addAttribute("users", courseServiceFacade.findAllUsers()); // TODO: 04.10.2021 filtering user availability add
+        model.addAttribute("users", courseServiceFacade.findUsersByCourseNotEqual(courseId)); // TODO: 04.10.2021 filtering user availability add
         return "assign";
     }
 
@@ -81,8 +83,7 @@ public class CourseControllerImpl implements CourseController {
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageModelNumbers", pageNumbers);
         }
-
-        model.addAttribute("userPage", courseServiceFacade.findUserPaginated(userPage, userSize));
+        model.addAttribute("userPage", courseServiceFacade.findUserPaginatedByCourse(userPage, userSize, course));
         List<Integer> pageUserNumbers = courseServiceFacade.getUserPageNumbers(userPage, userSize, model);
         if (!CollectionUtils.isEmpty(pageUserNumbers)) {
             model.addAttribute("pageUserNumbers", pageUserNumbers);
@@ -100,6 +101,7 @@ public class CourseControllerImpl implements CourseController {
         if (!CollectionUtils.isEmpty(pageNumbers)) {
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("activePage", "courses");
         return "course_table";
     }
 }

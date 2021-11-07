@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.gbteam.lms.dto.UserDto;
 import ru.gbteam.lms.enums.UserRole;
 import ru.gbteam.lms.exception.UserAlreadyExistException;
+import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.RoleRepository;
 import ru.gbteam.lms.repository.UserRepository;
@@ -31,6 +32,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findByCourse(Course course) {
+        return userRepository.findByCourse(course.getId());
+    }
+
+    @Override
+    public List<User> findByCourseNotEqual(Course course) {
+        return userRepository.findByCourseNotEqual(course.getId());
     }
 
     @Override
