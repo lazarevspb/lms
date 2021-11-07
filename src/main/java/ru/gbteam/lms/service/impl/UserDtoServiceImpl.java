@@ -50,11 +50,12 @@ public class UserDtoServiceImpl implements UserDtoService {
     }
 
     @Override
-    public void save(UserWithPwdDto userWithPwdDto) {
-        userRepository.save(new User(userWithPwdDto.getId(),
-                userWithPwdDto.getUsername(),
-                encoder.encode(userWithPwdDto.getPassword()),
-                userWithPwdDto.getRoles()
+    public void save(UserWithPwdDto userDto) {
+        userRepository.save(new User(userDto.getId(),
+                userDto.getUsername(),
+                encoder.encode(userDto.getPassword()),
+                userDto.getRoles(),
+                userDto.getEmail()
         ));
     }
 }

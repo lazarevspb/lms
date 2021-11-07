@@ -49,6 +49,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findByCourse(Course course) {
+        return userRepository.findByCourse(course.getId());
+    }
+
+    @Override
+    public List<User> findByCourseNotEqual(Course course) {
+        return userRepository.findByCourseNotEqual(course.getId());
+    }
+
+    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }

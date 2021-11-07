@@ -5,17 +5,16 @@ values ('ROLE_OWNER'),
        ('ROLE_STUDENT');
 
 insert into users (username, password)
-values ('owner', '100'),
-       ('admin', '100'),
-       ('tutor', '100'),
-       ('student', '100');
+values ('owner', '$2a$10$I5VXBJRAAQdZBjGIQrOdouFg9avfJ5hbaXvVuQltZicvA0Cw08ovC'),
+       ('admin', '$2a$10$I5VXBJRAAQdZBjGIQrOdouFg9avfJ5hbaXvVuQltZicvA0Cw08ovC'),
+       ('tutor', '$2a$10$I5VXBJRAAQdZBjGIQrOdouFg9avfJ5hbaXvVuQltZicvA0Cw08ovC'),
+       ('student', '$2a$10$I5VXBJRAAQdZBjGIQrOdouFg9avfJ5hbaXvVuQltZicvA0Cw08ovC');
 
 insert into users_roles (users_id, roles_id)
 values (1, '1'),
        (2, '2'),
        (3, '3'),
-       (4, '4')
-;
+       (4, '4');
 
 insert into course (author, title)
 values ('Автор Первый', 'Курс Первый'),
@@ -27,8 +26,7 @@ values ('Автор Первый', 'Курс Первый'),
        ('Автор Седьмой', 'Курс Седьмой'),
        ('Автор Восьмой', 'Курс Восьмой'),
        ('Автор Девятый', 'Курс Девятый'),
-       ('Автор Десятый', 'Курс Десятый')
-;
+       ('Автор Десятый', 'Курс Десятый');
 
 insert into module (course_id, title)
 values (1, 'Модуль 11'),
@@ -57,8 +55,7 @@ values (1, 'Модуль 11'),
        (7, 'Модуль 71'),
        (7, 'Модуль 72'),
        (7, 'Модуль 73'),
-       (7, 'Модуль 74')
-;
+       (7, 'Модуль 74');
 
 insert into lessons (title, description, created_by, content, exercise, module_id)
 values  ('Урок 1', 'Описание урока 1', 2, 'Видео-урок', 'Тестовое задание', 1),

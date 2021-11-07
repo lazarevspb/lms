@@ -8,9 +8,12 @@ import ru.gbteam.lms.controller.AdminController;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Role;
+import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.service.RoleService;
+import ru.gbteam.lms.service.UserService;
 import ru.gbteam.lms.service.impl.UserDtoServiceImpl;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -18,6 +21,7 @@ import java.util.List;
 public class AdminControllerImpl implements AdminController {
     private final UserDtoServiceImpl userDtoService;
     private final RoleService roleService;
+    private final UserService userService;
 
     @Override
     public String deleteCourse(Long id) {
@@ -26,17 +30,28 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public String courseForm(Model model) {
-        model.addAttribute("user", new UserWithPwdDto());
-        return "user_form";
+    public String newUserForm(Model model) {
+        model.addAttribute("user", new UserDTO());
+        return "new_user_form";
     }
 
     @Override
-    public String submitUserForm(UserWithPwdDto user, BindingResult bindingResult) {
+    @Transactional
+    public String submitUserForm(UserWithPwdDto userDto, BindingResult bindingResult) {
+        User user = userService.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("Пользователь", userDto.getId()));
+        user.getRoles().clear();
+        user.setRoles(userDto.getRoles());
+        userService.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @Override
+    @Transactional
+    public String createUser(UserWithPwdDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "user_form";
+            return "new_user_form";
         }
-        userDtoService.save(user);
+        userDtoService.save(userDto);
         return "redirect:/admin/users";
     }
 

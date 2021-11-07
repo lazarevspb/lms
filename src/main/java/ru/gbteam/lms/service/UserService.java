@@ -1,5 +1,7 @@
 package ru.gbteam.lms.service;
 
+import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.Course;
@@ -15,6 +17,8 @@ public interface UserService {
 
     List<User> findAll();
 
+    List<User> findByCourse(Course course);
+
     Optional<User> findById(Long id);
 
     void save(User user);
@@ -24,6 +28,8 @@ public interface UserService {
     User registerNewUserAccount(UserWithPwdDto userWithPwdDto);
 
     User updateUserProfile(Principal principal, UserDTO userDTO);
+
+    List<User> findByCourseNotEqual(Course course);
 
     void unAssign(Long courseId, Long userId);
 

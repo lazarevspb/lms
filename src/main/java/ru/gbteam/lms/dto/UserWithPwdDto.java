@@ -41,7 +41,7 @@ public class UserWithPwdDto {
 
     private Set<Role> roles = new HashSet<>();
 
-    @Size(min = 3, message = "Пароль должен быть не менее 8 символов")
+    @Size(min = 3, message = "Пароль должен быть не менее 3 символов")
     @ValidateCase(type = ValidateType.PASSWORD, message = "Некорректный формат пароля")
     @NotBlank(message = "Пароль не должен быть пустым")
     private String password;

@@ -3,13 +3,8 @@ package ru.gbteam.lms.controller;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import ru.gbteam.lms.dto.UserWithPwdDto;
+import org.springframework.web.bind.annotation.*;
+import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.model.Role;
 
 import java.util.List;
@@ -22,10 +17,13 @@ public interface AdminController {
     String deleteCourse(@PathVariable("id") Long id);
 
     @GetMapping("user/new")
-    String courseForm(Model model);
+    String newUserForm(Model model);
 
     @PostMapping("/user/save")
-    String submitUserForm(@Valid @ModelAttribute("user") UserWithPwdDto user, BindingResult bindingResult);
+    String submitUserForm(@ModelAttribute("user") UserDTO user, BindingResult bindingResult);
+
+    @PostMapping("/user/create")
+    String createUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult);
 
     @ModelAttribute("roles")
     List<Role> rolesAttribute();
