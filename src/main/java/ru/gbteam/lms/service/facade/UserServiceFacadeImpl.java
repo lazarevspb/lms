@@ -39,19 +39,22 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
     public String updateUserProfile(Principal principal, UserDTO userDTO, BindingResult result, Model model){
+
         if (result.hasErrors()) {
             String errorMessages = getErrorMessage(result);
             model.addAttribute("message", errorMessages);
+            getUserProfile(principal.getName(), model);
             return "user_profile";
         }
         try {
             userService.updateUserProfile(principal, userDTO);
         } catch (UserAlreadyExistException ex) {
             model.addAttribute("message", "An account for that username/email already exists.");
+            getUserProfile(principal.getName(), model);
             return "user_profile";
         }
         model.addAttribute("user", userDTO);
-        return "user_profile";
+        return "redirect:/user";
     }
 
     @Override
