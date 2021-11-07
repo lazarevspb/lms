@@ -33,7 +33,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @Override
     @Transactional
     public void unAssignUser(Long courseId, Long userId) {
-        userService.unAssignUser(courseId, userId);
+        userService.unAssign(courseId, userId);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @Override
     @Transactional
     public void assignUser(Long courseId, Long userId) {
-        userService.assignUser(courseId, userId);
+        userService.assign(courseId, userId);
     }
 
     @Override

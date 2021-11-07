@@ -25,9 +25,9 @@ public interface UserService {
 
     User updateUserProfile(Principal principal, UserDTO userDTO);
 
-    void unAssignUser(Long courseId, Long userId);
+    void unAssign(Long courseId, Long userId);
 
-    void assignUser(Long courseId, Long userId);
+    void assign(Long courseId, Long userId);
 
     List<Course> findCourses(Long userId);
 }

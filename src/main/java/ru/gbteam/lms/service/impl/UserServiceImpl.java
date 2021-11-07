@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void unAssignUser(Long courseId, Long userId) {
+    public void unAssign(Long courseId, Long userId) {
         User user = findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void assignUser(Long courseId, Long userId) {
+    public void assign(Long courseId, Long userId) {
         User user = findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь", userId));
         Course course = courseService.findById(courseId)

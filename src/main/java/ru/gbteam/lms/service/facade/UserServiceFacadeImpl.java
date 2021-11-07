@@ -99,7 +99,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
         User user = userService.findUserByUsername(principal.getName())
                 .orElseThrow(() -> new NotFoundException("Пользователь", principal.getName()));
 
-        userService.unAssignUser(courseId, user.getId());
+        userService.unAssign(courseId, user.getId());
         return "redirect:/user";
     }
 
