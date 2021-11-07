@@ -94,7 +94,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
         log.info("Обновляем пароль пользователя {}", user.getUsername());
         user.setPassword(passwordEncoder.encode(userWithPwdDto.getPassword()));
         userService.save(user);
-        return "user_change_pass";
+        return "redirect:/logout";
     }
 
     @Override
