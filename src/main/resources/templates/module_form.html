@@ -69,7 +69,7 @@
         </tr>
         </tbody>
     </table>
-    <p th:if="${lessonPage.totalPages > 0}"
+    <p th:if="${lessonPage.totalPages > 1}"
        th:each="pageNumber : ${pageLessonNumbers}"
        class="inline">
         <a th:href="@{/module/{id}(id = ${module.getId()},size=${lessonPage.size}, page=${pageNumber})}"

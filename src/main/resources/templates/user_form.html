@@ -10,9 +10,7 @@
 
 <div class="container">
   <form th:object="${user}" th:method="post" th:action="@{/admin/user/save}">
-    <input type="hidden" th:field="*{id}">
-
-
+    <input type="hidden" th:field="*{id}" th:name="user_id" th:value="*{id}">
     <div>
       <label for="username">Имя пользователя</label>
       <input type="text" id="username" th:field="*{username}">
@@ -20,17 +18,26 @@
              th:errors="*{username}">username has to be filled</small>
     </div>
 
-
     <div>
       <label for="password">Пароль</label>
-      <input type="password" id="password" th:field="*{password}" name="password">
+      <input type="password" id="password" th:field="*{password}" name="password" th:value="*{password}">
       <small class="validation-error" th:if="${#fields.hasErrors('password')}"
              th:errors="*{password}">Пароль не может быть пустым</small>
+    </div>
+    <div>
+      <label for="matchingPassword">Подтверждение пароля: </label>
+      <input id="matchingPassword" type="password" th:field="*{matchingPassword}"/>
+      <small class="validation-error" th:if="${#fields.hasErrors('matchingPassword')}"
+             th:errors="*{matchingPassword}">matchingPassword has to be filled</small>
+    </div>
+    <div>
+      <label for="email">"Эл. почта"</label>
+      <input type="email" id="email" th:field="*{email}" name="email">
     </div>
 
     <div class="form-group">
       <label for="roles">Права пользователя</label>
-      <select multiple class="form-control" id="roles" th:field="*{roles}" required>
+      <select multiple class="form-control" id="roles" th:field="*{roles}" required th:name="role_id">
         <option th:each="role : ${roles}"
                 th:text="${role.name}"
                 th:value="${role.id}"

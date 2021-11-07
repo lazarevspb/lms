@@ -7,6 +7,7 @@ import ru.gbteam.lms.repository.RoleRepository;
 import ru.gbteam.lms.service.RoleService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -16,5 +17,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findAll() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    public Optional<Role> findById(Long id) {
+        return roleRepository.findById(id);
     }
 }

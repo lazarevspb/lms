@@ -45,7 +45,13 @@ public interface CourseServiceFacade {
 
     Page<User> findUserPaginated(Optional<Integer> page, Optional<Integer> size);
 
+    Page<User> findUserPaginatedByCourse(Optional<Integer> page, Optional<Integer> size, Course course);
+
     List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model);
 
     List<User> findAllUsers();
+
+    List<User> findUsersByCourse(String courseId);
+
+    List<User> findUsersByCourseNotEqual(String courseId);
 }

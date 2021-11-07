@@ -106,7 +106,7 @@
         </tr>
         </tbody>
     </table>
-    <p th:if="${modulePage.getTotalPages() > 0}"
+    <p th:if="${modulePage.getTotalPages() > 1}"
        th:each="pageNumber : ${pageModelNumbers}"
        class="inline">
         <a th:href="@{/course/{id}(id = ${course.getId()},moduleSize=${modulePage.size}, modulePage=${pageNumber})}"
@@ -147,7 +147,7 @@
     </tr>
     </tbody>
 </table>
-<p th:if="${userPage.getTotalPages() > 0}"
+<p th:if="${userPage.getTotalPages() > 1}"
    th:each="pageNumber : ${pageUserNumbers}"
    class="inline">
     <a th:href="@{/course/{id}(id = ${course.getId()}, userSize=${modulePage.size}, userPage=${pageNumber})}"
