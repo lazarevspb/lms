@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                     .and()
                     .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login");
+                    .logoutSuccessUrl("/course");
         }
     }
 }
