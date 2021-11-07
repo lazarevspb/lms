@@ -1,16 +1,18 @@
 package ru.gbteam.lms.service;
 
-import ru.gbteam.lms.dto.LessonDTO;
 import ru.gbteam.lms.model.Lesson;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LessonService {
     List<Lesson> findAllByModuleId(Long id);
 
-    LessonDTO findLessonById(Long id);
+    Optional<Lesson> findById(Long id);
 
-    void save(LessonDTO lessonDTO);
+    void save(Lesson lesson);
 
-    Long delete(Long id);
+    void deleteById(Long id);
+
+    List<Lesson> findLessonsByModuleIdAndTitleLike(Long id, String search);
 }

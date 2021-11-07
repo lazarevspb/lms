@@ -1,14 +1,10 @@
 package ru.gbteam.lms.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
-public class IndexController {
+public interface IndexController {
 
-  @GetMapping(value = {"/", ""})
-  public String index() {
-    return "redirect:/course";
-  }
+    @GetMapping(value = {"/", ""})
+    String index();
+
 }
-

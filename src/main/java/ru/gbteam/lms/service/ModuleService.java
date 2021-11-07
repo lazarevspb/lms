@@ -12,4 +12,6 @@ public interface ModuleService {
     void save(Module module);
 
     void delete(Long id);
+
+    List<Module> findModulesByCourseIdAndTitleLike(Long id, String search);
 }

@@ -1,42 +1,33 @@
 package ru.gbteam.lms.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.service.LessonService;
 
-@Controller
+import javax.validation.Valid;
+
 @RequestMapping("/lesson")
-@AllArgsConstructor
-public class LessonController {
 
-    private final LessonService lessonService;
-
+public interface LessonController {
     @GetMapping("/{lesson_id}")
-    public String getLessonById(@PathVariable("lesson_id") Long lessonId, Model model) {
-        model.addAttribute("lesson", lessonService.findLessonById(lessonId));
-        return "lesson_form";
-    }
+    String getLessonById(@PathVariable("lesson_id") Long lessonId, Model model);
 
     @GetMapping("/new")
-    public String newLesson(@RequestParam(name = "module_id") Long moduleId, Model model) {
-        LessonDTO lessonDTO = new LessonDTO();
-        lessonDTO.setModuleId(moduleId);
-        model.addAttribute("lesson", lessonDTO);
-        return "lesson_form";
-    }
+    String newLesson(@RequestParam(name = "module_id") Long moduleId, Model model);
 
     @PostMapping("/save")
-    public String saveLesson(LessonDTO lessonDTO) {
-        lessonService.save(lessonDTO);
-        return "redirect:/module/" + lessonDTO.getModuleId();
-    }
+    @Secured("ROLE_ADMIN")
+    String saveLesson(@Valid @ModelAttribute("lesson") LessonDTO lessonDTO, BindingResult bindingResult);
 
     @DeleteMapping("/{lesson_id}")
-    public String deleteLesson(@PathVariable(name = "lesson_id") Long id) {
-        Long moduleId = lessonService.delete(id);
-        return "redirect:/module/" + moduleId;
-    }
+    @Secured("ROLE_ADMIN")
+    String deleteLesson(@PathVariable(name = "lesson_id") Long id);
 }

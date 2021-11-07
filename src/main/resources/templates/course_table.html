@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <header th:replace="fragments/header :: header"></header>
 
 <head>
@@ -10,28 +10,36 @@
 </head>
 
 <body>
+
 <h1>Список курсов</h1>
 
+<form>
+    <label for="title" class="inline">Поиск по названию/автору</label>
+    <input type="text" id="title" class="inline" name="title"
+           th:value="${param.title}"/>
+    <button>Искать</button>
+</form>
+
 <div>
-    <a th:href="@{/course/new/}">Создать курс</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/course/new/}">Создать курс</a>
 </div>
 <table>
     <thead>
     <tr>
-        <th>Id</th>
+        <th sec:authorize="hasRole('ADMIN')" >Id</th>
         <th>Название курса</th>
         <th>Автор курса</th>
-        <th>Действие</th>
+        <th sec:authorize="hasAnyRole('ADMIN','OWNER')">Действие</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="course : ${coursePage.content}">
-        <td th:text="${course.id}">1</td>
-        <td><a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
-        </td>
-        <td th:text="${course.author}">Course author</td>
-        <td>
-            <form class="inline" th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
+        <td class="id" sec:authorize="hasRole('ADMIN')" th:text="${course.id}">id</td>
+        <td sec:authorize="!isAuthenticated()"> <a th:text="${course.title}">Course name</a></td>
+        <td sec:authorize="isAuthenticated()"> <a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a></td>
+        <td> <a th:text="${course.author}">Course author</a></td>
+        <td sec:authorize="hasAnyRole('ADMIN','OWNER')">
+            <form sec:authorize="hasRole('ADMIN')" class="inline" th:method="delete" th:action="@{/course/{id}(id = ${course.id})}">
                 <button type="submit">Удалить</button>
             </form>
             <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
@@ -39,16 +47,16 @@
             </form>
         </td>
     </tr>
-    <tr th:if="${coursePage.size == 0}">
+    <tr th:if="${coursePage == 0}">
         <td colspan="4">Тут скоро появятся курсы</td>
     </tr>
     </tbody>
 </table>
-<p th:if="${coursePage.totalPages > 0}"
+<p th:if="${coursePage.totalPages > 1}"
    th:each="pageNumber : ${pageNumbers}"
    class="inline">
     <a th:href="@{/course(size=${coursePage.size}, page=${pageNumber})}"
-       th:text=${pageNumber}
+       th:text="${pageNumber}"
        th:class="${pageNumber==coursePage.number + 1} ? active"
        class="inline"
     ></a>

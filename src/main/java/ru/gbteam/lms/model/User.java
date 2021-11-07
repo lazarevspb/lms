@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "Users")
+@Builder
 public class User {
 
     @Id
@@ -21,6 +22,15 @@ public class User {
 
     @Column
     private String username;
+
+    @Column
+    private String firstName;
+
+    @Column
+    private String lastName;
+
+    @Column
+    private String email;
 
     @ManyToMany(mappedBy = "users")
     @ToString.Exclude
@@ -36,11 +46,13 @@ public class User {
     public User(Long id,
                 String username,
                 String password,
-                Set<Role> roles) {
+                Set<Role> roles,
+                String email) {
         this.id = id;
         this.username = username;
         this.roles = roles;
         this.password = password;
+        this.email = email;
     }
 
     @Override

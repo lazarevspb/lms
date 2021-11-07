@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">-->
+<header th:replace="fragments/header :: header"></header>
 <head>
     <meta charset="utf-8">
     <title>Lesson</title>
@@ -13,21 +14,38 @@
     <input type="hidden" th:field="*{moduleId}">
     <div>
         <label for="title">Название урока</label>
-        <input type="text" id="title" th:field="*{title}">
+        <input readonly type="text" id="title" th:field="*{title}">
+        <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+            Название урока не может быть пустым
+        </small>
     </div>
     <div>
         <label for="description">Описание урока</label>
-        <input type="text" id="description" th:field="*{description}">
+<!--        <input  type="text" id="description" th:field="*{description}"-->
+<!--         sec:authorize="!isAuthenticated()" readonly  >-->
+        <input  type="text" id="description" th:field="*{description}"
+                sec:authorize="hasRole('STUDENT')" readonly>
+        <input  type="text" id="description" th:field="*{description}"
+                sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')">
     </div>
     <div>
         <label for="content">Содержание</label>
-        <textarea id="content" rows="5" cols="50" th:field="*{content}"></textarea>
+        <textarea sec:authorize="hasRole('STUDENT')" readonly  id="content" rows="5" cols="50" th:field="*{content}"></textarea>
+        <textarea sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')"   id="content" rows="5" cols="50" th:field="*{content}"></textarea>
     </div>
     <div>
         <label for="exercise">Задание</label>
-        <textarea id="exercise" rows="5" cols="50" th:field="*{exercise}"></textarea>
+        <textarea readonly id="exercise" rows="5" cols="50" th:field="*{exercise}"></textarea>
     </div>
     <div>
         <button type="submit">Подтвердить</button>
     </div>
 </form>
+<div>
+    <p>
+        <a th:href="@{/module/{moduleId}(moduleId = ${lesson.moduleId})}"
+           th:text="'Вернуться к модулю ' + ${lesson.moduleTitle}">Module title</a>
+    </p>
+</div>
+</body>
+</html>

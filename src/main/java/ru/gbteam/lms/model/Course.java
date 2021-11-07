@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "course")
+@Builder
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +29,9 @@ public class Course {
 
     @ManyToMany
     private Set<User> users;
+
+    @OneToOne(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private CourseImage courseImage;
 
     @Override
     public boolean equals(Object o) {

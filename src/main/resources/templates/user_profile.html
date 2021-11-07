@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<header th:replace="fragments/header :: header"></header>
+<head>
+    <meta charset="utf-8">
+    <title>Редактирование профиля</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<form th:action="@{/user}" th:object="${user}" method="POST">
+    <div>
+        <input type="hidden" id="id" th:field="*{id}"/>
+    </div>
+    <div>
+        <label for="firstName">Имя: </label>
+        <input id="firstName" th:field="*{firstName}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('firstName')}"
+               th:errors="*{firstName}">firstName has to be filled</small>
+    </div>
+    <div>
+        <label for="lastName">Фамилия: </label>
+        <input id="lastName" th:field="*{lastName}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('lastName')}"
+               th:errors="*{lastName}">lastName has to be filled</small>
+    </div>
+    <div>
+        <label for="username">Логин: </label>
+        <input id="username" th:field="*{username}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('username')}"
+               th:errors="*{username}">username has to be filled</small>
+    </div>
+    <div>
+        <label for="email">Email: </label>
+        <input id="email" type="email" th:field="*{email}"/>
+        <small class="validation-error" th:if="${#fields.hasErrors('email')}"
+               th:errors="*{email}">email has to be filled</small>
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+<div>
+    <a sec:authorize="hasRole('STUDENT')" th:href="@{/user/change-password/}">Сменить пароль</a>
+</div>
+
+<h1>Курсы, на которые вы записаны</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Название курса</th>
+        <th>Автор курса</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${courses}" th:unless="${courses.empty}">
+        <td>
+            <a th:text="${course.title}">title</a>
+        </td>
+        <td>
+            <a th:text="${course.author}">author</a>
+        </td>
+        <td>
+            <form class="inline" th:action="@{/user/{courseId}/unassign_course(courseId=${course.id})}">
+                <button type="submit">Отписаться</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr th:if="${courses.empty}">
+        <td colspan="4">Нет курсов</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<div th:unless="${message == null}">
+    <h1>
+        <small class="validation-error" th:text="${message}"></small>
+    </h1>
+</div>
+</body>
+</html>
