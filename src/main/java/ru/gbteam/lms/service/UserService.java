@@ -2,6 +2,7 @@ package ru.gbteam.lms.service;
 
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
+import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 
 import java.security.Principal;
@@ -23,4 +24,10 @@ public interface UserService {
     User registerNewUserAccount(UserWithPwdDto userWithPwdDto);
 
     User updateUserProfile(Principal principal, UserDTO userDTO);
+
+    void unAssignUser(Long courseId, Long userId);
+
+    void assignUser(Long courseId, Long userId);
+
+    List<Course> findCourses(Long userId);
 }

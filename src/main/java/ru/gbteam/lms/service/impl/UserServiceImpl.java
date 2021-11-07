@@ -3,14 +3,18 @@ package ru.gbteam.lms.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.enums.UserRole;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.exception.UserAlreadyExistException;
+import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
+import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.repository.RoleRepository;
 import ru.gbteam.lms.repository.UserRepository;
+import ru.gbteam.lms.service.CourseService;
 import ru.gbteam.lms.service.MapperService;
 import ru.gbteam.lms.service.UserService;
 
@@ -22,13 +26,21 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final MapperService mapperService;
     private final RoleRepository roleRepository;
+    private final CourseService courseService;
+    private final CourseRepository courseRepository;
 
     @Override
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    public List<Course> findCourses(Long userId){
+        User user = findById(userId).orElseThrow(() -> new NotFoundException("Пользователь", userId));
+        return courseRepository.findAllByUsersEquals(user);
     }
 
     @Override
@@ -55,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public User registerNewUserAccount(UserWithPwdDto userWithPwdDto) {
         userWithPwdDto.getRoles().add(roleRepository.getById(UserRole.ROLE_STUDENT.getId()));
         User user = mapperService.fromUserRegistrationDTO(userWithPwdDto);
-        checkError(Optional.empty(), user);
+        throwExceptionIfUserExist(Optional.empty(), user);
         log.info("Сохраняем пользователя с логином {}", user.getUsername());
         return userRepository.save(user);
     }
@@ -66,9 +78,33 @@ public class UserServiceImpl implements UserService {
         User userBeforeUpdate = userRepository.findUserByUsername(principal.getName())
                 .orElseThrow(() -> new NotFoundException("Пользователь", principal.getName()));
         user.setRoles(userBeforeUpdate.getRoles());
-        checkError(Optional.of(principal), user);
+        throwExceptionIfUserExist(Optional.of(principal), user);
         log.info("Обновляем пользователя {}", user.getId());
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void unAssignUser(Long courseId, Long userId) {
+        User user = findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь", userId));
+        Course course = courseService.findById(courseId)
+                .orElseThrow(() -> new NotFoundException("Курс", courseId));
+        user.getCourses().remove(course);
+        course.getUsers().remove(user);
+        courseService.save(course);
+    }
+
+    @Override
+    @Transactional
+    public void assignUser(Long courseId, Long userId) {
+        User user = findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь", userId));
+        Course course = courseService.findById(courseId)
+                .orElseThrow(() -> new NotFoundException("Курс", courseId));
+        course.getUsers().add(user);
+        user.getCourses().add(course);
+        courseService.save(course);
     }
 
     private boolean emailExists(String email) {
@@ -79,7 +115,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUsername(username).isPresent();
     }
 
-    private void checkError(Optional<Principal> principal, User user){
+    private void throwExceptionIfUserExist(Optional<Principal> principal, User user){
         User userBeforeUpdate;
         String userMail = null;
         String username = null;
@@ -101,5 +137,4 @@ public class UserServiceImpl implements UserService {
                     user.getUsername());
         }
     }
-
 }

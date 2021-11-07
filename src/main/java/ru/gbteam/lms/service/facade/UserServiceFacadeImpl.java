@@ -33,13 +33,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
        User user = userService.findUserByUsername(username).orElseThrow(() -> new NotFoundException("Пользователь", username));
        UserDTO userDTO = mapperService.toUserAuthDTO(user);
        model.addAttribute("user", userDTO);
+       model.addAttribute("courses", userService.findCourses(user.getId()));
        return "user_profile";
     }
 
     @Override
     public String updateUserProfile(Principal principal, UserDTO userDTO, BindingResult result, Model model){
         if (result.hasErrors()) {
-            String errorMessages = checkError(result, model);
+            String errorMessages = getErrorMessage(result);
             model.addAttribute("message", errorMessages);
             return "user_profile";
         }
@@ -56,7 +57,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     public String registerUserAccount(UserWithPwdDto userWithPwdDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            String errorMessages = checkError(result, model);
+            String errorMessages = getErrorMessage(result);
             model.addAttribute("message", errorMessages);
             return "registration";
         }
@@ -93,7 +94,16 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
         return "user_change_pass";
     }
 
-    private String checkError(BindingResult result, Model model){
+    @Override
+    public String unAssignCourse(Principal principal, Long courseId){
+        User user = userService.findUserByUsername(principal.getName())
+                .orElseThrow(() -> new NotFoundException("Пользователь", principal.getName()));
+
+        userService.unAssignUser(courseId, user.getId());
+        return "redirect:/user";
+    }
+
+    private String getErrorMessage(BindingResult result){
         StringJoiner errorMessages = new StringJoiner(",");
         result.getAllErrors().stream()
                 .filter(er -> {

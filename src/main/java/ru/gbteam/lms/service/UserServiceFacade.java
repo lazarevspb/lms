@@ -18,4 +18,6 @@ public interface UserServiceFacade {
     String showChangeUserPwdForm(String username, Model model);
 
     String changeUserPwd(Principal principal, UserWithPwdDto userWithPwdDto, Model model);
+
+    String unAssignCourse(Principal principal, Long courseId);
 }

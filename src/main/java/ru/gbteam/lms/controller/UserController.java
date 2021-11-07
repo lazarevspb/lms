@@ -5,6 +5,7 @@ import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gbteam.lms.dto.UserDTO;
@@ -33,4 +34,7 @@ public interface UserController {
 
     @PostMapping("/change-password")
     String changeUserPwd(Principal principal, @ModelAttribute("user") UserWithPwdDto userWithPwdDto, Model model);
+
+    @GetMapping("/{courseId}/unassign_course")
+    String unAssignCourse(Principal principal, @PathVariable("courseId") Long courseId);
 }

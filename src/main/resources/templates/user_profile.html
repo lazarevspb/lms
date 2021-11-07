@@ -42,6 +42,37 @@
     <a sec:authorize="hasRole('STUDENT')" th:href="@{/user/change-password/}">Сменить пароль</a>
 </div>
 
+<h1>Курсы, на которые вы записаны</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Название курса</th>
+        <th>Автор курса</th>
+        <th>Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${courses}" th:unless="${courses.empty}">
+        <td>
+            <a th:text="${course.title}">title</a>
+        </td>
+        <td>
+            <a th:text="${course.author}">author</a>
+        </td>
+        <td>
+            <form class="inline" th:action="@{/user/{courseId}/unassign_course(courseId=${course.id})}">
+                <button type="submit">Отписаться</button>
+            </form>
+        </td>
+    </tr>
+
+    <tr th:if="${courses.empty}">
+        <td colspan="4">Нет курсов</td>
+    </tr>
+
+    </tbody>
+</table>
+
 <div th:unless="${message == null}">
     <h1>
         <small class="validation-error" th:text="${message}"></small>

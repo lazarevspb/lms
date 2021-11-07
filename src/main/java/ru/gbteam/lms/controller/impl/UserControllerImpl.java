@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.gbteam.lms.controller.UserController;
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
@@ -46,5 +47,10 @@ public class UserControllerImpl implements UserController {
     @Override
     public String changeUserPwd(Principal principal, UserWithPwdDto userWithPwdDto, Model model){
         return userServiceFacade.changeUserPwd(principal, userWithPwdDto, model);
+    }
+
+    @Override
+    public String unAssignCourse(Principal principal, Long courseId){
+        return userServiceFacade.unAssignCourse(principal, courseId);
     }
 }
