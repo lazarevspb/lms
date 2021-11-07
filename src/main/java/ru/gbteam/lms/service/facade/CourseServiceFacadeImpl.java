@@ -33,13 +33,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @Override
     @Transactional
     public void unAssignUser(Long courseId, Long userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь", userId));
-        Course course = courseService.findById(courseId)
-                .orElseThrow(() -> new NotFoundException("Курс", courseId));
-        user.getCourses().remove(course);
-        course.getUsers().remove(user);
-        courseService.save(course);
+        userService.unAssign(courseId, userId);
     }
 
     @Override
@@ -77,13 +71,7 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     @Override
     @Transactional
     public void assignUser(Long courseId, Long userId) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь", userId));
-        Course course = courseService.findById(courseId)
-                .orElseThrow(() -> new NotFoundException("Курс", courseId));
-        course.getUsers().add(user);
-        user.getCourses().add(course);
-        courseService.save(course);
+        userService.assign(courseId, userId);
     }
 
     @Override

@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 import ru.gbteam.lms.dto.CourseDTO;
 import ru.gbteam.lms.dto.LessonDTO;
 import ru.gbteam.lms.dto.ModuleDTO;
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserDTO;
+import ru.gbteam.lms.dto.UserWithPwdDto;
+import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Lesson;
 import ru.gbteam.lms.model.Module;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.repository.ModuleRepository;
+import ru.gbteam.lms.repository.UserRepository;
 import ru.gbteam.lms.service.MapperService;
 
 @Service
@@ -23,6 +26,8 @@ public class MapperServiceImpl implements MapperService {
     private final ModuleRepository moduleRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
 
     @Override
     public CourseDTO toDTO(Course course) {
@@ -74,8 +79,8 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public UserDto toDTO(User user) {
-        return UserDto.builder()
+    public UserWithPwdDto toUserRegistrationDTO(User user) {
+        return UserWithPwdDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -88,7 +93,7 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public User fromDTO(UserDto dto) {
+    public User fromUserRegistrationDTO(UserWithPwdDto dto) {
         return User.builder()
                 .id(dto.getId())
                 .firstName(dto.getFirstName())
@@ -98,6 +103,35 @@ public class MapperServiceImpl implements MapperService {
                 .email(dto.getEmail())
                 .courses(dto.getCourses())
                 .roles(dto.getRoles())
+                .build();
+    }
+
+    @Override
+    public UserDTO toUserAuthDTO(User user) {
+        return UserDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .courses(user.getCourses())
+                .roles(user.getRoles())
+                .build();
+    }
+    @Override
+    public User fromUserAuthDTO(UserDTO dto) {
+        User user = userRepository.findById(dto.getId())
+                .orElseThrow(() -> new NotFoundException("Пользователь", dto.getId()));
+
+        return user.builder()
+                .id(dto.getId())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .username(dto.getUsername())
+                .email(dto.getEmail())
+                .courses(dto.getCourses())
+                .roles(dto.getRoles())
+                .password(user.getPassword())
                 .build();
     }
 }

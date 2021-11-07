@@ -1,8 +1,9 @@
 package ru.gbteam.lms.validator.impl;
 
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.annotation.PasswordMatches;
 
+import java.util.Objects;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -14,7 +15,10 @@ public class PasswordMatchesValidator
     }
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context){
-        UserDto user = (UserDto) obj;
+        UserWithPwdDto user = (UserWithPwdDto) obj;
+        if(Objects.isNull(user.getPassword())){
+            return true;
+        }
         return user.getPassword().equals(user.getMatchingPassword());
     }
 }

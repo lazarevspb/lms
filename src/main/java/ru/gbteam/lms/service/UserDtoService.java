@@ -1,16 +1,16 @@
 package ru.gbteam.lms.service;
 
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserDtoService {
-    List<UserDto> findAllDto();
+    List<UserWithPwdDto> findAllDto();
 
-    Optional<UserDto> findDtoById(long id);
+    Optional<UserWithPwdDto> findDtoById(long id);
 
     void deleteById(long id);
 
-    void save(UserDto userDto);
+    void save(UserWithPwdDto userWithPwdDto);
 }

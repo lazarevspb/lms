@@ -4,7 +4,7 @@ package ru.gbteam.lms.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.gbteam.lms.dto.UserDto;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.UserRepository;
 import ru.gbteam.lms.service.UserDtoService;
@@ -20,9 +20,9 @@ public class UserDtoServiceImpl implements UserDtoService {
     private final PasswordEncoder encoder;
 
     @Override
-    public List<UserDto> findAllDto() {
+    public List<UserWithPwdDto> findAllDto() {
         return userRepository.findAll().stream()
-                .map(usr -> new UserDto(usr.getId(),
+                .map(usr -> new UserWithPwdDto(usr.getId(),
                         usr.getUsername(),
                         usr.getFirstName(),
                         usr.getLastName(),
@@ -33,9 +33,9 @@ public class UserDtoServiceImpl implements UserDtoService {
     }
 
     @Override
-    public Optional<UserDto> findDtoById(long id) {
+    public Optional<UserWithPwdDto> findDtoById(long id) {
         return userRepository.findById(id)
-                .map(usr -> new UserDto(usr.getId(),
+                .map(usr -> new UserWithPwdDto(usr.getId(),
                         usr.getUsername(),
                         usr.getFirstName(),
                         usr.getLastName(),
@@ -50,7 +50,7 @@ public class UserDtoServiceImpl implements UserDtoService {
     }
 
     @Override
-    public void save(UserDto userDto) {
+    public void save(UserWithPwdDto userDto) {
         userRepository.save(new User(userDto.getId(),
                 userDto.getUsername(),
                 encoder.encode(userDto.getPassword()),
