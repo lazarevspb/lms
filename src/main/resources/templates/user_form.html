@@ -18,22 +18,22 @@
              th:errors="*{username}">username has to be filled</small>
     </div>
 
-    <div>
-      <label for="password">Пароль</label>
-      <input type="password" id="password" th:field="*{password}" name="password" th:value="*{password}">
-      <small class="validation-error" th:if="${#fields.hasErrors('password')}"
-             th:errors="*{password}">Пароль не может быть пустым</small>
-    </div>
-    <div>
-      <label for="matchingPassword">Подтверждение пароля: </label>
-      <input id="matchingPassword" type="password" th:field="*{matchingPassword}"/>
-      <small class="validation-error" th:if="${#fields.hasErrors('matchingPassword')}"
-             th:errors="*{matchingPassword}">matchingPassword has to be filled</small>
-    </div>
-    <div>
-      <label for="email">"Эл. почта"</label>
-      <input type="email" id="email" th:field="*{email}" name="email">
-    </div>
+<!--    <div>-->
+<!--      <label for="password">Пароль</label>-->
+<!--      <input type="password" id="password" th:field="*{password}" name="password" th:value="*{password}">-->
+<!--      <small class="validation-error" th:if="${#fields.hasErrors('password')}"-->
+<!--             th:errors="*{password}">Пароль не может быть пустым</small>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label for="matchingPassword">Подтверждение пароля: </label>-->
+<!--      <input id="matchingPassword" type="password" th:field="*{matchingPassword}"/>-->
+<!--      <small class="validation-error" th:if="${#fields.hasErrors('matchingPassword')}"-->
+<!--             th:errors="*{matchingPassword}">matchingPassword has to be filled</small>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <label for="email">"Эл. почта"</label>-->
+<!--      <input type="email" id="email" th:field="*{email}" name="email">-->
+<!--    </div>-->
 
     <div class="form-group">
       <label for="roles">Права пользователя</label>

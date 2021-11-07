@@ -20,7 +20,7 @@ public interface AdminController {
     String courseForm(Model model);
 
     @PostMapping("/user/save")
-    String submitUserForm(@Valid @ModelAttribute("user") UserDto user, BindingResult bindingResult);
+    String submitUserForm(@ModelAttribute("user") UserDto user, BindingResult bindingResult);
 
     @ModelAttribute("roles")
     List<Role> rolesAttribute();
