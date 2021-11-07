@@ -151,8 +151,29 @@ public class CourseServiceFacadeImpl implements CourseServiceFacade {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public Page<User> findUserPaginatedByCourse(Optional<Integer> page, Optional<Integer> size, Course course) {
+        return (Page<User>) paginationService.findPaginated(page, size,
+                userService.findByCourse(course));
+    }
+
+    @Override
     public List<Integer> getUserPageNumbers(Optional<Integer> page, Optional<Integer> size, Model model) {
         return paginationService.getLessonPageNumbers(page, size,
                 userService.findAll());
+    }
+
+    @Override
+    public List<User> findUsersByCourse(String courseId) {
+        Long id = Long.parseLong(courseId);
+        Course course = courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
+        return userService.findByCourse(course);
+    }
+
+    @Override
+    public List<User> findUsersByCourseNotEqual(String courseId) {
+        Long id = Long.parseLong(courseId);
+        Course course = courseService.findById(id).orElseThrow(() -> new NotFoundException("Курс", id));
+        return userService.findByCourseNotEqual(course);
     }
 }

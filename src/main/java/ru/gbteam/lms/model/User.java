@@ -46,11 +46,13 @@ public class User {
     public User(Long id,
                 String username,
                 String password,
-                Set<Role> roles) {
+                Set<Role> roles,
+                String email) {
         this.id = id;
         this.username = username;
         this.roles = roles;
         this.password = password;
+        this.email = email;
     }
 
     @Override

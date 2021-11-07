@@ -3,25 +3,26 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <header th:fragment="header">
-            <span th:classappend="${activePage == 'courses'} ? active">
-                <a th:href="@{/course}">Courses</a>
-            </span>
+    <span th:classappend="${activePage == 'courses'} ? active">
+        <a th:href="@{/course}">Courses</a>
+    </span>
+
     <span th:classappend="${activePage == 'users'} ? active" sec:authorize="hasAnyRole('!ADMIN','STUDENT')">
-                <a th:href="@{/user}">User</a>
-            </span>
+        <a th:href="@{/user}">User</a>
+    </span>
 
     <span th:classappend="${activePage == 'admin'} ? active" sec:authorize="hasRole('ADMIN')">
-                <a th:href="@{/admin/users}">Users</a>
-            </span>
+        <a th:href="@{/admin/users}">Users</a>
+    </span>
 
-    <span class="float-right">
-        <a  sec:authorize="!isAuthenticated()" th:href="@{/login}">
+    <span class="float-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}">
             Login
         </a>
     </span>
 
-    <span class="float-right">
-        <a  sec:authorize="!isAuthenticated()" th:href="@{/user/registration}">
+    <span class="float-right" sec:authorize="!isAuthenticated()">
+        <a th:href="@{/user/registration}">
             Registration
         </a>
     </span>
