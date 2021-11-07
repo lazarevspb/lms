@@ -31,7 +31,7 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     public String newUserForm(Model model) {
-        model.addAttribute("user", new UserDTO());
+        model.addAttribute("user", new UserWithPwdDto());
         return "new_user_form";
     }
 

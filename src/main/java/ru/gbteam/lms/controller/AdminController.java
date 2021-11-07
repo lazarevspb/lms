@@ -4,7 +4,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.gbteam.lms.dto.UserDTO;
+import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.Role;
 
 import java.util.List;
@@ -20,10 +20,10 @@ public interface AdminController {
     String newUserForm(Model model);
 
     @PostMapping("/user/save")
-    String submitUserForm(@ModelAttribute("user") UserDTO user, BindingResult bindingResult);
+    String submitUserForm(@ModelAttribute("user") UserWithPwdDto user, BindingResult bindingResult);
 
     @PostMapping("/user/create")
-    String createUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult);
+    String createUser(@Valid @ModelAttribute("user") UserWithPwdDto userDto, BindingResult bindingResult);
 
     @ModelAttribute("roles")
     List<Role> rolesAttribute();

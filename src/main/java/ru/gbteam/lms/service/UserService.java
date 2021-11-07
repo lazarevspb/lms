@@ -1,10 +1,8 @@
 package ru.gbteam.lms.service;
 
-import ru.gbteam.lms.dto.UserDto;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
-import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.User;
 
 import java.security.Principal;
