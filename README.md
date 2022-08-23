@@ -3,25 +3,25 @@
  студент, учитель; создание и загрузка контента разного формата; создание курсов, модулей, уроков; наличие системы оценивания.
 
 Используемые в проекте технологии:
-1 Java 11  
-2 Spring Boot 
-3 Spring Data JPA 
-4 Spring Security 
-5 Spring Validation 
-6 Spring MVC  
-7 Thymeleaf  
-8 Hibernate 
-9 Postgres 
-10 Docker 
-11 Heroku 
-12 Maven 
-13 Git  
-14 Mockito 
-15 Junit 
-16 Lombok 
+1.Java 11,
+2.Spring Boot,
+3.Spring Data JPA,
+4.Spring Security,
+5.Spring Validation,
+6.Spring MVC,
+7.Thymeleaf,
+8.Hibernate,
+9.Postgres,
+10. Docker,
+11. Heroku,
+12. Maven,
+13. Git,
+14. Mockito,
+15. Junit,
+16. Lombok.
 
 Возможности, которые удалось
-реализовать за прошедший курс:
+реализовать в данном проекте:
 ● Регистрация пользователей (проверка уникальности email, login, валидация 
 пароля)
 ● В системе у пользователей есть роли, обладающие разными правами доступа и 
