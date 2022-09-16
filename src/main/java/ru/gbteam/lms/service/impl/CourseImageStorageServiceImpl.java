@@ -12,7 +12,6 @@ import ru.gbteam.lms.model.CourseImage;
 import ru.gbteam.lms.repository.CourseImageRepository;
 import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.service.CourseImageStorageService;
-import ru.gbteam.lms.util.ReadData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,11 +28,15 @@ import static java.nio.file.StandardOpenOption.*;
 public class CourseImageStorageServiceImpl implements CourseImageStorageService {
 
     public static final String DEFAULT_IMAGE_FILENAME = "default_course_image.png";
+    public static final String IMG_STORAGE_PATCH = "classpath:/static/img/";
     private final CourseImageRepository courseImageRepository;
     private final CourseRepository courseRepository;
 
-    @Value("classpath:/static/img/" + DEFAULT_IMAGE_FILENAME)
-    Resource resource;
+    @Value(IMG_STORAGE_PATCH + DEFAULT_IMAGE_FILENAME)
+    Resource defaultImageresource;
+
+    @Value(IMG_STORAGE_PATCH)
+    Resource imageResource;
 
     @Autowired
     public CourseImageStorageServiceImpl(
@@ -51,7 +54,7 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
     @Override
     public Optional<byte[]> getDefaultCourseImageData() {
         try {
-            byte[] bytes = resource.getInputStream().readAllBytes();
+            byte[] bytes = defaultImageresource.getInputStream().readAllBytes();
             return Optional.of(bytes);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
@@ -77,8 +80,7 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
                 .map(CourseImage::getFilename)
                 .map(filename -> {
                     try {
-                        return ReadData.read(resource.getFile().getPath(), filename)
-                                .orElseThrow(() -> new IllegalStateException("no_data_from_resourses"));
+                        return imageResource.createRelative(filename).getInputStream().readAllBytes();
                     } catch (IOException e) {
                         log.error("failed to read image on path, exception: {}", e.getLocalizedMessage());
                     }
@@ -114,7 +116,7 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
         }
         courseImageRepository.save(courseImage);
 
-        try (OutputStream os = newOutputStream(Path.of(resource.getFile().getPath(), filename), CREATE, WRITE,
+        try (OutputStream os = newOutputStream(Path.of(imageResource.getFile().getPath(), filename), CREATE, WRITE,
                 TRUNCATE_EXISTING)) {
             is.transferTo(os);
         } catch (Exception ex) {
