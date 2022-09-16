@@ -14,7 +14,8 @@
     <input type="hidden" th:field="*{moduleId}">
     <div>
         <label for="title">Название урока</label>
-        <input readonly type="text" id="title" th:field="*{title}">
+        <input type="text" id="title" th:field="*{title}" sec:authorize="hasRole('STUDENT')" readonly>
+        <input  type="text" id="title" th:field="*{title}" sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')">
         <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
             Название урока не может быть пустым
         </small>
@@ -23,10 +24,8 @@
         <label for="description">Описание урока</label>
 <!--        <input  type="text" id="description" th:field="*{description}"-->
 <!--         sec:authorize="!isAuthenticated()" readonly  >-->
-        <input  type="text" id="description" th:field="*{description}"
-                sec:authorize="hasRole('STUDENT')" readonly>
-        <input  type="text" id="description" th:field="*{description}"
-                sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')">
+        <input  type="text" id="description" th:field="*{description}" sec:authorize="hasRole('STUDENT')" readonly>
+        <input  type="text" id="description" th:field="*{description}" sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')">
     </div>
     <div>
         <label for="content">Содержание</label>
@@ -35,10 +34,11 @@
     </div>
     <div>
         <label for="exercise">Задание</label>
-        <textarea readonly id="exercise" rows="5" cols="50" th:field="*{exercise}"></textarea>
+        <textarea  id="exercise" rows="5" cols="50" th:field="*{exercise}" sec:authorize="hasRole('STUDENT')" readonly></textarea>
+        <textarea  type="text" id="exercise" rows="5" cols="50" th:field="*{exercise}" sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')"></textarea>
     </div>
     <div>
-        <button type="submit">Подтвердить</button>
+        <button type="submit" sec:authorize="hasAnyRole('ADMIN','TUTOR','OWNER')">Подтвердить</button>
     </div>
 </form>
 <div>
