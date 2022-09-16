@@ -4,10 +4,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.gbteam.lms.dto.RoleDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
-import ru.gbteam.lms.model.Role;
 
-import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 
 @Secured("ROLE_ADMIN")
@@ -26,7 +26,7 @@ public interface AdminController {
     String createUser(@Valid @ModelAttribute("user") UserWithPwdDto userDto, BindingResult bindingResult);
 
     @ModelAttribute("roles")
-    List<Role> rolesAttribute();
+    Set<RoleDTO> rolesAttribute();
 
     @GetMapping("user/{id}")
     String userForm(Model model, @PathVariable Long id);

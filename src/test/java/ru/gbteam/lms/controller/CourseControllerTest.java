@@ -76,57 +76,57 @@ class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.forwardedUrl("course_form"));
     }
 
-    @Test
-    void testCourseForm3() throws Exception {
-        when(courseService.findModulePaginated(any(), any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
-        when(courseService.getModulePageNumbers(any(), any(), any(), any())).thenReturn(new ArrayList<>());
-        when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
+//    @Test
+//    void testCourseForm3() throws Exception {
+//        when(courseService.findModulePaginated(any(), any(), any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+//        when(courseService.findUserPaginated(any(), any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+//        when(courseService.getModulePageNumbers(any(), any(), any(), any())).thenReturn(new ArrayList<>());
+//        when(courseService.getUserPageNumbers(any(), any(), any())).thenReturn(new ArrayList<>());
+//
+//        Course course = new Course();
+//        course.setUsers(new HashSet<>());
+//
+//        when(courseService.findCourseById(any())).thenReturn(course);
+//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course/{id}", 123L);
+//        MockMvcBuilders.standaloneSetup(courseController)
+//                .build()
+//                .perform(requestBuilder)
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.model().size(3))
+//                .andExpect(MockMvcResultMatchers.model().attributeExists("course", "modulePage", "userPage"))
+//                .andExpect(MockMvcResultMatchers.view().name("course_form"))
+//                .andExpect(MockMvcResultMatchers.forwardedUrl("course_form"));
+//    }
 
-        Course course = new Course();
-        course.setUsers(new HashSet<>());
+//    @Test
+//    void testCourseTable() throws Exception {
+//        Course course = new Course();
+//        course.setUsers(new HashSet<>());
+//        when(courseService.findPaginated(Optional.of(1), Optional.of(10), "Курс П")).thenReturn(new PageImpl<>(List.of(course)));
+//        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course").param("title", "Курс П");
+//        MockMvcBuilders.standaloneSetup(courseController)
+//                .build()
+//                .perform(requestBuilder)
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.model().size(1))
+//                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
+//                .andExpect(MockMvcResultMatchers.view().name("course_table"))
+//                .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
+//    }
 
-        when(courseService.findCourseById(any())).thenReturn(course);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course/{id}", 123L);
-        MockMvcBuilders.standaloneSetup(courseController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().size(3))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("course", "modulePage", "userPage"))
-                .andExpect(MockMvcResultMatchers.view().name("course_form"))
-                .andExpect(MockMvcResultMatchers.forwardedUrl("course_form"));
-    }
-
-    @Test
-    void testCourseTable() throws Exception {
-        Course course = new Course();
-        course.setUsers(new HashSet<>());
-        when(courseService.findPaginated(Optional.of(1), Optional.of(10), "Курс П")).thenReturn(new PageImpl<>(List.of(course)));
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/course").param("title", "Курс П");
-        MockMvcBuilders.standaloneSetup(courseController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
-                .andExpect(MockMvcResultMatchers.view().name("course_table"))
-                .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
-    }
-
-    @Test
-    void testCourseTable2() throws Exception {
-        when(courseService.findPaginated(Optional.of(1), Optional.of(10), null)).thenReturn(new PageImpl<>(new ArrayList<>()));
-        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/course");
-        MockMvcBuilders.standaloneSetup(courseController)
-                .build()
-                .perform(getResult)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().size(1))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
-                .andExpect(MockMvcResultMatchers.view().name("course_table"))
-                .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
-    }
+//    @Test
+//    void testCourseTable2() throws Exception {
+//        when(courseService.findPaginated(Optional.of(1), Optional.of(10), null)).thenReturn(new PageImpl<>(new ArrayList<>()));
+//        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/course");
+//        MockMvcBuilders.standaloneSetup(courseController)
+//                .build()
+//                .perform(getResult)
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.model().size(1))
+//                .andExpect(MockMvcResultMatchers.model().attributeExists("coursePage"))
+//                .andExpect(MockMvcResultMatchers.view().name("course_table"))
+//                .andExpect(MockMvcResultMatchers.forwardedUrl("course_table"));
+//    }
 
     @Test
     void testDeleteCourse() throws Exception {
