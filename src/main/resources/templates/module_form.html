@@ -12,7 +12,7 @@
 
 <form th:object="${module}" th:method="post" th:action="@{/module/save}">
     <input type="hidden" th:field="*{id}">
-<!--    <input type="hidden" th:field="*{course}">-->
+    <input type="hidden" th:field="*{course.id}">
     <div>
         <label for="title">Название модуля</label>
         <input sec:authorize="hasRole('STUDENT')" readonly type="text" id="title" th:field="*{title}">
