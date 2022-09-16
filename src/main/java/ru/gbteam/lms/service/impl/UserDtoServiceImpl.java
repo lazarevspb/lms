@@ -4,6 +4,7 @@ package ru.gbteam.lms.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.gbteam.lms.mapper.RoleMapper;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.UserRepository;
@@ -54,7 +55,7 @@ public class UserDtoServiceImpl implements UserDtoService {
         userRepository.save(new User(userDto.getId(),
                 userDto.getUsername(),
                 encoder.encode(userDto.getPassword()),
-                userDto.getRoles(),
+                RoleMapper.roleDtoMapper(userDto.getRoleDTO()),
                 userDto.getEmail()
         ));
     }

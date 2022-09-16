@@ -17,7 +17,7 @@ public class CourseDTO {
     private Long id;
 
     @NotBlank(message = "Название курса не может быть пустым")
-    @ValidateCase(type = ValidateType.ANY, message = "Двойные пробелы запрещены")
+//    @ValidateCase(type = ValidateType.ANY, message = "Двойные пробелы запрещены")
     private String title;
 
     @NotBlank(message = "Автор курса должен быть заполен")
