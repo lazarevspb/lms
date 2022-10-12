@@ -1,10 +1,13 @@
 package ru.gbteam.lms.controller.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import ru.gbteam.lms.mapper.RoleMapper;
 import ru.gbteam.lms.controller.AdminController;
+import ru.gbteam.lms.dto.RoleDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.model.Role;
@@ -14,7 +17,9 @@ import ru.gbteam.lms.service.UserService;
 import ru.gbteam.lms.service.impl.UserDtoServiceImpl;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class AdminControllerImpl implements AdminController {
     private final UserDtoServiceImpl userDtoService;
     private final RoleService roleService;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String deleteCourse(Long id) {
@@ -38,11 +44,18 @@ public class AdminControllerImpl implements AdminController {
     @Override
     @Transactional
     public String submitUserForm(UserWithPwdDto userDto, BindingResult bindingResult) {
-        User user = userService.findById(userDto.getId()).orElseThrow(() -> new NotFoundException("Пользователь", userDto.getId()));
-        user.getRoles().clear();
-        user.setRoles(userDto.getRoles());
+        User user = userService.findById(userDto.getId())
+                .orElseThrow(() -> new NotFoundException("Пользователь", userDto.getId()));
+
+        if (!userDto.getRoleDTO().equals(RoleMapper.roleMapper(user.getRoles()))) {
+            user.getRoles().clear();
+            user.setRoles(RoleMapper.roleDtoMapper(userDto.getRoleDTO()));
+        }
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
         userService.save(user);
-        return "redirect:/admin/users";
+        return String.format("redirect:/admin/user/%d", userDto.getId());
     }
 
     @Override
@@ -56,8 +69,9 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public List<Role> rolesAttribute() {
-        return roleService.findAll();
+    public Set<RoleDTO> rolesAttribute() {
+        Set<Role> roleSet = new HashSet<>(roleService.findAll());
+        return RoleMapper.roleMapper(roleSet);
     }
 
     public String userForm(Model model, Long id) {

@@ -36,7 +36,7 @@ public class User {
     @ToString.Exclude
     private Set<Course> courses;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<Role> roles;
 

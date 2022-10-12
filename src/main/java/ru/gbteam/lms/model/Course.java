@@ -24,7 +24,7 @@ public class Course {
     @Column
     private String title;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Module> modules;
 
     @ManyToMany

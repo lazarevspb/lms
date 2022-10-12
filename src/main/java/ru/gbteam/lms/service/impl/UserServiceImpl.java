@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gbteam.lms.dto.RoleDTO;
 import ru.gbteam.lms.dto.UserDTO;
 import ru.gbteam.lms.dto.UserWithPwdDto;
 import ru.gbteam.lms.enums.UserRole;
 import ru.gbteam.lms.exception.NotFoundException;
 import ru.gbteam.lms.exception.UserAlreadyExistException;
 import ru.gbteam.lms.model.Course;
+import ru.gbteam.lms.model.Role;
 import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.repository.RoleRepository;
@@ -75,7 +77,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerNewUserAccount(UserWithPwdDto userWithPwdDto) {
-        userWithPwdDto.getRoles().add(roleRepository.getById(UserRole.ROLE_STUDENT.getId()));
+        Role role = roleRepository.getById(UserRole.ROLE_STUDENT.getId());
+        userWithPwdDto.getRoleDTO().add(new RoleDTO(role.getId(), role.getName()));
         User user = mapperService.fromUserRegistrationDTO(userWithPwdDto);
         throwExceptionIfUserExist(Optional.empty(), user);
         log.info("Сохраняем пользователя с логином {}", user.getUsername());

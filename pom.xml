@@ -11,12 +11,13 @@
 	<groupId>ru.gbteam</groupId>
 	<artifactId>lms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>life-long-learning</name>
 	<description>An application with a monolithic architecture, which is an educational platform LMS (Learning Management System).</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,6 +73,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<finalName>app_lms</finalName>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

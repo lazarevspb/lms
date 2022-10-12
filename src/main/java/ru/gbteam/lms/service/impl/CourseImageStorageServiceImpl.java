@@ -3,6 +3,7 @@ package ru.gbteam.lms.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gbteam.lms.exception.NotFoundException;
@@ -11,8 +12,8 @@ import ru.gbteam.lms.model.CourseImage;
 import ru.gbteam.lms.repository.CourseImageRepository;
 import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.service.CourseImageStorageService;
-import ru.gbteam.lms.util.ReadData;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -26,11 +27,16 @@ import static java.nio.file.StandardOpenOption.*;
 @Service
 public class CourseImageStorageServiceImpl implements CourseImageStorageService {
 
+    public static final String DEFAULT_IMAGE_FILENAME = "default_course_image.png";
+    public static final String IMG_STORAGE_PATCH = "classpath:/static/img/";
     private final CourseImageRepository courseImageRepository;
     private final CourseRepository courseRepository;
 
-    @Value("${file.storage.path}")
-    private String path;
+    @Value(IMG_STORAGE_PATCH + DEFAULT_IMAGE_FILENAME)
+    Resource defaultImageresource;
+
+    @Value(IMG_STORAGE_PATCH)
+    Resource imageResource;
 
     @Autowired
     public CourseImageStorageServiceImpl(
@@ -47,8 +53,13 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
 
     @Override
     public Optional<byte[]> getDefaultCourseImageData() {
-        String DEFAULT_IMAGE_FILENAME = "default_course_image.png";
-        return ReadData.read(path, DEFAULT_IMAGE_FILENAME);
+        try {
+            byte[] bytes = defaultImageresource.getInputStream().readAllBytes();
+            return Optional.of(bytes);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
+            return Optional.empty();
+        }
     }
 
     /**
@@ -65,10 +76,17 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
      */
     @Override
     public Optional<byte[]> getCourseImageByCourse(Long courseId) {
-        return getCourseImagedByCourseId(courseId)
+        Optional<byte[]> data = getCourseImagedByCourseId(courseId)
                 .map(CourseImage::getFilename)
-                .map(filename -> ReadData.read(path, filename)
-                        .orElseThrow(() -> new IllegalStateException("no_data")));
+                .map(filename -> {
+                    try {
+                        return imageResource.createRelative(filename).getInputStream().readAllBytes();
+                    } catch (IOException e) {
+                        log.error("failed to read image on path, exception: {}", e.getLocalizedMessage());
+                    }
+                    return new byte[0];
+                });
+        return data;
     }
 
     @Override
@@ -98,7 +116,7 @@ public class CourseImageStorageServiceImpl implements CourseImageStorageService 
         }
         courseImageRepository.save(courseImage);
 
-        try (OutputStream os = newOutputStream(Path.of(path, filename), CREATE, WRITE,
+        try (OutputStream os = newOutputStream(Path.of(imageResource.getFile().getPath(), filename), CREATE, WRITE,
                 TRUNCATE_EXISTING)) {
             is.transferTo(os);
         } catch (Exception ex) {

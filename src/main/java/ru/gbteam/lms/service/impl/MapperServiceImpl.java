@@ -3,20 +3,20 @@ package ru.gbteam.lms.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.gbteam.lms.dto.CourseDTO;
-import ru.gbteam.lms.dto.LessonDTO;
-import ru.gbteam.lms.dto.ModuleDTO;
-import ru.gbteam.lms.dto.UserDTO;
-import ru.gbteam.lms.dto.UserWithPwdDto;
+import ru.gbteam.lms.dto.*;
 import ru.gbteam.lms.exception.NotFoundException;
-import ru.gbteam.lms.model.Course;
-import ru.gbteam.lms.model.Lesson;
+import ru.gbteam.lms.mapper.RoleMapper;
+import ru.gbteam.lms.model.*;
 import ru.gbteam.lms.model.Module;
-import ru.gbteam.lms.model.User;
 import ru.gbteam.lms.repository.CourseRepository;
 import ru.gbteam.lms.repository.ModuleRepository;
+import ru.gbteam.lms.repository.RoleRepository;
 import ru.gbteam.lms.repository.UserRepository;
 import ru.gbteam.lms.service.MapperService;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,14 +29,24 @@ public class MapperServiceImpl implements MapperService {
 
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
+
     @Override
     public CourseDTO toDTO(Course course) {
-        return CourseDTO.builder().id(course.getId()).author(course.getAuthor()).title(course.getTitle()).build();
+        return CourseDTO.builder()
+                .id(course.getId())
+                .author(course.getAuthor())
+                .title(course.getTitle())
+                .build();
     }
 
     @Override
     public Course fromDTO(CourseDTO dto) {
-        return Course.builder().id(dto.getId()).author(dto.getAuthor()).title(dto.getTitle()).build();
+        return Course.builder()
+                .id(dto.getId())
+                .author(dto.getAuthor())
+                .title(dto.getTitle())
+                .build();
     }
 
     @Override
@@ -88,7 +98,7 @@ public class MapperServiceImpl implements MapperService {
                 .password(user.getPassword())
                 .email(user.getEmail())
                 .courses(user.getCourses())
-                .roles(user.getRoles())
+                .roleDTO(user.getRoles().stream().map(role -> new RoleDTO(role.getId(), role.getName())).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -102,8 +112,8 @@ public class MapperServiceImpl implements MapperService {
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .email(dto.getEmail())
                 .courses(dto.getCourses())
-                .roles(dto.getRoles())
-                .build();
+                .roles(RoleMapper.roleDtoMapper(dto.getRoleDTO()))
+                        .build();
     }
 
     @Override
@@ -115,7 +125,7 @@ public class MapperServiceImpl implements MapperService {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .courses(user.getCourses())
-                .roles(user.getRoles())
+                .roles(RoleMapper.roleMapper(user.getRoles()))
                 .build();
     }
     @Override
@@ -123,14 +133,20 @@ public class MapperServiceImpl implements MapperService {
         User user = userRepository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("Пользователь", dto.getId()));
 
-        return user.builder()
+        Set<Role> roles = dto.getRoles().stream()
+                .map(roleDto -> roleRepository.findById(roleDto.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
+        return User.builder()
                 .id(dto.getId())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .courses(dto.getCourses())
-                .roles(dto.getRoles())
+                .roles(roles)
                 .password(user.getPassword())
                 .build();
     }

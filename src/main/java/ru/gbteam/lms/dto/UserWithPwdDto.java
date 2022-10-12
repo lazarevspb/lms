@@ -1,11 +1,9 @@
 package ru.gbteam.lms.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.gbteam.lms.annotation.ValidateCase;
 import ru.gbteam.lms.enums.ValidateType;
+import ru.gbteam.lms.mapper.RoleMapper;
 import ru.gbteam.lms.model.Course;
 import ru.gbteam.lms.model.Role;
 import ru.gbteam.lms.model.User;
@@ -39,7 +37,7 @@ public class UserWithPwdDto {
 
     private Set<Course> courses;
 
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleDTO> roleDTO;
 
     @Size(min = 3, message = "Пароль должен быть не менее 3 символов")
     @ValidateCase(type = ValidateType.PASSWORD, message = "Некорректный формат пароля")
@@ -47,13 +45,13 @@ public class UserWithPwdDto {
     private String password;
     private String matchingPassword;
 
-    public UserWithPwdDto(Long id, String username, String firstName, String lastName, String email, String password, Set<Role> roles) {
+    public UserWithPwdDto(Long id, String username, String firstName, String lastName, String email, String password, Set<Role> roleDTO) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.roles = roles;
+        this.roleDTO = RoleMapper.roleMapper(roleDTO);
         this.password = password;
     }
 
@@ -63,7 +61,7 @@ public class UserWithPwdDto {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
-        this.roles = user.getRoles();
+        this.roleDTO = RoleMapper.roleMapper(user.getRoles());
         this.password = user.getPassword();
         this.courses = user.getCourses();
     }
